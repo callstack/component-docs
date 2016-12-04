@@ -1,0 +1,79 @@
+/* @flow */
+
+import fs from 'fs';
+import path from 'path';
+import watch from 'node-watch';
+import { server, bundle } from 'quik';
+import { buildRoutes } from './templates/App';
+import buildEntry from './buildEntry';
+import buildHTML from './buildHTML';
+import markdown from './parsers/markdown';
+import component from './parsers/component';
+
+type Files = Array<string | Array<string>>;
+
+type Options = {
+  files: Files | () => Files;
+  output: string;
+  port?: number;
+}
+
+const collectData = (files, output) => {
+  const data = files.reduce((acc, file) => {
+    if (Array.isArray(file)) {
+      return [ ...acc, file ];
+    }
+    return [ ...acc, [ file ] ];
+  }, []).map(items => items.map(it => {
+    if (it.endsWith('.md')) {
+      return markdown(it);
+    }
+    if (it.endsWith('.js')) {
+      return component(it);
+    }
+    throw new Error('Unknown extension ', it);
+  }));
+
+  fs.writeFileSync(path.join(output, 'app.data.json'), JSON.stringify(data));
+
+  return data;
+};
+
+export function build({ files: getFiles, output }: Options) {
+  const entry = path.join(output, 'app.src.js');
+  const files = typeof getFiles === 'function' ? getFiles() : getFiles;
+  const data = collectData(files, output);
+  buildEntry(entry);
+  buildRoutes(data)
+    .forEach(route => buildHTML({ data, route, output, transpile: true }));
+  bundle({
+    root: process.cwd(),
+    entry: [ entry ],
+    output: path.join(output, 'app.bundle.js'),
+    sourcemaps: true,
+    production: true,
+  });
+}
+
+export function serve({ files: getFiles, output, port = 3031 }: Options) {
+  let files = typeof getFiles === 'function' ? getFiles() : getFiles;
+  let data = collectData(files, output);
+  const entry = path.join(output, 'app.src.js');
+  buildEntry(entry);
+  buildRoutes(data)
+    .forEach(route => buildHTML({ data, route, output, transpile: false }));
+
+  watch([].concat.apply([], files), () => {
+    files = typeof getFiles === 'function' ? getFiles() : getFiles;
+    data = collectData(files, output);
+    buildRoutes(data)
+      .forEach(route => buildHTML({ data, route, output, transpile: false }));
+  });
+
+  server({
+    root: process.cwd(),
+    watch: [ entry ],
+  }).listen(port);
+
+  console.log(`Open http://localhost:${port}/${path.relative(process.cwd(), output)}/ in your browser.\n`);
+}

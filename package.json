@@ -1,0 +1,42 @@
+{
+  "name": "component-docs",
+  "version": "0.0.1",
+  "description": "Documentation for React components",
+  "scripts": {
+    "build": "del dist/ && babel -sd dist/ src/",
+    "lint": "git diff HEAD --name-only --diff-filter=ACM | grep '.js$' | xargs eslint --quiet",
+    "flow": "flow",
+    "prepublish": "npm run build",
+    "semantic-release": "semantic-release pre && npm publish && semantic-release post",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "main": "dist/index.js",
+  "files": [ "dist/" ],
+  "dependencies": {
+    "glamor": "^2.19.0",
+    "highlight.js": "^9.8.0",
+    "history": "^4.4.0",
+    "node-watch": "^0.4.1",
+    "quik": "^0.11.1",
+    "react": "~15.3.2",
+    "react-dom": "~15.3.0",
+    "react-remarkable": "^1.1.1",
+    "redbox-react": "^1.3.3"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.18.0",
+    "babel-eslint": "^7.1.1",
+    "babel-preset-es2015": "^6.18.0",
+    "babel-preset-react": "^6.16.0",
+    "babel-preset-stage-1": "^6.16.0",
+    "del-cli": "^0.2.0",
+    "eslint": "^3.11.1",
+    "eslint-plugin-babel": "^4.0.0",
+    "eslint-plugin-import": "^2.2.0",
+    "eslint-plugin-react": "^6.7.1",
+    "flow-bin": "^0.36.0",
+    "react-docgen": "^2.12.1"
+  },
+  "author": "",
+  "license": "MIT"
+}

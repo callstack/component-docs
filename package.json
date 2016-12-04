@@ -1,6 +1,5 @@
 {
   "name": "component-docs",
-  "version": "0.0.1",
   "description": "Documentation for React components",
   "scripts": {
     "build": "del dist/ && babel -sd dist/ src/",
@@ -11,7 +10,9 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "main": "dist/index.js",
-  "files": [ "dist/" ],
+  "files": [
+    "dist/"
+  ],
   "dependencies": {
     "glamor": "^2.19.0",
     "highlight.js": "^9.8.0",
@@ -35,8 +36,13 @@
     "eslint-plugin-import": "^2.2.0",
     "eslint-plugin-react": "^6.7.1",
     "flow-bin": "^0.36.0",
-    "react-docgen": "^2.12.1"
+    "react-docgen": "^2.12.1",
+    "semantic-release": "^6.3.2"
   },
   "author": "",
-  "license": "MIT"
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/satya164/component-docs.git"
+  }
 }

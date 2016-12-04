@@ -48,7 +48,7 @@ export function build({ files: getFiles, output }: Options) {
     .forEach(route => buildHTML({ data, route, output, transpile: true }));
   bundle({
     root: process.cwd(),
-    entry: [ entry ],
+    entry: [ path.relative(process.cwd(), entry) ],
     output: path.join(output, 'app.bundle.js'),
     sourcemaps: true,
     production: true,
@@ -63,7 +63,19 @@ export function serve({ files: getFiles, output, port = 3031 }: Options) {
   buildRoutes(data)
     .forEach(route => buildHTML({ data, route, output, transpile: false }));
 
-  watch([].concat.apply([], files), () => {
+  const dirs = [];
+
+  files.forEach(items => items.forEach(file => {
+    const dir = path.dirname(file);
+    if (!dirs.includes(dir)) {
+      dirs.push(dir);
+    }
+  }));
+
+  watch(dirs, file => {
+    if (!path.relative(path.dirname(file), output)) {
+      return;
+    }
     files = typeof getFiles === 'function' ? getFiles() : getFiles;
     data = collectData(files, output);
     buildRoutes(data)
@@ -72,7 +84,7 @@ export function serve({ files: getFiles, output, port = 3031 }: Options) {
 
   server({
     root: process.cwd(),
-    watch: [ entry ],
+    watch: [ path.relative(process.cwd(), entry) ],
   }).listen(port);
 
   console.log(`Open http://localhost:${port}/${path.relative(process.cwd(), output)}/ in your browser.\n`);

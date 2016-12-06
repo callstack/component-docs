@@ -37,7 +37,7 @@ export default function buildHTML({ route, data, transpile, output }: Options) {
   `;
 
   if (transpile) {
-    body += '<script src="../app.bundle.js?transpile=false"></script>';
+    body += '<script src="./app.bundle.js?transpile=false"></script>';
   } else {
     body += '<script src="./app.src.js"></script>';
   }

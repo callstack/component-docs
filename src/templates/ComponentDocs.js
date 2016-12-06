@@ -6,7 +6,7 @@ import Markdown from './Markdown';
 
 const title = style({
   fontSize: '36px',
-  margin: '24px 0 8px -24px',
+  margin: '0 0 8px -24px',
 });
 
 const markdown = style({

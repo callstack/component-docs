@@ -49,7 +49,7 @@ export function build({ files: getFiles, output }: Options) {
   bundle({
     root: process.cwd(),
     entry: [ path.relative(process.cwd(), entry) ],
-    output: path.join(output, 'app.bundle.js'),
+    output: path.relative(process.cwd(), path.join(output, 'app.bundle.js')),
     sourcemaps: true,
     production: true,
   });

@@ -42,3 +42,7 @@ build({
 ```
 
 You can also use the server while actively working on documentation. Just replace `build` with `serve` in the above example.
+
+## Example
+
+`component-docs` is used for [react-native-paper](https://react-native-paper.github.io/)

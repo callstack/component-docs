@@ -72,7 +72,7 @@ export function serve({ files: getFiles, output, port = 3031 }: Options) {
     }
   }));
 
-  watch(dirs, file => {
+  watch(dirs, (event, file) => {
     if (!path.relative(path.dirname(file), output)) {
       return;
     }

@@ -1,41 +1,12 @@
 /* @flow */
 
 import React from 'react';
-import { insertGlobal } from 'glamor';
 import Router from './Router';
 import Page from './Page';
 import ComponentDocs from './ComponentDocs';
 import Markdown from './Markdown';
 import type { Metadata } from '../types/Metadata';
 import type { Route } from '../types/Route';
-
-insertGlobal(`
-  html {
-    box-sizing: border-box;
-  }
-  *, *:before, *:after {
-    box-sizing: inherit;
-  }
-  html, body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-    margin: 0;
-    padding: 0;
-    color: #000;
-    lineHeight: 1.5;
-  }
-  code {
-    font-family: "Roboto Mono", "Operator Mono", "Fira Code", "Ubuntu Mono", "Droid Sans Mono", "Liberation Mono", "Source Code Pro", Menlo, Consolas, Courier, monospace;
-    color: #000;
-    line-height: 2;
-  }
-  a {
-    color: #1976D2;
-    text-decoration: none;
-  }
-  a:hover {
-    color: #2196F3;
-  }
-`);
 
 export const buildRoutes = (data: Array<Array<Metadata>>): Array<Route> => {
   const routes = data.map(items =>

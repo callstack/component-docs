@@ -1,79 +1,79 @@
 /* @flow */
 
 import React from 'react';
-import { style, merge } from 'glamor';
+import { css } from '../lib/styling';
 import Markdown from './Markdown';
 
-const title = style({
-  fontSize: '36px',
-  margin: '0 0 8px -24px',
-});
+const title = css`
+  font-size: 36px;
+  margin: 0 0 8px -24px;
+`;
 
-const markdown = style({
-  '& p:first-child': {
-    marginTop: 0,
-  },
+const markdown = css`
+  & p:first-child {
+    margin-top: 0;
+  }
 
-  '& p:last-child': {
-    marginBottom: 0,
-  },
-});
+  & p:last-child {
+    margin-bottom: 0;
+  }
+`;
 
-const propsHeader = style({
-  fontSize: '24px',
-  lineHeight: 1,
-  color: '#000',
-  margin: '48px 0 16px',
-});
+const propsHeader = css`
+  font-size: 24px;
+  line-height: 1;
+  color: #000;
+  margin: 48px 0 16px;
+`
 
-const propInfo = merge(markdown, {
-  position: 'relative',
-  margin: '16px 0',
-});
+const propInfo = css`
+  position: relative;
+  margin: 16px 0;
+`
 
-const propRequired = style({
-  position: 'absolute',
-  left: -24,
-  fontSize: '22px',
-  lineHeight: 1.5,
-  color: '#C1C2CA',
+const propRequired = css`
+  position: absolute;
+  left: -24px;
+  font-size: 22px;
+  line-height: 1.5;
+  color: #C1C2CA;
 
-  '&:hover:after': {
-    content: 'attr(data-hint)',
-    display: 'inline-block',
-    position: 'absolute',
-    left: 0,
-    borderRadius: '3px',
-    bottom: '32px',
-    padding: '2px 8px',
-    fontSize: '12px',
-    color: '#fff',
-    background: '#262939',
-    zIndex: 10,
-  },
-});
+  &:hover:after {
+    content: attr(data-hint);
+    display: inline-block;
+    position: absolute;
+    left: 0;
+    border-radius: 3px;
+    bottom: 32px;
+    padding: 2px 8px;
+    font-size: 12px;
+    color: #fff;
+    background: #262939;
+    z-index: 10;
+  }
+`
 
-const propLabel = style({
-  backgroundColor: '#F3F3F7',
-  borderRadius: '3px',
-  padding: '4px 8px',
-  margin: '4px 16px 4px 0',
-  textDecoration: 'none',
-  whiteSpace: 'nowrap',
-  border: '1px solid rgba(0, 0, 0, .04)',
-});
+const propLabel = css`
+  background-color: #F3F3F7;
+  border-radius: 3px;
+  padding: 4px 8px;
+  margin: 4px 16px 4px 0;
+  text-decoration: none;
+  white-space: nowrap;
+  border: 1px solid rgba(0, 0, 0, .04);
+`
 
-const propDetails = style({
-  margin: '8px 0',
+const propDetails = css`
+  margin: 8px 0;
 
-  '@media(min-width: 960px)': {
-    display: 'inline-block',
-  },
-});
+  @media(min-width: 960px) {
+    display: inline-block;
+  }
+`
 
-const rest = style({
-  color: '#1976D2',
-});
+const rest = css`
+  color: #1976D2;
+`
 
 export default function ComponentDocs({ name, info }: any) {
   const restProps = [];
@@ -92,25 +92,25 @@ export default function ComponentDocs({ name, info }: any) {
 
   return (
     <div>
-      <h1 {...title}><code>{`<${name} />`}</code></h1>
+      <h1 className={title}><code>{`<${name} />`}</code></h1>
       <Markdown
-        {...markdown}
+        className={markdown}
         source={description} options={{ linkify: true }}
       />
-      <h2 {...propsHeader}>Props</h2>
+      <h2 className={propsHeader}>Props</h2>
       {Object.keys(info.props).map(prop => {
         const { flowType, type, required } = info.props[prop];
         return (
-          <div {...propInfo} key={prop}>
+          <div className={propInfo} key={prop}>
             <span>
               <code
-                {...propRequired}
+                className={propRequired}
                 data-hint='required'
               >
                 {required ? '*' : ''}
               </code>
               <a
-                {...propLabel}
+                className={propLabel}
                 name={prop}
                 href={`#${prop}`}
               >
@@ -120,7 +120,7 @@ export default function ComponentDocs({ name, info }: any) {
               </a>
             </span>
             <Markdown
-              {...propDetails}
+              className={propDetails}
               source={info.props[prop].description}
             />
           </div>
@@ -128,8 +128,7 @@ export default function ComponentDocs({ name, info }: any) {
       })}
       {restProps && restProps.length ? restProps.map(prop => (
         <a
-          {...propLabel}
-          {...rest}
+          className={`${propLabel} ${rest}`}
           key={prop.name}
           href={prop.link}
         >

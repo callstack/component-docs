@@ -4,9 +4,11 @@ import path from 'path';
 import fs from 'fs';
 import React from 'react';
 import ReactDOMServer from 'react-dom/server';
-import { renderStatic } from 'glamor/server';
+import { dump } from './lib/styling';
 import HTML from './templates/HTML';
 import App from './templates/App';
+import normalize from './styles/normalize.css';
+import globals from './styles/globals.css';
 import type { Route } from './types/Route';
 import type { Metadata } from './types/Metadata';
 
@@ -18,21 +20,18 @@ type Options = {
 }
 
 export default function buildHTML({ route, data, transpile, output }: Options) {
-  const { html, css, ids } = renderStatic(
-    () => ReactDOMServer.renderToString(
-      <App
-        name={route.name}
-        data={data}
-      />
-    )
+  const html = ReactDOMServer.renderToString(
+    <App
+      name={route.name}
+      data={data}
+    />
   );
 
   let body = `<div id='root'>${html}</div>`;
 
   body += `
     <script>
-      window.__INITIAL_PATH__ = '${route.name}'
-      window.__GLAMOR__ = ${JSON.stringify(ids)}
+      window.__INITIAL_PATH__ = '${route.name}';
     </script>
   `;
 
@@ -50,7 +49,13 @@ export default function buildHTML({ route, data, transpile, output }: Options) {
         title={route.title}
         description={route.description || ''}
         body={body}
-        css={css}
+        css={
+          `
+          ${normalize}
+          ${globals}
+          ${dump()}
+          `
+        }
       />
     )
   );

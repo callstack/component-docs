@@ -1,7 +1,6 @@
 {
   "name": "component-docs",
   "description": "Documentation for React components",
-  "version": "0.1.0",
   "scripts": {
     "build": "del dist/ && babel -sd dist/ src/",
     "lint": "eslint .",

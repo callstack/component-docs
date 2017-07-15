@@ -8,7 +8,8 @@
     "flow": "flow",
     "prepublish": "npm run build",
     "semantic-release": "semantic-release pre && npm publish && semantic-release post",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "example": "babel-node example/index"
   },
   "main": "dist/index.js",
   "files": [

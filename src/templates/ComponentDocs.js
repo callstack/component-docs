@@ -115,7 +115,7 @@ export default function ComponentDocs({ name, info }: any) {
                 href={`#${prop}`}
               >
                 <code>
-                  {prop}: {flowType.name === 'any' && type ? (type.raw || type.name) : (flowType.raw || flowType.name)}
+                  {prop}: {(!flowType || flowType.name === 'any') && type ? (type.raw || type.name) : (flowType.raw || flowType.name)}
                 </code>
               </a>
             </span>

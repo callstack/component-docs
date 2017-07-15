@@ -13,22 +13,20 @@ export const buildRoutes = (data: Array<Array<Metadata>>): Array<Route> => {
     items.map(it => {
       let component;
       switch (it.type) {
-      case 'markdown':
-        component = props => (
-          <Page {...props} data={data}>
-            <Markdown source={it.data} />
-          </Page>
-        );
-        break;
-      case 'component':
-        component = props => (
-          <Page {...props} data={data}>
-            <ComponentDocs name={it.title} info={it.data} />
-          </Page>
-        );
-        break;
-      default:
-        throw new Error(`Unknown type ${it.type}`);
+        case 'markdown':
+          component = props =>
+            <Page {...props} data={data}>
+              <Markdown source={it.data} />
+            </Page>;
+          break;
+        case 'component':
+          component = props =>
+            <Page {...props} data={data}>
+              <ComponentDocs name={it.title} info={it.data} />
+            </Page>;
+          break;
+        default:
+          throw new Error(`Unknown type ${it.type}`);
       }
       return {
         ...it,
@@ -40,16 +38,11 @@ export const buildRoutes = (data: Array<Array<Metadata>>): Array<Route> => {
 };
 
 type Props = {
-  name: string;
-  data: Array<Array<Metadata>>;
-}
+  name: string,
+  data: Array<Array<Metadata>>,
+};
 
 export default function App({ name, data }: Props) {
   const routes = buildRoutes(data);
-  return (
-    <Router
-      name={name}
-      routes={[].concat.apply([], routes)}
-    />
-  );
+  return <Router name={name} routes={[].concat.apply([], routes)} />;
 }

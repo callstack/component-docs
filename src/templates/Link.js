@@ -4,8 +4,8 @@ import React, { Component } from 'react';
 import { history } from './Router';
 
 type Props = {
-  to: string;
-}
+  to: string,
+};
 
 export default class Router extends Component<void, Props, void> {
   props: Props;
@@ -33,16 +33,10 @@ export default class Router extends Component<void, Props, void> {
         window.location.pathname = `${parts.join('/')}/${path}`;
       }
     }
-  }
+  };
 
   render() {
     const { to, ...rest } = this.props;
-    return (
-      <a
-        {...rest}
-        href={`${to}.html`}
-        onClick={this._handleClick}
-      />
-    );
+    return <a {...rest} href={`${to}.html`} onClick={this._handleClick} />;
   }
 }

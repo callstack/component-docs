@@ -9,10 +9,7 @@ export function dump() {
   return sheet;
 }
 
-export function css(
-  template: Array<string>,
-  ...expressions: Array<string>
-) {
+export function css(template: Array<string>, ...expressions: Array<string>) {
   const styles = template.reduce(
     (accumulator, part, i) => accumulator + expressions[i - 1] + part
   );
@@ -24,4 +21,4 @@ export function css(
   sheet += rules + '\n';
 
   return slug;
-};
+}

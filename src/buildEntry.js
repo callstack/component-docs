@@ -8,7 +8,10 @@ export default function buildEntry(entry: string) {
 import React from 'react';
 import ReactDOM from 'react-dom';
 import RedBox from 'redbox-react';
-import App from './${path.relative(path.dirname(entry), __dirname)}/templates/App';
+import App from './${path.relative(
+    path.dirname(entry),
+    __dirname
+  )}/templates/App';
 import data from './app.data.json';
 
 const root = document.getElementById('root');

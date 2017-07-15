@@ -52,7 +52,7 @@ const markdown = css`
   & .hljs-variable, & .hljs-attr, & .hljs-tag, & .hljs-regexp, & .hljs-doctype, & .hljs-id, & .hljs-class, & .hljs-pseudo, & .hljs-tag .hljs-name, & .hljs-built_in {
     color: #3F51B5;
   }
-`
+`;
 
 function highlight(text, lang) {
   const language = lang === 'jsx' ? 'xml' : lang;

@@ -23,4 +23,4 @@ export default `
   a:hover {
     color: #2196F3;
   }
-`
+`;

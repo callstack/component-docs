@@ -24,12 +24,12 @@ const propsHeader = css`
   line-height: 1;
   color: #000;
   margin: 48px 0 16px;
-`
+`;
 
 const propInfo = css`
   position: relative;
   margin: 16px 0;
-`
+`;
 
 const propRequired = css`
   position: absolute;
@@ -51,7 +51,7 @@ const propRequired = css`
     background: #262939;
     z-index: 10;
   }
-`
+`;
 
 const propLabel = css`
   background-color: #F3F3F7;
@@ -61,7 +61,7 @@ const propLabel = css`
   text-decoration: none;
   white-space: nowrap;
   border: 1px solid rgba(0, 0, 0, .04);
-`
+`;
 
 const propDetails = css`
   margin: 8px 0;
@@ -69,33 +69,39 @@ const propDetails = css`
   @media(min-width: 960px) {
     display: inline-block;
   }
-`
+`;
 
 const rest = css`
   color: #1976D2;
-`
+`;
 
 export default function ComponentDocs({ name, info }: any) {
   const restProps = [];
-  const description = info.description.split('\n').filter(line => {
-    if (line.startsWith('@extends ')) {
-      const parts = line.split(' ').slice(1);
-      const link = parts.pop();
-      restProps.push({
-        name: parts.join(' '),
-        link,
-      });
-      return false;
-    }
-    return true;
-  }).join('\n');
+  const description = info.description
+    .split('\n')
+    .filter(line => {
+      if (line.startsWith('@extends ')) {
+        const parts = line.split(' ').slice(1);
+        const link = parts.pop();
+        restProps.push({
+          name: parts.join(' '),
+          link,
+        });
+        return false;
+      }
+      return true;
+    })
+    .join('\n');
 
   return (
     <div>
-      <h1 className={title}><code>{`<${name} />`}</code></h1>
+      <h1 className={title}>
+        <code>{`<${name} />`}</code>
+      </h1>
       <Markdown
         className={markdown}
-        source={description} options={{ linkify: true }}
+        source={description}
+        options={{ linkify: true }}
       />
       <h2 className={propsHeader}>Props</h2>
       {Object.keys(info.props).map(prop => {
@@ -103,19 +109,15 @@ export default function ComponentDocs({ name, info }: any) {
         return (
           <div className={propInfo} key={prop}>
             <span>
-              <code
-                className={propRequired}
-                data-hint='required'
-              >
+              <code className={propRequired} data-hint="required">
                 {required ? '*' : ''}
               </code>
-              <a
-                className={propLabel}
-                name={prop}
-                href={`#${prop}`}
-              >
+              <a className={propLabel} name={prop} href={`#${prop}`}>
                 <code>
-                  {prop}: {(!flowType || flowType.name === 'any') && type ? (type.raw || type.name) : (flowType.raw || flowType.name)}
+                  {prop}:{' '}
+                  {(!flowType || flowType.name === 'any') && type
+                    ? type.raw || type.name
+                    : flowType.raw || flowType.name}
                 </code>
               </a>
             </span>
@@ -126,17 +128,19 @@ export default function ComponentDocs({ name, info }: any) {
           </div>
         );
       })}
-      {restProps && restProps.length ? restProps.map(prop => (
-        <a
-          className={`${propLabel} ${rest}`}
-          key={prop.name}
-          href={prop.link}
-        >
-          <code>
-            ...{prop.name}
-          </code>
-        </a>
-      )) : null}
+      {restProps && restProps.length
+        ? restProps.map(prop =>
+            <a
+              className={`${propLabel} ${rest}`}
+              key={prop.name}
+              href={prop.link}
+            >
+              <code>
+                ...{prop.name}
+              </code>
+            </a>
+          )
+        : null}
     </div>
   );
 }

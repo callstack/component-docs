@@ -13,18 +13,15 @@ import type { Route } from './types/Route';
 import type { Metadata } from './types/Metadata';
 
 type Options = {
-  data: Array<Array<Metadata>>;
-  route: Route;
-  transpile: boolean;
-  output: string;
-}
+  data: Array<Array<Metadata>>,
+  route: Route,
+  transpile: boolean,
+  output: string,
+};
 
 export default function buildHTML({ route, data, transpile, output }: Options) {
   const html = ReactDOMServer.renderToString(
-    <App
-      name={route.name}
-      data={data}
-    />
+    <App name={route.name} data={data} />
   );
 
   let body = `<div id='root'>${html}</div>`;
@@ -49,13 +46,11 @@ export default function buildHTML({ route, data, transpile, output }: Options) {
         title={route.title}
         description={route.description || ''}
         body={body}
-        css={
-          `
+        css={`
           ${normalize}
           ${globals}
           ${dump()}
-          `
-        }
+          `}
       />
     )
   );

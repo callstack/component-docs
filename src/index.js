@@ -13,26 +13,30 @@ import component from './parsers/component';
 type Files = Array<string | Array<string>>;
 
 type Options = {
-  files: Files | () => Files;
-  output: string;
-  port?: number;
-}
+  files: Files | (() => Files),
+  output: string,
+  port?: number,
+};
 
 const collectData = (files, output) => {
-  const data = files.reduce((acc, file) => {
-    if (Array.isArray(file)) {
-      return [ ...acc, file ];
-    }
-    return [ ...acc, [ file ] ];
-  }, []).map(items => items.map(it => {
-    if (it.endsWith('.md')) {
-      return markdown(it);
-    }
-    if (it.endsWith('.js')) {
-      return component(it);
-    }
-    throw new Error('Unknown extension ', it);
-  }));
+  const data = files
+    .reduce((acc, file) => {
+      if (Array.isArray(file)) {
+        return [...acc, file];
+      }
+      return [...acc, [file]];
+    }, [])
+    .map(items =>
+      items.map(it => {
+        if (it.endsWith('.md')) {
+          return markdown(it);
+        }
+        if (it.endsWith('.js')) {
+          return component(it);
+        }
+        throw new Error('Unknown extension ', it);
+      })
+    );
 
   fs.writeFileSync(path.join(output, 'app.data.json'), JSON.stringify(data));
 
@@ -44,11 +48,12 @@ export function build({ files: getFiles, output }: Options) {
   const files = typeof getFiles === 'function' ? getFiles() : getFiles;
   const data = collectData(files, output);
   buildEntry(entry);
-  buildRoutes(data)
-    .forEach(route => buildHTML({ data, route, output, transpile: true }));
+  buildRoutes(data).forEach(route =>
+    buildHTML({ data, route, output, transpile: true })
+  );
   bundle({
     root: process.cwd(),
-    entry: [ path.relative(process.cwd(), entry) ],
+    entry: [path.relative(process.cwd(), entry)],
     output: path.relative(process.cwd(), path.join(output, 'app.bundle.js')),
     sourcemaps: true,
     production: true,
@@ -60,17 +65,20 @@ export function serve({ files: getFiles, output, port = 3031 }: Options) {
   let data = collectData(files, output);
   const entry = path.join(output, 'app.src.js');
   buildEntry(entry);
-  buildRoutes(data)
-    .forEach(route => buildHTML({ data, route, output, transpile: false }));
+  buildRoutes(data).forEach(route =>
+    buildHTML({ data, route, output, transpile: false })
+  );
 
   const dirs = [];
 
-  files.forEach(items => items.forEach(file => {
-    const dir = path.dirname(file);
-    if (!dirs.includes(dir)) {
-      dirs.push(dir);
-    }
-  }));
+  files.forEach(items =>
+    items.forEach(file => {
+      const dir = path.dirname(file);
+      if (!dirs.includes(dir)) {
+        dirs.push(dir);
+      }
+    })
+  );
 
   watch(dirs, (event, file) => {
     if (!path.relative(path.dirname(file), output)) {
@@ -78,14 +86,20 @@ export function serve({ files: getFiles, output, port = 3031 }: Options) {
     }
     files = typeof getFiles === 'function' ? getFiles() : getFiles;
     data = collectData(files, output);
-    buildRoutes(data)
-      .forEach(route => buildHTML({ data, route, output, transpile: false }));
+    buildRoutes(data).forEach(route =>
+      buildHTML({ data, route, output, transpile: false })
+    );
   });
 
   server({
     root: process.cwd(),
-    watch: [ path.relative(process.cwd(), entry) ],
+    watch: [path.relative(process.cwd(), entry)],
   }).listen(port);
 
-  console.log(`Open http://localhost:${port}/${path.relative(process.cwd(), output)}/ in your browser.\n`);
+  console.log(
+    `Open http://localhost:${port}/${path.relative(
+      process.cwd(),
+      output
+    )}/ in your browser.\n`
+  );
 }

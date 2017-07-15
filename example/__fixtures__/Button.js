@@ -1,6 +1,7 @@
 /* @flow */
 
-import { Component, PropTypes } from 'react';
+import { Component } from 'react';
+import PropTypes from 'prop-types';
 
 /**
  * Buttons communicate the action that will occur when the user touches them
@@ -27,7 +28,10 @@ export default class Button extends Component {
     /**
      * Button text
      */
-    children: PropTypes.oneOfType([ PropTypes.string, PropTypes.arrayOf(PropTypes.string) ]).isRequired,
+    children: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.arrayOf(PropTypes.string),
+    ]).isRequired,
     /**
      * Function to execute on press
      */

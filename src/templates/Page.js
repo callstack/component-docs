@@ -2,7 +2,7 @@
 
 import React from 'react';
 import Link from './Link';
-import { css } from '../lib/styling'
+import { css } from '../lib/styling';
 import type { Metadata } from '../types/Metadata';
 
 const wrapper = css`
@@ -13,7 +13,7 @@ const wrapper = css`
   @media(min-width: 640px) {
     flex-direction: row;
   }
-`
+`;
 
 const sidebar = css`
   padding: 24px;
@@ -26,7 +26,7 @@ const sidebar = css`
     width: 240px;
     overflow: auto;
   }
-`
+`;
 
 const content = css`
   flex: 1;
@@ -37,7 +37,7 @@ const content = css`
     overflow: auto;
     padding: 24px 48px;
   }
-`
+`;
 
 const menuButton = css`
   display: none;
@@ -58,7 +58,7 @@ const menuButton = css`
   &:not(:checked) ~ label > :last-child {
     display: none;
   }
-`
+`;
 
 const menuIcon = css`
   font-size: 24px;
@@ -73,7 +73,7 @@ const menuIcon = css`
   @media(min-width: 640px) {
     display: none;
   }
-`
+`;
 
 const separator = css`
   border: 0;
@@ -81,7 +81,7 @@ const separator = css`
   height: 1px;
   margin: 8px 0;
   opacity: 0.04;
-`
+`;
 
 const link = css`
   display: block;
@@ -96,31 +96,35 @@ const link = css`
   & code {
     color: #fff;
   }
-`
+`;
 
 const active = css`
   opacity: 0.64;
-`
+`;
 
 type Props = {
-  name: string;
-  data: Array<Array<Metadata>>;
-  children?: any;
-}
+  name: string,
+  data: Array<Array<Metadata>>,
+  children?: any,
+};
 
 export default function Page({ name, data, children }: Props) {
   const links = [];
 
   data.forEach((items, i) => {
-    items.forEach(route => links.push(
-      <Link
-        key={route.name}
-        to={route.name}
-        className={`${link} ${name === route.name ? active : ''}`}
-      >
-        <code>{route.title}</code>
-      </Link>
-    ));
+    items.forEach(route =>
+      links.push(
+        <Link
+          key={route.name}
+          to={route.name}
+          className={`${link} ${name === route.name ? active : ''}`}
+        >
+          <code>
+            {route.title}
+          </code>
+        </Link>
+      )
+    );
     if (data[i + 1]) {
       links.push(<hr key={`separator-${i + 1}`} className={separator} />);
     }
@@ -130,11 +134,11 @@ export default function Page({ name, data, children }: Props) {
     <div className={wrapper}>
       <input
         className={menuButton}
-        id='slide-sidebar'
-        type='checkbox'
-        role='button'
+        id="slide-sidebar"
+        type="checkbox"
+        role="button"
       />
-      <label className={menuIcon} htmlFor='slide-sidebar'>
+      <label className={menuIcon} htmlFor="slide-sidebar">
         <span>☰</span>
         <span>✕</span>
       </label>

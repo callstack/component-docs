@@ -5,13 +5,13 @@ import createHistory from 'history/createBrowserHistory';
 import type { Route } from '../types/Route';
 
 type Props = {
-  name: string;
-  routes: Array<Route>;
-}
+  name: string,
+  routes: Array<Route>,
+};
 
 type State = {
-  name: string;
-}
+  name: string,
+};
 
 export let history: any;
 
@@ -54,7 +54,8 @@ export default class Router extends Component<void, Props, State> {
 
   props: Props;
 
-  _parse = (pathname: string) => pathname.split('/').pop().split('.')[0] || 'index';
+  _parse = (pathname: string) =>
+    pathname.split('/').pop().split('.')[0] || 'index';
 
   _unlisten: Function;
 

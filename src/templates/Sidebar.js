@@ -5,16 +5,6 @@ import Link from './Link';
 import { css } from '../lib/styling';
 import type { Metadata } from '../types/Metadata';
 
-const wrapper = css`
-  display: flex;
-  height: 100%;
-  flex-direction: column;
-
-  @media(min-width: 640px) {
-    flex-direction: row;
-  }
-`;
-
 const sidebar = css`
   padding: 24px;
   background-color: #262939;
@@ -25,17 +15,6 @@ const sidebar = css`
     height: 100%;
     width: 240px;
     overflow: auto;
-  }
-`;
-
-const content = css`
-  flex: 1;
-  padding: 12px 24px;
-
-  @media(min-width: 640px) {
-    height: 100%;
-    overflow: auto;
-    padding: 24px 48px;
   }
 `;
 
@@ -105,10 +84,9 @@ const active = css`
 type Props = {
   name: string,
   data: Array<Array<Metadata>>,
-  children?: any,
 };
 
-export default function Page({ name, data, children }: Props) {
+export default function Sidebar({ name, data }: Props) {
   const links = [];
 
   data.forEach((items, i) => {
@@ -131,7 +109,7 @@ export default function Page({ name, data, children }: Props) {
   });
 
   return (
-    <div className={wrapper}>
+    <div>
       <input
         className={menuButton}
         id="slide-sidebar"
@@ -145,9 +123,6 @@ export default function Page({ name, data, children }: Props) {
       <nav className={sidebar}>
         {links}
       </nav>
-      <div className={content}>
-        {children}
-      </div>
     </div>
   );
 }

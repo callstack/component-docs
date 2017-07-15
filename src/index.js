@@ -16,6 +16,7 @@ type Options = {
   files: Files | (() => Files),
   output: string,
   port?: number,
+  layout?: string,
 };
 
 const collectData = (files, output) => {
@@ -43,13 +44,17 @@ const collectData = (files, output) => {
   return data;
 };
 
-export function build({ files: getFiles, output }: Options) {
+export function build({
+  files: getFiles,
+  output,
+  layout = require.resolve('./templates/Layout'),
+}: Options) {
   const entry = path.join(output, 'app.src.js');
   const files = typeof getFiles === 'function' ? getFiles() : getFiles;
   const data = collectData(files, output);
-  buildEntry(entry);
+  buildEntry({ entry, layout });
   buildRoutes(data).forEach(route =>
-    buildHTML({ data, route, output, transpile: true })
+    buildHTML({ layout, data, route, output, transpile: true })
   );
   bundle({
     root: process.cwd(),
@@ -60,13 +65,18 @@ export function build({ files: getFiles, output }: Options) {
   });
 }
 
-export function serve({ files: getFiles, output, port = 3031 }: Options) {
+export function serve({
+  files: getFiles,
+  output,
+  port = 3031,
+  layout = require.resolve('./templates/Layout'),
+}: Options) {
   let files = typeof getFiles === 'function' ? getFiles() : getFiles;
   let data = collectData(files, output);
   const entry = path.join(output, 'app.src.js');
-  buildEntry(entry);
+  buildEntry({ entry, layout });
   buildRoutes(data).forEach(route =>
-    buildHTML({ data, route, output, transpile: false })
+    buildHTML({ layout, data, route, output, transpile: false })
   );
 
   const dirs = [];
@@ -87,7 +97,7 @@ export function serve({ files: getFiles, output, port = 3031 }: Options) {
     files = typeof getFiles === 'function' ? getFiles() : getFiles;
     data = collectData(files, output);
     buildRoutes(data).forEach(route =>
-      buildHTML({ data, route, output, transpile: false })
+      buildHTML({ layout, data, route, output, transpile: false })
     );
   });
 

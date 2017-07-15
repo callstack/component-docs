@@ -17,11 +17,24 @@ type Options = {
   route: Route,
   transpile: boolean,
   output: string,
+  layout: string,
 };
 
-export default function buildHTML({ route, data, transpile, output }: Options) {
+export default function buildHTML({
+  route,
+  data,
+  transpile,
+  output,
+  layout,
+}: Options) {
+  const Layout = require(layout);
   const html = ReactDOMServer.renderToString(
-    <App name={route.name} data={data} />
+    /* $FlowFixMe */
+    <App
+      name={route.name}
+      data={data}
+      layout={Layout.__esModule ? Layout.default : Layout}
+    />
   );
 
   let body = `<div id='root'>${html}</div>`;

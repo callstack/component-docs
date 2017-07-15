@@ -1,17 +1,20 @@
 /* @flow */
 
-import path from 'path';
 import fs from 'fs';
 
-export default function buildEntry(entry: string) {
+export default function buildEntry({
+  entry,
+  layout,
+}: {
+  entry: string,
+  layout: string,
+}) {
   const data = `
 import React from 'react';
 import ReactDOM from 'react-dom';
 import RedBox from 'redbox-react';
-import App from './${path.relative(
-    path.dirname(entry),
-    __dirname
-  )}/templates/App';
+import App from '${require.resolve('./templates/App')}';
+import Layout from '${layout}';
 import data from './app.data.json';
 
 const root = document.getElementById('root');
@@ -21,6 +24,7 @@ const render = () => {
       <App
         name={window.__INITIAL_PATH__}
         data={data}
+        layout={Layout}
       />,
       root
     );

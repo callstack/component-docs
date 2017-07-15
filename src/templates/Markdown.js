@@ -6,27 +6,27 @@ import hljs from 'highlight.js';
 import { css } from '../lib/styling';
 
 const markdown = css`
-  & .hljs-comment {
+  .hljs-comment {
     color: #ABB0B6;
   }
 
-  & .hljs-keyword {
+  .hljs-keyword {
     color: #E91E63;
   }
 
-  & .hljs-string, & .hljs-value, & .hljs-inheritance, & .hljs-header, & .hljs-class, & .hljs-attr {
+  .hljs-string, .hljs-value, .hljs-inheritance, .hljs-header, .hljs-class, .hljs-attr {
     color: #4CAF50;
   }
 
-  & .hljs-function .hljs-title {
+  .hljs-function .hljs-title {
     color: #FF5722;
   }
 
-  & .hljs-number, & .hljs-preprocessor, & .hljs-built_in, & .hljs-literal, & .hljs-params, & .hljs-constant {
+  .hljs-number, .hljs-preprocessor, .hljs-built_in, .hljs-literal, .hljs-params, .hljs-constant {
     color: #9C27B0;
   }
 
-  & .hljs-variable, & .hljs-attr, & .hljs-tag, & .hljs-regexp, & .hljs-doctype, & .hljs-id, & .hljs-class, & .hljs-pseudo, & .hljs-tag .hljs-name, & .hljs-built_in {
+  .hljs-variable, .hljs-attr, .hljs-tag, .hljs-regexp, .hljs-doctype, .hljs-id, .hljs-class, .hljs-pseudo, .hljs-tag .hljs-name, .hljs-built_in {
     color: #3F51B5;
   }
 `;
@@ -53,9 +53,9 @@ function highlight(text, lang) {
 }
 
 export default function Markdown(props: any) {
-  const { source, ...rest } = props;
+  const { source, className, ...rest } = props;
   return (
-    <div className={markdown} {...rest}>
+    <div {...rest} className={`${markdown} ${className}`}>
       <Remarkable
         source={source}
         options={{

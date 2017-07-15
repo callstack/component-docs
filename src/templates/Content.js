@@ -5,7 +5,7 @@ import { css } from '../lib/styling';
 
 const content = css`
   flex: 1;
-  padding: 12px 24px;
+  padding: 24px;
 
   @media(min-width: 640px) {
     height: 100%;

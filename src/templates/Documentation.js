@@ -7,14 +7,19 @@ import Markdown from './Markdown';
 const title = css`
   font-size: 36px;
   margin: 0 0 8px -24px;
+
+  & > code {
+    background-color: transparent;
+    border: 0;
+  }
 `;
 
 const markdown = css`
-  & p:first-child {
+  p:first-of-type {
     margin-top: 0;
   }
 
-  & p:last-child {
+  p:last-of-type {
     margin-bottom: 0;
   }
 `;
@@ -27,16 +32,18 @@ const propsHeader = css`
 `;
 
 const propInfo = css`
-  position: relative;
   margin: 16px 0;
 `;
 
 const propRequired = css`
   position: absolute;
-  left: -24px;
+  top: -2px;
+  left: -18px;
   font-size: 22px;
-  line-height: 1.5;
+  line-height: 1;
   color: #C1C2CA;
+  background-color: transparent;
+  border: 0;
 
   &:hover:after {
     content: attr(data-hint);
@@ -45,7 +52,7 @@ const propRequired = css`
     left: 0;
     border-radius: 3px;
     bottom: 32px;
-    padding: 2px 8px;
+    padding: 4px 8px;
     font-size: 12px;
     color: #fff;
     background: #262939;
@@ -53,7 +60,12 @@ const propRequired = css`
   }
 `;
 
+const propLabelContainer = css`
+  position: relative;
+`;
+
 const propLabel = css`
+  color: inherit;
   background-color: #F3F3F7;
   border-radius: 3px;
   padding: 4px 8px;
@@ -61,6 +73,15 @@ const propLabel = css`
   text-decoration: none;
   white-space: nowrap;
   border: 1px solid rgba(0, 0, 0, .04);
+
+  &:hover {
+    color: inherit;
+  }
+
+  & > code {
+    background-color: transparent;
+    border: 0;
+  }
 `;
 
 const propDetails = css`
@@ -75,7 +96,7 @@ const rest = css`
   color: #1976D2;
 `;
 
-export default function ComponentDocs({ name, info }: any) {
+export default function Documentation({ name, info }: any) {
   const restProps = [];
   const description = info.description
     .split('\n')
@@ -108,7 +129,7 @@ export default function ComponentDocs({ name, info }: any) {
         const { flowType, type, required } = info.props[prop];
         return (
           <div className={propInfo} key={prop}>
-            <span>
+            <span className={propLabelContainer}>
               <code className={propRequired} data-hint="required">
                 {required ? '*' : ''}
               </code>
@@ -122,7 +143,7 @@ export default function ComponentDocs({ name, info }: any) {
               </a>
             </span>
             <Markdown
-              className={propDetails}
+              className={`${propDetails} ${markdown}`}
               source={info.props[prop].description}
             />
           </div>

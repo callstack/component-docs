@@ -18,27 +18,6 @@ const sidebar = css`
   }
 `;
 
-const menuButton = css`
-  display: none;
-
-  &:checked ~ nav {
-    display: block;
-  },
-
-  &:checked ~ label {
-    color: #fff;
-    opacity: 0.64;
-  },
-
-  &:checked ~ label > :first-child {
-    display: none;
-  },
-
-  &:not(:checked) ~ label > :last-child {
-    display: none;
-  }
-`;
-
 const menuIcon = css`
   font-size: 24px;
   line-height: 1;
@@ -46,10 +25,32 @@ const menuIcon = css`
   position: absolute;
   top: 0;
   right: 0;
-  padding: 32px 24px;
+  padding: 24px;
   z-index: 10;
 
   @media(min-width: 640px) {
+    display: none;
+  }
+`;
+
+const menuButton = css`
+  display: none;
+
+  &:checked ~ nav {
+    display: block;
+  }
+
+  &:checked ~ label {
+    color: #fff;
+    opacity: 0.64;
+    user-select: none;
+  }
+
+  &:checked ~ label > span:first-of-type {
+    display: none;
+  }
+
+  &:not(:checked) ~ label > span:last-of-type {
     display: none;
   }
 `;
@@ -64,21 +65,20 @@ const separator = css`
 
 const link = css`
   display: block;
-  padding: 4px 0;
+  padding: 8px 0;
   text-decoration: none;
-  opacity: 0.16;
+  font-weight: 600;
+  color: #fff;
+  opacity: 0.32;
 
   &:hover {
-    opacity: 0.64;
-  }
-
-  & code {
     color: #fff;
+    opacity: 0.80;
   }
 `;
 
 const active = css`
-  opacity: 0.64;
+  opacity: 0.80;
 `;
 
 type Props = {
@@ -97,9 +97,7 @@ export default function Sidebar({ name, data }: Props) {
           to={route.name}
           className={`${link} ${name === route.name ? active : ''}`}
         >
-          <code>
-            {route.title}
-          </code>
+          {route.title}
         </Link>
       )
     );

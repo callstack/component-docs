@@ -2,7 +2,7 @@
 
 import React from 'react';
 import Router from './Router';
-import ComponentDocs from './ComponentDocs';
+import Documentation from './Documentation';
 import Markdown from './Markdown';
 import Sidebar from './Sidebar';
 import Content from './Content';
@@ -35,7 +35,7 @@ export const buildRoutes = (
               Sidebar={() => <Sidebar {...props} data={data} />}
               Content={() =>
                 <Content {...props}>
-                  <ComponentDocs name={it.title} info={it.data} />
+                  <Documentation name={it.title} info={it.data} />
                 </Content>}
             />;
           break;

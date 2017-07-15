@@ -6,29 +6,6 @@ import hljs from 'highlight.js';
 import { css } from '../lib/styling';
 
 const markdown = css`
-  & pre {
-    whitespace: nowrap;
-    background-color: #F3F3F7;
-    border-radius: 3px;
-    padding: 12px 16px;
-    overflow-x: auto;
-    border: 1px solid rgba(0, 0, 0, .04);
-  }
-
-  & code {
-    font-weight: bold;
-    font-size: .9em;
-    background-color: #F3F3F7;
-    padding: 0 4px;
-    border-radius: 3px;
-    border: 1px solid rgba(0, 0, 0, .04);
-  }
-
-  & pre code {
-    font-weight: normal;
-    border: 0;
-  }
-
   & .hljs-comment {
     color: #ABB0B6;
   }

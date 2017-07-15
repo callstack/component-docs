@@ -7,7 +7,7 @@ import ReactDOMServer from 'react-dom/server';
 import { dump } from './lib/styling';
 import HTML from './templates/HTML';
 import App from './templates/App';
-import normalize from './styles/normalize.css';
+import reset from './styles/reset.css';
 import globals from './styles/globals.css';
 import type { Route } from './types/Route';
 import type { Metadata } from './types/Metadata';
@@ -60,7 +60,7 @@ export default function buildHTML({
         description={route.description || ''}
         body={body}
         css={`
-          ${normalize}
+          ${reset}
           ${globals}
           ${dump()}
           `}

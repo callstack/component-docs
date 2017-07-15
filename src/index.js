@@ -81,14 +81,19 @@ export function serve({
 
   const dirs = [];
 
-  files.forEach(items =>
-    items.forEach(file => {
+  files
+    .reduce((acc, file) => {
+      if (Array.isArray(file)) {
+        return [...acc, ...file];
+      }
+      return [...acc, file];
+    }, [])
+    .forEach(file => {
       const dir = path.dirname(file);
       if (!dirs.includes(dir)) {
         dirs.push(dir);
       }
-    })
-  );
+    });
 
   watch(dirs, (event, file) => {
     if (!path.relative(path.dirname(file), output)) {

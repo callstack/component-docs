@@ -27,9 +27,9 @@ export default function buildHTML({
   output,
   layout,
 }: Options) {
+  /* $FlowFixMe */
   const Layout = require(layout);
   const html = ReactDOMServer.renderToString(
-    /* $FlowFixMe */
     <App
       name={route.name}
       data={data}

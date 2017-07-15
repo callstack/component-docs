@@ -11,10 +11,9 @@ import type { Route } from '../types/Route';
 
 export const buildRoutes = (
   data: Array<Array<Metadata>>,
-  layout
+  layout: ReactClass<*>
 ): Array<Route> => {
   const Layout = layout;
-
   const routes = data.map(items =>
     items.map(it => {
       let component;

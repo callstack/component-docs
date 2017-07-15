@@ -14,16 +14,10 @@ if (!fs.existsSync(dist)) {
 const fixtures = path.join(__dirname, '__fixtures__');
 
 function getFiles() {
-  const components = fs
+  return fs
     .readdirSync(fixtures)
-    .filter(f => f.endsWith('.js'))
+    .filter(f => /\.(js|md)/.test(f))
     .map(f => path.join(fixtures, f));
-  const pages = fs
-    .readdirSync(fixtures)
-    .filter(f => f.endsWith('.md'))
-    .map(f => path.join(fixtures, f));
-
-  return [pages, components];
 }
 
 if (task !== 'build') {

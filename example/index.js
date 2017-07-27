@@ -5,15 +5,10 @@ import fs from 'fs';
 import { build, serve } from '../src';
 
 const task = process.argv[2];
-const dist = path.join(__dirname, 'dist');
-
-if (!fs.existsSync(dist)) {
-  fs.mkdirSync(dist);
-}
-
+const output = path.join(__dirname, 'dist');
 const fixtures = path.join(__dirname, '__fixtures__');
 
-function getFiles() {
+function files() {
   return fs
     .readdirSync(fixtures)
     .filter(f => /\.(js|md)/.test(f))
@@ -22,12 +17,12 @@ function getFiles() {
 
 if (task !== 'build') {
   serve({
-    files: getFiles,
-    output: path.join(__dirname, 'dist'),
+    files,
+    output,
   });
 } else {
   build({
-    files: getFiles,
-    output: path.join(__dirname, 'dist'),
+    files,
+    output,
   });
 }

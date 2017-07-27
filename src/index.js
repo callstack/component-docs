@@ -39,6 +39,10 @@ const collectData = (files, output) => {
       })
     );
 
+  if (!fs.existsSync(output)) {
+    fs.mkdirSync(output);
+  }
+
   fs.writeFileSync(path.join(output, 'app.data.json'), JSON.stringify(data));
 
   return data;

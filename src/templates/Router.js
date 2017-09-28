@@ -55,7 +55,10 @@ export default class Router extends Component<void, Props, State> {
   props: Props;
 
   _parse = (pathname: string) =>
-    pathname.split('/').pop().split('.')[0] || 'index';
+    pathname
+      .split('/')
+      .pop()
+      .split('.')[0] || 'index';
 
   _unlisten: Function;
 

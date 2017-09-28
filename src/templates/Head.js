@@ -31,9 +31,7 @@ export default function Head({ title, description, css }: Props) {
       <meta property="og:title" content={title} />
       <meta property="og:description" content={description} />
 
-      <title>
-        {title}
-      </title>
+      <title>{title}</title>
 
       <style type="text/css" dangerouslySetInnerHTML={{ __html: css }} />
     </head>

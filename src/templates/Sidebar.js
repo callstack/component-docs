@@ -10,7 +10,7 @@ const sidebar = css`
   background-color: #262939;
   display: none;
 
-  @media(min-width: 640px) {
+  @media (min-width: 640px) {
     display: block;
     height: 100%;
     width: 240px;
@@ -28,7 +28,7 @@ const menuIcon = css`
   padding: 24px;
   z-index: 10;
 
-  @media(min-width: 640px) {
+  @media (min-width: 640px) {
     display: none;
   }
 `;
@@ -73,13 +73,11 @@ const link = css`
 
   &:hover {
     color: #fff;
-    opacity: 0.80;
+    opacity: 0.8;
   }
 `;
 
-const active = css`
-  opacity: 0.80;
-`;
+const active = css`opacity: 0.8;`;
 
 type Props = {
   name: string,
@@ -118,9 +116,7 @@ export default function Sidebar({ name, data }: Props) {
         <span>☰</span>
         <span>✕</span>
       </label>
-      <nav className={sidebar}>
-        {links}
-      </nav>
+      <nav className={sidebar}>{links}</nav>
     </div>
   );
 }

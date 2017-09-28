@@ -13,7 +13,7 @@ const wrapper = css`
   height: 100%;
   flex-direction: column;
 
-  @media(min-width: 640px) {
+  @media (min-width: 640px) {
     flex-direction: row;
   }
 `;

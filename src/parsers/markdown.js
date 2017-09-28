@@ -45,7 +45,11 @@ export default function(file: string): Metadata {
     })
     .join('\n');
 
-  const name = file.split('/').pop().replace(/\.md$/, '').replace(/^\d+\./, '');
+  const name = file
+    .split('/')
+    .pop()
+    .replace(/\.md$/, '')
+    .replace(/^\d+\./, '');
 
   return {
     title: meta.title ? meta.title : name,

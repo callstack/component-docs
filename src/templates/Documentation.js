@@ -31,9 +31,7 @@ const propsHeader = css`
   margin: 48px 0 16px;
 `;
 
-const propInfo = css`
-  margin: 16px 0;
-`;
+const propInfo = css`margin: 16px 0;`;
 
 const propRequired = css`
   position: absolute;
@@ -41,7 +39,7 @@ const propRequired = css`
   left: -18px;
   font-size: 22px;
   line-height: 1;
-  color: #C1C2CA;
+  color: #c1c2ca;
   background-color: transparent;
   border: 0;
 
@@ -60,19 +58,17 @@ const propRequired = css`
   }
 `;
 
-const propLabelContainer = css`
-  position: relative;
-`;
+const propLabelContainer = css`position: relative;`;
 
 const propLabel = css`
   color: inherit;
-  background-color: #F3F3F7;
+  background-color: #f3f3f7;
   border-radius: 3px;
   padding: 4px 8px;
   margin: 4px 16px 4px 0;
   text-decoration: none;
   white-space: nowrap;
-  border: 1px solid rgba(0, 0, 0, .04);
+  border: 1px solid rgba(0, 0, 0, 0.04);
 
   &:hover {
     color: inherit;
@@ -87,14 +83,12 @@ const propLabel = css`
 const propDetails = css`
   margin: 8px 0;
 
-  @media(min-width: 960px) {
+  @media (min-width: 960px) {
     display: inline-block;
   }
 `;
 
-const rest = css`
-  color: #1976D2;
-`;
+const rest = css`color: #1976d2;`;
 
 export default function Documentation({ name, info }: any) {
   const restProps = [];
@@ -150,17 +144,15 @@ export default function Documentation({ name, info }: any) {
         );
       })}
       {restProps && restProps.length
-        ? restProps.map(prop =>
+        ? restProps.map(prop => (
             <a
               className={`${propLabel} ${rest}`}
               key={prop.name}
               href={prop.link}
             >
-              <code>
-                ...{prop.name}
-              </code>
+              <code>...{prop.name}</code>
             </a>
-          )
+          ))
         : null}
     </div>
   );

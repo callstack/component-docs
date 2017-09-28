@@ -19,24 +19,28 @@ export const buildRoutes = (
       let component;
       switch (it.type) {
         case 'markdown':
-          component = props =>
+          component = props => (
             <Layout
               Sidebar={() => <Sidebar {...props} data={data} />}
-              Content={() =>
+              Content={() => (
                 <Content {...props}>
                   <Markdown source={it.data} />
-                </Content>}
-            />;
+                </Content>
+              )}
+            />
+          );
           break;
         case 'component':
-          component = props =>
+          component = props => (
             <Layout
               Sidebar={() => <Sidebar {...props} data={data} />}
-              Content={() =>
+              Content={() => (
                 <Content {...props}>
                   <Documentation name={it.title} info={it.data} />
-                </Content>}
-            />;
+                </Content>
+              )}
+            />
+          );
           break;
         default:
           throw new Error(`Unknown type ${it.type}`);

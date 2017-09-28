@@ -10,7 +10,7 @@ script:
   - yarn run flow -- check
   - yarn run lint
 after_success:
-  - npm run semantic-release
+  - yarn run semantic-release
 branches:
   except:
     - /^v\d+\.\d+\.\d+$/

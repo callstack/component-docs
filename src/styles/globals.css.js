@@ -243,7 +243,6 @@ code, tt {
   white-space: nowrap;
   font-weight: bold;
   font-size: 13px;
-  background-color: #F3F3F7;
 }
 
 pre code {
@@ -251,7 +250,6 @@ pre code {
   padding: 0;
   white-space: pre;
   border: none;
-  background: transparent;
 }
 
 pre {
@@ -259,7 +257,7 @@ pre {
   font-size: 13px;
   line-height: 19px;
   overflow: auto;
-  padding: 12px 16px;
+  padding: 16px;
   border-radius: 2px;
 }
 

@@ -66,8 +66,7 @@ const link = css`
   display: block;
   padding: 8px 0;
   text-decoration: none;
-  font-weight: 600;
-  color: #555;
+  color: #888;
 
   &:hover {
     color: #111;

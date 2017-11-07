@@ -4,6 +4,14 @@ import React from 'react';
 import { css } from '../lib/styling';
 import Markdown from './Markdown';
 
+const container = css`
+  padding: 0 12px;
+
+  @media (min-width: 640px) {
+    padding: 0;
+  }
+`;
+
 const title = css`
   font-size: 36px;
   margin: 0 0 8px -24px;
@@ -114,7 +122,7 @@ export default function Documentation({ name, info }: any) {
     .join('\n');
 
   return (
-    <div>
+    <div className={container}>
       <h1 className={title}>
         <code>{`<${name} />`}</code>
       </h1>

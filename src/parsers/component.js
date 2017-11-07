@@ -2,6 +2,7 @@
 
 import fs from 'fs';
 import { parse } from 'react-docgen';
+import dashify from 'dashify';
 import type { Metadata } from '../types/Metadata';
 
 export default function(file: string): Metadata {
@@ -13,7 +14,7 @@ export default function(file: string): Metadata {
 
   return {
     title: name,
-    name: name.toLowerCase().replace(/\s+/, '-'),
+    name: dashify(name),
     description: info.description,
     data: info,
     type: 'component',

@@ -16,7 +16,7 @@
     "dist/"
   ],
   "dependencies": {
-    "highlight.js": "^9.12.0",
+    "dashify": "^0.2.2",
     "history": "^4.7.2",
     "illuminate-js": "^0.3.0",
     "node-watch": "^0.5.5",

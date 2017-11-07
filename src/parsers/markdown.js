@@ -2,6 +2,7 @@
 
 import fs from 'fs';
 import path from 'path';
+import dashify from 'dashify';
 import type { Metadata } from '../types/Metadata';
 
 export default function(file: string): Metadata {
@@ -53,9 +54,7 @@ export default function(file: string): Metadata {
 
   return {
     title: meta.title ? meta.title : name,
-    name: meta.permalink
-      ? meta.permalink
-      : name.toLowerCase().replace(/\s+/, '-'),
+    name: meta.permalink ? meta.permalink : dashify(name),
     description: meta.description,
     data: text,
     type: 'markdown',

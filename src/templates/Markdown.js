@@ -2,84 +2,98 @@
 
 import * as React from 'react';
 import Remarkable from 'react-remarkable';
-import hljs from 'highlight.js';
+import { highlight, getLanguage } from 'illuminate-js';
 import { css } from '../lib/styling';
 
 const markdown = css`
-  .hljs-comment {
-    color: #abb0b6;
+  .token.comment,
+  .token.prolog,
+  .token.doctype,
+  .token.cdata {
+    color: #90a4ae;
   }
 
-  .hljs-keyword {
+  .token.punctuation {
+    color: #9e9e9e;
+  }
+
+  .namespace {
+    opacity: 0.7;
+  }
+
+  .token.property,
+  .token.tag,
+  .token.boolean,
+  .token.number,
+  .token.constant,
+  .token.symbol,
+  .token.deleted {
     color: #e91e63;
   }
 
-  .hljs-string,
-  .hljs-value,
-  .hljs-inheritance,
-  .hljs-header,
-  .hljs-class,
-  .hljs-attr {
+  .token.selector,
+  .token.attr-name,
+  .token.string,
+  .token.char,
+  .token.builtin,
+  .token.inserted {
     color: #4caf50;
   }
 
-  .hljs-function .hljs-title {
-    color: #ff5722;
+  .token.operator,
+  .token.entity,
+  .token.url,
+  .language-css .token.string,
+  .style .token.string {
+    color: #795548;
   }
 
-  .hljs-number,
-  .hljs-preprocessor,
-  .hljs-built_in,
-  .hljs-literal,
-  .hljs-params,
-  .hljs-constant {
-    color: #9c27b0;
-  }
-
-  .hljs-variable,
-  .hljs-attr,
-  .hljs-tag,
-  .hljs-regexp,
-  .hljs-doctype,
-  .hljs-id,
-  .hljs-class,
-  .hljs-pseudo,
-  .hljs-tag .hljs-name,
-  .hljs-built_in {
+  .token.atrule,
+  .token.attr-value,
+  .token.keyword {
     color: #3f51b5;
+  }
+
+  .token.function {
+    color: #f44336;
+  }
+
+  .token.regex,
+  .token.important,
+  .token.variable {
+    color: #ff9800;
+  }
+
+  .token.important,
+  .token.bold {
+    font-weight: bold;
+  }
+  .token.italic {
+    font-style: italic;
+  }
+
+  .token.entity {
+    cursor: help;
   }
 `;
 
-function highlight(text, lang) {
-  const language = lang === 'jsx' ? 'xml' : lang;
-  if (language) {
-    if (hljs.getLanguage(language)) {
-      try {
-        return hljs.highlight(language, text).value;
-      } catch (err) {
-        // Do nothing
-      }
-    }
-  } else {
-    try {
-      return hljs.highlightAuto(text).value;
-    } catch (err) {
-      // Do nothing
-    }
-  }
+type Props = {
+  source: string,
+  className?: string,
+};
 
-  return '';
-}
-
-export default function Markdown(props: any) {
+export default function Markdown(props: Props) {
   const { source, className, ...rest } = props;
   return (
-    <div {...rest} className={`${markdown} ${className}`}>
+    <div {...rest} className={`${markdown} ${className || ''}`}>
       <Remarkable
         source={source}
         options={{
           linkify: true,
-          highlight,
+          highlight: (text, lang) => {
+            const language = lang === 'js' ? 'jsx' : lang;
+            return getLanguage(language) ? highlight(text, language) : null;
+          },
         }}
       />
     </div>

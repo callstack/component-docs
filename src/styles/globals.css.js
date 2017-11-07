@@ -239,7 +239,7 @@ img {
 }
 
 code, tt {
-  font-family: "Roboto Mono", "Operator Mono", "Fira Code", "Ubuntu Mono", "Droid Sans Mono", "Liberation Mono", "Source Code Pro", Menlo, Consolas, Courier, monospace;
+  font-family: "Roboto Mono", "Fira Code", "Operator Mono", "Ubuntu Mono", "Droid Sans Mono", "Liberation Mono", "Source Code Pro", Menlo, Consolas, Courier, monospace;
   white-space: nowrap;
   font-weight: bold;
   font-size: 13px;
@@ -253,12 +253,21 @@ pre code {
 }
 
 pre {
-  background-color: #F3F3F7;
+  background-color: #fafafa;
   font-size: 13px;
   line-height: 19px;
   overflow: auto;
   padding: 16px;
   border-radius: 2px;
+
+  -moz-tab-size: 2;
+  -o-tab-size: 2;
+  tab-size: 2;
+
+  -webkit-hyphens: none;
+  -moz-hyphens: none;
+  -ms-hyphens: none;
+  hyphens: none;
 }
 
 pre code, pre tt {

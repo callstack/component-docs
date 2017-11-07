@@ -13,10 +13,10 @@ type Props = {
  * Link allows to visit a remote URL on tap
  *
  * **Usage:**
- * ```
+ * ```js
  * const MyComponent = () => (
  *   <Link source={{ uri: 'callstack.com' }}>
- *    Press me
+ *     Press me
  *   </Link>
  * );
  * ```

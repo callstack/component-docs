@@ -8,10 +8,10 @@ import PropTypes from 'prop-types';
  * Buttons communicate the action that will occur when the user touches them
  *
  * **Usage:**
- * ```
+ * ```js
  * const MyComponent = () => (
  *   <Button raised onPress={() => console.log('Pressed')}>
- *    Press me
+ *     Press me
  *   </Button>
  * );
  * ```

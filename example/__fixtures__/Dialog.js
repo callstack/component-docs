@@ -13,7 +13,7 @@ type Props = {
  * Link allows to visit a remote URL on tap
  *
  * **Usage:**
- * ```
+ * ```jsx
  * export default class MyComponent extends React.Component {
  *  state = {
  *   visible: false,

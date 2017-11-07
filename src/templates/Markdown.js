@@ -2,8 +2,7 @@
 
 import * as React from 'react';
 import Remarkable from 'react-remarkable';
-
-const illuminate = require('illuminate-js');
+import { highlight, getLanguage } from 'illuminate-js';
 
 export default function Markdown(props: any) {
   const { source, className, ...rest } = props;
@@ -13,7 +12,8 @@ export default function Markdown(props: any) {
         source={source}
         options={{
           linkify: true,
-          highlight: text => illuminate.highlight(text, 'jsx'),
+          highlight: (text, language) =>
+            getLanguage(language) ? highlight(text, language) : null,
         }}
       />
     </div>

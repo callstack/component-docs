@@ -16,29 +16,29 @@ export const buildRoutes = (
   const Layout = layout;
   const routes = data.map(items =>
     items.map(it => {
-      let component;
+      let render;
       switch (it.type) {
         case 'markdown':
-          component = props => (
+          render = props => (
             <Layout
-              Sidebar={() => <Sidebar {...props} data={data} />}
-              Content={() => (
+              sidebar={<Sidebar {...props} data={data} />}
+              content={
                 <Content {...props}>
                   <Markdown source={it.data} />
                 </Content>
-              )}
+              }
             />
           );
           break;
         case 'component':
-          component = props => (
+          render = props => (
             <Layout
-              Sidebar={() => <Sidebar {...props} data={data} />}
-              Content={() => (
+              sidebar={<Sidebar {...props} data={data} />}
+              content={
                 <Content {...props}>
                   <Documentation name={it.title} info={it.data} />
                 </Content>
-              )}
+              }
             />
           );
           break;
@@ -47,7 +47,7 @@ export const buildRoutes = (
       }
       return {
         ...it,
-        component,
+        render,
       };
     })
   );

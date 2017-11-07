@@ -1,6 +1,6 @@
 /* @flow */
 
-import React, { Component } from 'react';
+import { Component } from 'react';
 import createHistory from 'history/createBrowserHistory';
 import type { Route } from '../types/Route';
 
@@ -66,7 +66,7 @@ export default class Router extends Component<void, Props, State> {
     const route = this.props.routes.find(r => r.name === this.state.name);
 
     if (route) {
-      return React.createElement(route.component, {
+      return route.render({
         ...route.props,
         name: this.state.name,
       });

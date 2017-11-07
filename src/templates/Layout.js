@@ -4,8 +4,8 @@ import React from 'react';
 import { css } from '../lib/styling';
 
 type Props = {
-  Sidebar: ReactClass<*>,
-  Content: ReactClass<*>,
+  sidebar: React.Element<*>,
+  content: React.Element<*>,
 };
 
 const wrapper = css`
@@ -18,11 +18,11 @@ const wrapper = css`
   }
 `;
 
-export default function Layout({ Sidebar, Content }: Props) {
+export default function Layout({ sidebar, content }: Props) {
   return (
     <div className={wrapper}>
-      <Sidebar />
-      <Content />
+      {sidebar}
+      {content}
     </div>
   );
 }

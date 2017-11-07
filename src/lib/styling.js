@@ -18,7 +18,7 @@ export function css(template: Array<string>, ...expressions: Array<string>) {
   const selector = `.${slug}`;
   const rules = stylis(selector, styles);
 
-  sheet += rules + '\n';
+  sheet += `${rules}\n`;
 
   return slug;
 }

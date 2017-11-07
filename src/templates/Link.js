@@ -7,7 +7,7 @@ type Props = {
   to: string,
 };
 
-export default class Router extends Component<void, Props, void> {
+export default class Router extends Component<Props, void> {
   props: Props;
 
   _handleClick = (event: any) => {
@@ -37,6 +37,8 @@ export default class Router extends Component<void, Props, void> {
 
   render() {
     const { to, ...rest } = this.props;
+
+    // eslint-disable-next-line jsx-a11y/anchor-has-content
     return <a {...rest} href={`${to}.html`} onClick={this._handleClick} />;
   }
 }

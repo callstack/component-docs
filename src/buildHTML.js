@@ -2,7 +2,7 @@
 
 import path from 'path';
 import fs from 'fs';
-import React from 'react';
+import * as React from 'react';
 import ReactDOMServer from 'react-dom/server';
 import HTML from './templates/HTML';
 import App from './templates/App';
@@ -25,7 +25,7 @@ export default function buildHTML({
   layout,
 }: Options) {
   /* $FlowFixMe */
-  const Layout = require(layout);
+  const Layout = require(layout); // eslint-disable-line global-require
   const html = ReactDOMServer.renderToString(
     <App
       name={route.name}

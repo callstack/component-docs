@@ -1,11 +1,11 @@
 /* @flow */
 
-import React from 'react';
+import * as React from 'react';
 import { css } from '../lib/styling';
 
 type Props = {
-  sidebar: React.Element<*>,
-  content: React.Element<*>,
+  sidebar: React.Element<any>,
+  content: React.Element<any>,
 };
 
 const wrapper = css`

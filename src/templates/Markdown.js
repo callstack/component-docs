@@ -1,6 +1,6 @@
 /* @flow */
 
-import React from 'react';
+import * as React from 'react';
 import Remarkable from 'react-remarkable';
 import hljs from 'highlight.js';
 import { css } from '../lib/styling';

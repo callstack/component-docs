@@ -1,6 +1,6 @@
 /* @flow */
 
-import React from 'react';
+import * as React from 'react';
 import Router from './Router';
 import Documentation from './Documentation';
 import Markdown from './Markdown';
@@ -11,7 +11,7 @@ import type { Route } from '../types/Route';
 
 export const buildRoutes = (
   data: Array<Array<Metadata>>,
-  layout: ReactClass<*>
+  layout: React.ComponentType<*>
 ): Array<Route> => {
   const Layout = layout;
   const routes = data.map(items =>
@@ -51,16 +51,17 @@ export const buildRoutes = (
       };
     })
   );
-  return [].concat.apply([], routes);
+
+  return [].concat(...routes);
 };
 
 type Props = {
   name: string,
   data: Array<Array<Metadata>>,
-  layout: ReactClass<*>,
+  layout: React.ComponentType<*>,
 };
 
 export default function App({ name, data, layout }: Props) {
   const routes = buildRoutes(data, layout);
-  return <Router name={name} routes={[].concat.apply([], routes)} />;
+  return <Router name={name} routes={routes} />;
 }

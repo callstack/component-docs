@@ -13,6 +13,7 @@ type State = {
   name: string,
 };
 
+// eslint-disable-next-line import/no-mutable-exports
 export let history: any;
 
 try {
@@ -21,7 +22,7 @@ try {
   history = null;
 }
 
-export default class Router extends Component<void, Props, State> {
+export default class Router extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {

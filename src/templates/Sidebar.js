@@ -77,7 +77,9 @@ const link = css`
   }
 `;
 
-const active = css`opacity: 0.8;`;
+const active = css`
+  opacity: 0.8;
+`;
 
 type Props = {
   name: string,

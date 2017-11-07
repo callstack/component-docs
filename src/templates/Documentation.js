@@ -31,7 +31,9 @@ const propsHeader = css`
   margin: 48px 0 16px;
 `;
 
-const propInfo = css`margin: 16px 0;`;
+const propInfo = css`
+  margin: 16px 0;
+`;
 
 const propRequired = css`
   position: absolute;
@@ -58,7 +60,9 @@ const propRequired = css`
   }
 `;
 
-const propLabelContainer = css`position: relative;`;
+const propLabelContainer = css`
+  position: relative;
+`;
 
 const propLabel = css`
   color: inherit;
@@ -88,7 +92,9 @@ const propDetails = css`
   }
 `;
 
-const rest = css`color: #1976d2;`;
+const rest = css`
+  color: #1976d2;
+`;
 
 export default function Documentation({ name, info }: any) {
   const restProps = [];

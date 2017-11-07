@@ -9,7 +9,7 @@ import PropTypes from 'prop-types';
  * **Usage:**
  * ```
  * const MyComponent = () => (
- *   <Button raised onPress={() => console.log('Pressed')>}
+ *   <Button raised onPress={() => console.log('Pressed')}>
  *    Press me
  *   </Button>
  * );

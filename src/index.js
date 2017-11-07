@@ -5,6 +5,7 @@ import path from 'path';
 import watch from 'node-watch';
 import { server, bundle } from 'quik';
 import { buildRoutes } from './templates/App';
+import buildCSS from './buildCSS';
 import buildEntry from './buildEntry';
 import buildHTML from './buildHTML';
 import markdown from './parsers/markdown';
@@ -54,12 +55,14 @@ export function build({
   layout = require.resolve('./templates/Layout'),
 }: Options) {
   const entry = path.join(output, 'app.src.js');
+  const sheet = path.join(output, 'app.css');
   const files = typeof getFiles === 'function' ? getFiles() : getFiles;
   const data = collectData(files, output);
   buildEntry({ entry, layout });
   buildRoutes(data).forEach(route =>
     buildHTML({ layout, data, route, output, transpile: true })
   );
+  buildCSS({ sheet });
   bundle({
     root: process.cwd(),
     entry: [path.relative(process.cwd(), entry)],
@@ -78,10 +81,12 @@ export function serve({
   let files = typeof getFiles === 'function' ? getFiles() : getFiles;
   let data = collectData(files, output);
   const entry = path.join(output, 'app.src.js');
+  const sheet = path.join(output, 'app.css');
   buildEntry({ entry, layout });
   buildRoutes(data).forEach(route =>
     buildHTML({ layout, data, route, output, transpile: false })
   );
+  buildCSS({ sheet });
 
   const dirs = [];
 

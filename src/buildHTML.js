@@ -4,11 +4,8 @@ import path from 'path';
 import fs from 'fs';
 import React from 'react';
 import ReactDOMServer from 'react-dom/server';
-import { dump } from './lib/styling';
 import HTML from './templates/HTML';
 import App from './templates/App';
-import reset from './styles/reset.css';
-import globals from './styles/globals.css';
 import type { Route } from './types/Route';
 import type { Metadata } from './types/Metadata';
 
@@ -46,9 +43,9 @@ export default function buildHTML({
   `;
 
   if (transpile) {
-    body += '<script src="./app.bundle.js?transpile=false"></script>';
+    body += '<script src="app.bundle.js?transpile=false"></script>';
   } else {
-    body += '<script src="./app.src.js"></script>';
+    body += '<script src="app.src.js"></script>';
   }
 
   fs.writeFileSync(
@@ -59,11 +56,7 @@ export default function buildHTML({
         title={route.title}
         description={route.description || ''}
         body={body}
-        css={`
-          ${reset}
-          ${globals}
-          ${dump()}
-          `}
+        sheet="app.css"
       />
     )
   );

@@ -244,7 +244,6 @@ code, tt {
   font-weight: bold;
   font-size: 13px;
   background-color: #F3F3F7;
-  border: 1px solid rgba(0, 0, 0, .04);
 }
 
 pre code {
@@ -257,12 +256,11 @@ pre code {
 
 pre {
   background-color: #F3F3F7;
-  border: 1px solid rgba(0, 0, 0, .04);
   font-size: 13px;
   line-height: 19px;
   overflow: auto;
-  padding: 6px 10px;
-  border-radius: 3px;
+  padding: 12px 16px;
+  border-radius: 2px;
 }
 
 pre code, pre tt {

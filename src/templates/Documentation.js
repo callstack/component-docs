@@ -50,7 +50,7 @@ const propRequired = css`
     display: inline-block;
     position: absolute;
     left: 0;
-    border-radius: 3px;
+    border-radius: 2px;
     bottom: 32px;
     padding: 4px 8px;
     font-size: 12px;
@@ -67,12 +67,11 @@ const propLabelContainer = css`
 const propLabel = css`
   color: inherit;
   background-color: #f3f3f7;
-  border-radius: 3px;
+  border-radius: 2px;
   padding: 4px 8px;
   margin: 4px 16px 4px 0;
   text-decoration: none;
   white-space: nowrap;
-  border: 1px solid rgba(0, 0, 0, 0.04);
 
   &:hover {
     color: inherit;

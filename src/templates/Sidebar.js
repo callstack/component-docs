@@ -7,7 +7,8 @@ import type { Metadata } from '../types/Metadata';
 
 const sidebar = css`
   padding: 24px;
-  background-color: #262939;
+  background-color: #fafafa;
+  box-shadow: 0 0.5px 1.5px rgba(0, 0, 0, 0.32);
   display: none;
 
   @media (min-width: 640px) {
@@ -41,8 +42,7 @@ const menuButton = css`
   }
 
   &:checked ~ label {
-    color: #fff;
-    opacity: 0.64;
+    color: #111;
     user-select: none;
   }
 
@@ -57,10 +57,9 @@ const menuButton = css`
 
 const separator = css`
   border: 0;
-  background-color: #fff;
+  background-color: rgba(0, 0, 0, 0.05);
   height: 1px;
   margin: 8px 0;
-  opacity: 0.04;
 `;
 
 const link = css`
@@ -68,17 +67,15 @@ const link = css`
   padding: 8px 0;
   text-decoration: none;
   font-weight: 600;
-  color: #fff;
-  opacity: 0.32;
+  color: #555;
 
   &:hover {
-    color: #fff;
-    opacity: 0.8;
+    color: #111;
   }
 `;
 
 const active = css`
-  opacity: 0.8;
+  color: #111;
 `;
 
 type Props = {

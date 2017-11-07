@@ -74,7 +74,7 @@ const propLabelContainer = css`
 
 const propLabel = css`
   color: inherit;
-  background-color: #f3f3f7;
+  background-color: #fafafa;
   border-radius: 2px;
   padding: 4px 8px;
   margin: 4px 16px 4px 0;

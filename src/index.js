@@ -58,11 +58,11 @@ export function build({
   const sheet = path.join(output, 'app.css');
   const files = typeof getFiles === 'function' ? getFiles() : getFiles;
   const data = collectData(files, output);
-  buildEntry({ entry, layout });
+  buildEntry({ output: entry, layout });
   buildRoutes(data).forEach(route =>
     buildHTML({ layout, data, route, output, transpile: true })
   );
-  buildCSS({ sheet });
+  buildCSS({ output: sheet, minify: true });
   bundle({
     root: process.cwd(),
     entry: [path.relative(process.cwd(), entry)],
@@ -82,11 +82,11 @@ export function serve({
   let data = collectData(files, output);
   const entry = path.join(output, 'app.src.js');
   const sheet = path.join(output, 'app.css');
-  buildEntry({ entry, layout });
+  buildEntry({ output: entry, layout });
   buildRoutes(data).forEach(route =>
     buildHTML({ layout, data, route, output, transpile: false })
   );
-  buildCSS({ sheet });
+  buildCSS({ output: sheet });
 
   const dirs = [];
 

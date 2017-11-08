@@ -259,14 +259,7 @@ pre {
   overflow: auto;
   padding: 16px;
   border-radius: 2px;
-
-  -moz-tab-size: 2;
-  -o-tab-size: 2;
   tab-size: 2;
-
-  -webkit-hyphens: none;
-  -moz-hyphens: none;
-  -ms-hyphens: none;
   hyphens: none;
 }
 

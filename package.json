@@ -16,6 +16,7 @@
     "dist/"
   ],
   "dependencies": {
+    "clean-css": "^4.1.9",
     "dashify": "^0.2.2",
     "history": "^4.7.2",
     "illuminate-js": "^0.3.0",

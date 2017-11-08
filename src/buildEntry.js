@@ -3,10 +3,10 @@
 import fs from 'fs';
 
 export default function buildEntry({
-  entry,
+  output,
   layout,
 }: {
-  entry: string,
+  output: string,
   layout: string,
 }) {
   const data = `
@@ -45,5 +45,5 @@ if (module.hot) {
 render();
 `;
 
-  fs.writeFileSync(entry, data);
+  fs.writeFileSync(output, data);
 }

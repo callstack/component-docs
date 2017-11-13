@@ -33,13 +33,8 @@ h1, h2, h3, h4, h5, h6 {
   position: relative;
 }
 
-h2:first-child, h1:first-child, h1:first-child + h2, h3:first-child, h4:first-child, h5:first-child, h6:first-child {
-  margin-top: 0;
-  padding-top: 0;
-}
-
 h1 tt, h1 code {
-  font-size: inherit;
+  font-size: 32px;
 }
 
 h2 tt, h2 code {
@@ -63,8 +58,23 @@ h6 tt, h6 code {
 }
 
 h1 {
-  font-size: 28px;
-  color: black;
+  background: #2196f3;
+  font-size: 32px;
+  color: white;
+  position: relative;
+  margin-left: -47px;
+  margin-top: -24px;
+  margin-right: -48px;
+  padding-left: 47px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+@media (min-width: 640px) {
+  h1 {
+    padding-top: 20px;
+    padding-bottom: 20px;
+  }
 }
 
 h2 {
@@ -105,11 +115,6 @@ hr {
 }
 
 body > h2:first-child {
-  margin-top: 0;
-  padding-top: 0;
-}
-
-body > h1:first-child {
   margin-top: 0;
   padding-top: 0;
 }

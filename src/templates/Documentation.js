@@ -14,7 +14,6 @@ const container = css`
 
 const title = css`
   font-size: 36px;
-  margin: 0 0 8px -24px;
 
   & > code {
     background-color: transparent;

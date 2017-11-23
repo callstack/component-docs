@@ -13,7 +13,7 @@ const named = (name?: string = 'css', filename: ?string = null) => (
     (accumulator, part, i) => accumulator + expressions[i - 1] + part
   );
 
-  const slug = hash(styles || filename);
+  const slug = hash(filename || styles);
   const classname = `${name}__${slug}`;
   const selector = `.${classname}`;
   const rules = stylis(selector, styles);

@@ -1,15 +1,19 @@
 /* @flow */
 
+import express from 'express';
+import webpack from 'webpack';
+import devMiddleware from 'webpack-dev-middleware';
+import hotMiddleware from 'webpack-hot-middleware';
 import fs from 'fs';
 import path from 'path';
 import watch from 'node-watch';
-import { server, bundle } from 'quik';
 import { buildRoutes } from './templates/App';
 import buildCSS from './buildCSS';
 import buildEntry from './buildEntry';
 import buildHTML from './buildHTML';
 import markdown from './parsers/markdown';
 import component from './parsers/component';
+import configureWebpack from './configureWebpack';
 
 type Files = Array<string | Array<string>>;
 
@@ -20,7 +24,7 @@ type Options = {
   layout?: string,
 };
 
-const collectData = (files, output) => {
+const collectData = files => {
   const data = files
     .reduce((acc, file) => {
       if (Array.isArray(file)) {
@@ -40,12 +44,6 @@ const collectData = (files, output) => {
       })
     );
 
-  if (!fs.existsSync(output)) {
-    fs.mkdirSync(output);
-  }
-
-  fs.writeFileSync(path.join(output, 'app.data.json'), JSON.stringify(data));
-
   return data;
 };
 
@@ -58,17 +56,36 @@ export function build({
   const sheet = path.join(output, 'app.css');
   const files = typeof getFiles === 'function' ? getFiles() : getFiles;
   const data = collectData(files, output);
+
+  if (!fs.existsSync(output)) {
+    fs.mkdirSync(output);
+  }
+
+  fs.writeFileSync(path.join(output, 'app.data.json'), JSON.stringify(data));
+
   buildEntry({ output: entry, layout });
-  buildRoutes(data).forEach(route =>
-    buildHTML({ layout, data, route, output, transpile: true })
+  buildRoutes(data).forEach(route => {
+    fs.writeFileSync(
+      path.join(output, `${route.name}.html`),
+      buildHTML({ layout, data, route })
+    );
+  });
+
+  fs.writeFileSync(
+    path.join(output, 'app.css'),
+    buildCSS({ output: sheet, minify: true })
   );
-  buildCSS({ output: sheet, minify: true });
-  bundle({
+
+  const config = configureWebpack({
     root: process.cwd(),
-    entry: [path.relative(process.cwd(), entry)],
-    output: path.relative(process.cwd(), path.join(output, 'app.bundle.js')),
-    sourcemaps: true,
+    entry,
+    output: path.join(output, 'app.bundle.js'),
     production: true,
+  });
+  webpack(config, (err, stats) => {
+    if (err || stats.hasErrors()) {
+      console.log(err, stats);
+    }
   });
 }
 
@@ -80,14 +97,20 @@ export function serve({
 }: Options) {
   let files = typeof getFiles === 'function' ? getFiles() : getFiles;
   let data = collectData(files, output);
-  const entry = path.join(output, 'app.src.js');
-  const sheet = path.join(output, 'app.css');
-  buildEntry({ output: entry, layout });
-  buildRoutes(data).forEach(route =>
-    buildHTML({ layout, data, route, output, transpile: false })
-  );
-  buildCSS({ output: sheet });
 
+  if (!fs.existsSync(output)) {
+    fs.mkdirSync(output);
+  }
+
+  fs.writeFileSync(path.join(output, 'app.src.js'), buildEntry({ layout }));
+  fs.writeFileSync(path.join(output, 'app.data.json'), JSON.stringify(data));
+
+  let routes = buildRoutes(data).reduce((acc, route) => {
+    acc[route.name] = buildHTML({ layout, data, route });
+    return acc;
+  }, {});
+
+  const css = buildCSS({ minify: false });
   const dirs = [];
 
   files
@@ -108,22 +131,53 @@ export function serve({
     if (!path.relative(path.dirname(file), output)) {
       return;
     }
+
     files = typeof getFiles === 'function' ? getFiles() : getFiles;
     data = collectData(files, output);
-    buildRoutes(data).forEach(route =>
-      buildHTML({ layout, data, route, output, transpile: false })
-    );
+
+    fs.writeFileSync(path.join(output, 'app.data.json'), JSON.stringify(data));
+
+    routes = buildRoutes(data).reduce((acc, route) => {
+      acc[route.name] = buildHTML({ layout, data, route });
+      return acc;
+    }, {});
   });
 
-  server({
-    root: process.cwd(),
-    watch: [path.relative(process.cwd(), entry)],
-  }).listen(port);
+  const app = express();
 
-  console.log(
-    `Open http://localhost:${port}/${path.relative(
-      process.cwd(),
-      output
-    )}/ in your browser.\n`
+  app.get('*', (req, res, next) => {
+    const page = req.path.slice(1).replace(/\.html$/, '');
+
+    if (page === '' && routes.index) {
+      res.send(routes.index);
+    } else if (routes[page]) {
+      res.send(routes[page]);
+    } else if (page === 'app.css') {
+      res.send(css);
+    } else {
+      next();
+    }
+  });
+
+  const config = configureWebpack({
+    root: process.cwd(),
+    entry: path.join(output, 'app.src.js'),
+    output: path.join(output, 'app.bundle.js'),
+    production: false,
+  });
+  const compiler = webpack(config);
+
+  app.use(
+    devMiddleware(compiler, {
+      noInfo: true,
+      publicPath: config.output.publicPath,
+      stats: {
+        colors: true,
+      },
+    })
   );
+  app.use(hotMiddleware(compiler));
+  app.listen(port);
+
+  console.log(`Open http://localhost:${port} in your browser.\n`);
 }

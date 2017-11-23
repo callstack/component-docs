@@ -1,7 +1,5 @@
 /* @flow */
 
-import path from 'path';
-import fs from 'fs';
 import * as React from 'react';
 import ReactDOMServer from 'react-dom/server';
 import HTML from './templates/HTML';
@@ -17,13 +15,7 @@ type Options = {
   layout: string,
 };
 
-export default function buildHTML({
-  route,
-  data,
-  transpile,
-  output,
-  layout,
-}: Options) {
+export default function buildHTML({ route, data, layout }: Options) {
   /* $FlowFixMe */
   const Layout = require(layout); // eslint-disable-line global-require
   const html = ReactDOMServer.renderToString(
@@ -42,22 +34,15 @@ export default function buildHTML({
     </script>
   `;
 
-  if (transpile) {
-    body += '<script src="app.bundle.js?transpile=false"></script>';
-  } else {
-    body += '<script src="app.src.js"></script>';
-  }
+  body += '<script src="app.bundle.js"></script>';
 
-  fs.writeFileSync(
-    path.join(output, `${route.name}.html`),
-    ReactDOMServer.renderToString(
-      // eslint-disable-next-line react/jsx-pascal-case
-      <HTML
-        title={route.title}
-        description={route.description || ''}
-        body={body}
-        sheet="app.css"
-      />
-    )
+  return ReactDOMServer.renderToString(
+    // eslint-disable-next-line react/jsx-pascal-case
+    <HTML
+      title={route.title}
+      description={route.description || ''}
+      body={body}
+      sheet="app.css"
+    />
   );
 }

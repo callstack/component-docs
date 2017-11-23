@@ -1,15 +1,7 @@
 /* @flow */
 
-import fs from 'fs';
-
-export default function buildEntry({
-  output,
-  layout,
-}: {
-  output: string,
-  layout: string,
-}) {
-  const data = `
+export default function buildEntry({ layout }: { layout: string }) {
+  return `
 import React from 'react';
 import ReactDOM from 'react-dom';
 import RedBox from 'redbox-react';
@@ -38,12 +30,10 @@ const render = () => {
 
 if (module.hot) {
   module.hot.accept(() => {
-    setTimeout(render);
+    render();
   });
 }
 
 render();
 `;
-
-  fs.writeFileSync(output, data);
 }

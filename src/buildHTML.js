@@ -15,7 +15,7 @@ type Options = {
   layout: string,
 };
 
-export default function buildHTML({ route, data, layout }: Options) {
+export default function buildHTML({ route, data, layout, sheet }: Options) {
   /* $FlowFixMe */
   const Layout = require(layout); // eslint-disable-line global-require
   const html = ReactDOMServer.renderToString(
@@ -42,7 +42,7 @@ export default function buildHTML({ route, data, layout }: Options) {
       title={route.title}
       description={route.description || ''}
       body={body}
-      sheet="app.css"
+      sheet={sheet}
     />
   );
 }

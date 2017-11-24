@@ -8,7 +8,6 @@ import fs from 'fs';
 import path from 'path';
 import watch from 'node-watch';
 import { buildRoutes } from './templates/App';
-import buildCSS from './buildCSS';
 import buildEntry from './buildEntry';
 import buildHTML from './buildHTML';
 import markdown from './parsers/markdown';
@@ -52,8 +51,6 @@ export function build({
   output,
   layout = require.resolve('./templates/Layout'),
 }: Options) {
-  const entry = path.join(output, 'app.src.js');
-  const sheet = path.join(output, 'app.css');
   const files = typeof getFiles === 'function' ? getFiles() : getFiles;
   const data = collectData(files, output);
 
@@ -61,25 +58,25 @@ export function build({
     fs.mkdirSync(output);
   }
 
+  fs.writeFileSync(path.join(output, 'app.src.js'), buildEntry({ layout }));
   fs.writeFileSync(path.join(output, 'app.data.json'), JSON.stringify(data));
 
-  buildEntry({ output: entry, layout });
+  buildEntry({ layout });
   buildRoutes(data).forEach(route => {
     fs.writeFileSync(
       path.join(output, `${route.name}.html`),
-      buildHTML({ layout, data, route })
+      buildHTML({ layout, data, route, sheet: 'app.css' })
     );
   });
 
-  fs.writeFileSync(
-    path.join(output, 'app.css'),
-    buildCSS({ output: sheet, minify: true })
-  );
-
   const config = configureWebpack({
     root: process.cwd(),
-    entry,
-    output: path.join(output, 'app.bundle.js'),
+    entry: path.join(output, 'app.src.js'),
+    output: {
+      path: output,
+      bundle: 'app.bundle.js',
+      style: 'app.css',
+    },
     production: true,
   });
   webpack(config, (err, stats) => {
@@ -110,7 +107,6 @@ export function serve({
     return acc;
   }, {});
 
-  const css = buildCSS({ minify: false });
   const dirs = [];
 
   files
@@ -152,8 +148,6 @@ export function serve({
       res.send(routes.index);
     } else if (routes[page]) {
       res.send(routes[page]);
-    } else if (page === 'app.css') {
-      res.send(css);
     } else {
       next();
     }
@@ -162,7 +156,11 @@ export function serve({
   const config = configureWebpack({
     root: process.cwd(),
     entry: path.join(output, 'app.src.js'),
-    output: path.join(output, 'app.bundle.js'),
+    output: {
+      path: output,
+      bundle: 'app.bundle.js',
+      style: 'app.css',
+    },
     production: false,
   });
   const compiler = webpack(config);

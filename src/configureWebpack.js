@@ -1,15 +1,24 @@
 /* @flow */
 
 import webpack from 'webpack';
-import path from 'path';
+import ExtractTextPlugin from 'extract-text-webpack-plugin';
 
 const babelrc = {
   babelrc: false,
+  cacheDirectory: false,
   presets: [
-    ['env', { modules: false }],
+    [
+      'env',
+      {
+        modules: false,
+        targets: {
+          browsers: ['last 2 versions', 'safari >= 7'],
+        },
+      },
+    ],
     'react',
     'stage-2',
-    require.resolve('./babel/preset'),
+    'linaria/babel',
   ],
   env: {
     development: {
@@ -23,8 +32,8 @@ export default ({ root, entry, output, production }) => ({
   devtool: 'source-map',
   entry: production ? entry : ['webpack-hot-middleware/client', entry],
   output: {
-    path: path.dirname(output),
-    filename: path.basename(output),
+    path: output.path,
+    filename: output.bundle,
     publicPath: '/',
   },
   plugins: [
@@ -42,6 +51,7 @@ export default ({ root, entry, output, production }) => ({
             sourceMap: true,
           }),
           new webpack.optimize.ModuleConcatenationPlugin(),
+          new ExtractTextPlugin(output.style),
         ]
       : [
           new webpack.HotModuleReplacementPlugin(),
@@ -62,6 +72,15 @@ export default ({ root, entry, output, production }) => ({
       {
         test: /\.(bmp|gif|jpg|jpeg|png|svg|webp|ttf|otf)$/,
         use: { loader: 'url-loader', options: { limit: 25000 } },
+      },
+      {
+        test: /\.css$/,
+        use: production
+          ? ExtractTextPlugin.extract({
+              fallback: 'style-loader',
+              use: 'css-loader',
+            })
+          : [{ loader: 'style-loader' }, { loader: 'css-loader' }],
       },
     ],
   },

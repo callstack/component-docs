@@ -1,7 +1,7 @@
 /* @flow */
 
 import * as React from 'react';
-import { css } from '../lib/styling';
+import { css } from 'linaria';
 
 type Props = {
   sidebar: React.Element<any>,

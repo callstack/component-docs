@@ -7,7 +7,7 @@ type Props = {
   title: string,
   description: string,
   body: string,
-  sheet: string,
+  sheet: ?string,
 };
 
 export default function HTML({ title, description, body, sheet }: Props) {
@@ -34,7 +34,7 @@ export default function HTML({ title, description, body, sheet }: Props) {
 
         <title>{title}</title>
 
-        <link type="text/css" rel="stylesheet" href={sheet} />
+        {sheet ? <link type="text/css" rel="stylesheet" href={sheet} /> : null}
       </head>
       <body dangerouslySetInnerHTML={{ __html: body }} />
     </html>

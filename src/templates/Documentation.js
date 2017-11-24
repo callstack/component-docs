@@ -1,7 +1,7 @@
 /* @flow */
 
 import * as React from 'react';
-import { css } from '../lib/styling';
+import { css } from 'linaria';
 import Markdown from './Markdown';
 
 const container = css`

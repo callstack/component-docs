@@ -3,7 +3,7 @@
 import * as React from 'react';
 import Remarkable from 'react-remarkable';
 import { highlight, getLanguage } from 'illuminate-js';
-import { css } from '../lib/styling';
+import { css } from 'linaria';
 
 const markdown = css`
   .token.comment,

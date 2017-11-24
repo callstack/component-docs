@@ -8,6 +8,8 @@ import RedBox from 'redbox-react';
 import App from '${require.resolve('./templates/App')}';
 import Layout from '${layout}';
 import data from './app.data.json';
+import '${require.resolve('./styles/reset.css')}';
+import '${require.resolve('./styles/globals.css')}';
 
 const root = document.getElementById('root');
 const render = () => {

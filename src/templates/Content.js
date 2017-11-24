@@ -1,7 +1,7 @@
 /* @flow */
 
 import * as React from 'react';
-import { css } from '../lib/styling';
+import { css } from 'linaria';
 
 const content = css`
   flex: 1;

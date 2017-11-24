@@ -3,6 +3,6 @@
     "env",
     "react",
     "stage-2",
-    "./src/babel/preset"
+    ["linaria/babel", { "extract": false }]
   ]
 }

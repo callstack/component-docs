@@ -1,8 +1,8 @@
 /* @flow */
 
 import * as React from 'react';
+import { css } from 'linaria';
 import Link from './Link';
-import { css } from '../lib/styling';
 import type { Metadata } from '../types/Metadata';
 
 const sidebar = css`

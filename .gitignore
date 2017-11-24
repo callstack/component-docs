@@ -14,3 +14,7 @@ npm-debug.log
 # Build
 #
 dist/
+
+# Linaria
+#
+.linaria-cache/

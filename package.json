@@ -2,7 +2,7 @@
   "name": "component-docs",
   "description": "Documentation for React components",
   "scripts": {
-    "build": "babel -sd dist/ src/",
+    "build": "babel -sd dist/ src/ --copy-files",
     "lint": "eslint .",
     "flow": "flow",
     "prepare": "yarn run build",

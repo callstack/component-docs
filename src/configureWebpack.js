@@ -1,6 +1,5 @@
 /* @flow */
 
-import path from 'path';
 import webpack from 'webpack';
 import ExtractTextPlugin from 'extract-text-webpack-plugin';
 
@@ -24,7 +23,7 @@ const babelrc = {
       {
         single: true,
         filename: 'styles.css',
-        outDir: path.resolve(__dirname, '../dist/styles.css'),
+        outDir: 'dist',
       },
     ],
   ],

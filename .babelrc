@@ -3,6 +3,13 @@
     "env",
     "react",
     "stage-2",
-    ["linaria/babel", { "extract": false }]
+    [
+      "linaria/babel",
+      {
+        "single": true,
+        "filename": "styles.css",
+        "outDir": "dist"
+      }
+    ]
   ]
 }

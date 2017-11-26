@@ -1,5 +1,6 @@
 /* @flow */
 
+import path from 'path';
 import webpack from 'webpack';
 import ExtractTextPlugin from 'extract-text-webpack-plugin';
 
@@ -18,7 +19,14 @@ const babelrc = {
     ],
     'react',
     'stage-2',
-    'linaria/babel',
+    [
+      'linaria/babel',
+      {
+        single: true,
+        filename: 'styles.css',
+        outDir: path.resolve(__dirname, '../dist/styles.css'),
+      },
+    ],
   ],
   env: {
     development: {

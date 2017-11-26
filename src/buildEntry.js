@@ -10,6 +10,7 @@ import Layout from '${layout}';
 import data from './app.data.json';
 import '${require.resolve('./styles/reset.css')}';
 import '${require.resolve('./styles/globals.css')}';
+import '${require.resolve('../dist/styles.css')}';
 
 const root = document.getElementById('root');
 const render = () => {

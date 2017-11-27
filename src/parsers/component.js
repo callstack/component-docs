@@ -3,7 +3,7 @@
 import fs from 'fs';
 import { parse } from 'react-docgen';
 import dashify from 'dashify';
-import type { Metadata } from '../types/Metadata';
+import type { Metadata } from '../types';
 
 export default function(file: string): Metadata {
   const name = file

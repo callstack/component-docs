@@ -3,7 +3,7 @@
 import fs from 'fs';
 import path from 'path';
 import dashify from 'dashify';
-import type { Metadata } from '../types/Metadata';
+import type { Metadata } from '../types';
 
 export default function(file: string): Metadata {
   let text = fs.readFileSync(file).toString();
@@ -53,8 +53,8 @@ export default function(file: string): Metadata {
     .replace(/^\d+\./, '');
 
   return {
-    title: meta.title ? meta.title : name,
-    name: meta.permalink ? meta.permalink : dashify(name),
+    title: meta.title || name,
+    name: meta.permalink || dashify(name),
     description: meta.description,
     data: text,
     type: 'markdown',

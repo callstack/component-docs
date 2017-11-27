@@ -8,22 +8,26 @@ const task = process.argv[2];
 const output = path.join(__dirname, 'dist');
 const fixtures = path.join(__dirname, '__fixtures__');
 
-function files() {
-  const list = fs.readdirSync(fixtures);
-  const md = list.filter(f => f.endsWith('.md'));
-  const js = list.filter(f => f.endsWith('.js'));
+function pages() {
+  const list = fs.readdirSync(fixtures).map(f => path.join(fixtures, f));
+  const md = list
+    .filter(f => f.endsWith('.md'))
+    .map(file => ({ type: 'markdown', file }));
+  const js = list
+    .filter(f => f.endsWith('.js'))
+    .map(file => ({ type: 'component', file }));
 
-  return [md, js].map(items => items.map(f => path.join(fixtures, f)));
+  return [...md, { type: 'separator' }, ...js];
 }
 
 if (task !== 'build') {
   serve({
-    files,
+    pages,
     output,
   });
 } else {
   build({
-    files,
+    pages,
     output,
   });
 }

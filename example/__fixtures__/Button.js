@@ -1,4 +1,3 @@
-/* @flow */
 /* eslint-disable react/no-unused-prop-types */
 
 import { Component } from 'react';

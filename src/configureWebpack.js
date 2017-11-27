@@ -3,6 +3,17 @@
 import webpack from 'webpack';
 import ExtractTextPlugin from 'extract-text-webpack-plugin';
 
+type Options = {
+  root: string,
+  entry: string,
+  production: boolean,
+  output: {
+    path: string,
+    bundle: string,
+    style: string,
+  },
+};
+
 const babelrc = {
   babelrc: false,
   cacheDirectory: false,
@@ -34,7 +45,7 @@ const babelrc = {
   },
 };
 
-export default ({ root, entry, output, production }) => ({
+export default ({ root, entry, output, production }: Options) => ({
   context: root,
   devtool: 'source-map',
   entry: production ? entry : ['webpack-hot-middleware/client', entry],

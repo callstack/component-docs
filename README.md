@@ -29,14 +29,14 @@ Currently there's no CLI available. You can use the API to generate documentatio
 import path from 'path';
 import { build } from 'component-docs';
 
-const files = [
-  '../docs/Get Started.md',
-  '../src/Button.js',
-  '../src/Calendar.js',
+const pages = [
+  { type: 'markdown', file: '../docs/Get Started.md' },
+  { type: 'component', file: '../src/Button.js', }
+  { type: 'component', file: '../src/Calendar.js' },
 ];
 
 build({
-  files: files.map(file => path.join(__dirname, file)),
+  pages: pages.map(page => ({ ...page, file: path.join(__dirname, page.file) })),
   output: path.join(__dirname, 'pages'),
 });
 ```

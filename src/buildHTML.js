@@ -4,23 +4,21 @@ import * as React from 'react';
 import ReactDOMServer from 'react-dom/server';
 import HTML from './templates/HTML';
 import App from './templates/App';
-import type { Route } from './types/Route';
-import type { Metadata } from './types/Metadata';
+import type { Metadata, PageInfo, Separator } from './types';
 
 type Options = {
-  data: Array<Array<Metadata>>,
-  route: Route,
-  transpile: boolean,
-  output: string,
+  data: Array<Metadata | Separator>,
+  info: PageInfo,
   layout: string,
+  sheet?: string,
 };
 
-export default function buildHTML({ route, data, layout, sheet }: Options) {
+export default function buildHTML({ info, data, layout, sheet }: Options) {
   /* $FlowFixMe */
   const Layout = require(layout); // eslint-disable-line global-require
   const html = ReactDOMServer.renderToString(
     <App
-      name={route.name}
+      name={info.name}
       data={data}
       layout={Layout.__esModule ? Layout.default : Layout}
     />
@@ -30,7 +28,7 @@ export default function buildHTML({ route, data, layout, sheet }: Options) {
 
   body += `
     <script>
-      window.__INITIAL_PATH__ = '${route.name}';
+      window.__INITIAL_PATH__ = '${info.name}';
     </script>
   `;
 
@@ -39,8 +37,8 @@ export default function buildHTML({ route, data, layout, sheet }: Options) {
   return ReactDOMServer.renderToString(
     // eslint-disable-next-line react/jsx-pascal-case
     <HTML
-      title={route.title}
-      description={route.description || ''}
+      title={info.title}
+      description={info.description || ''}
       body={body}
       sheet={sheet}
     />

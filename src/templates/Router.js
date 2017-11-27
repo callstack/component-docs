@@ -2,7 +2,7 @@
 
 import { Component } from 'react';
 import createHistory from 'history/createBrowserHistory';
-import type { Route } from '../types/Route';
+import type { Route } from '../types';
 
 type Props = {
   name: string,

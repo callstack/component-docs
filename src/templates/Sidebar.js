@@ -3,7 +3,7 @@
 import * as React from 'react';
 import { css } from 'linaria';
 import Link from './Link';
-import type { Metadata } from '../types/Metadata';
+import type { Metadata, Separator } from '../types';
 
 const sidebar = css`
   padding: 24px;
@@ -79,27 +79,24 @@ const active = css`
 
 type Props = {
   name: string,
-  data: Array<Array<Metadata>>,
+  data: Array<Metadata | Separator>,
 };
 
 export default function Sidebar({ name, data }: Props) {
-  const links = [];
-
-  data.forEach((items, i) => {
-    items.forEach(route =>
-      links.push(
-        <Link
-          key={route.name}
-          to={route.name}
-          className={`${link} ${name === route.name ? active : ''}`}
-        >
-          {route.title}
-        </Link>
-      )
-    );
-    if (data[i + 1]) {
-      links.push(<hr key={`separator-${i + 1}`} className={separator} />);
+  const links = data.map((item, i) => {
+    if (item.type === 'separator') {
+      return <hr key={`separator-${i + 1}`} className={separator} />;
     }
+
+    return (
+      <Link
+        key={item.name}
+        to={item.name}
+        className={`${link} ${name === item.name ? active : ''}`}
+      >
+        {item.title}
+      </Link>
+    );
   });
 
   return (

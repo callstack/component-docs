@@ -6,58 +6,64 @@ import Documentation from './Documentation';
 import Markdown from './Markdown';
 import Sidebar from './Sidebar';
 import Content from './Content';
-import type { Metadata } from '../types/Metadata';
-import type { Route } from '../types/Route';
+import type { Metadata, Route, Separator } from '../types';
 
-export const buildRoutes = (
-  data: Array<Array<Metadata>>,
+type Data = Array<Metadata | Separator>;
+
+const buildRoutes = (
+  data: Data,
   layout: React.ComponentType<*>
 ): Array<Route> => {
   const Layout = layout;
-  const routes = data.map(items =>
-    items.map(it => {
-      let render;
-      switch (it.type) {
-        case 'markdown':
-          render = props => (
-            <Layout
-              sidebar={<Sidebar {...props} data={data} />}
-              content={
-                <Content {...props}>
-                  <Markdown source={it.data} />
-                </Content>
-              }
-            />
-          );
-          break;
-        case 'component':
-          render = props => (
-            <Layout
-              sidebar={<Sidebar {...props} data={data} />}
-              content={
-                <Content {...props}>
-                  <Documentation name={it.title} info={it.data} />
-                </Content>
-              }
-            />
-          );
-          break;
-        default:
-          throw new Error(`Unknown type ${it.type}`);
-      }
-      return {
-        ...it,
-        render,
-      };
-    })
-  );
 
-  return [].concat(...routes);
+  const items: any[] = data.filter(item => item.type !== 'separator');
+
+  return items.map((item: Metadata) => {
+    let render;
+
+    switch (item.type) {
+      case 'markdown':
+        {
+          const source = item.data;
+          render = (props: any) => (
+            <Layout
+              sidebar={<Sidebar {...props} data={data} />}
+              content={
+                <Content {...props}>
+                  <Markdown source={source} />
+                </Content>
+              }
+            />
+          );
+        }
+        break;
+      case 'component':
+        render = (props: any) => (
+          <Layout
+            sidebar={<Sidebar {...props} data={data} />}
+            content={
+              <Content {...props}>
+                <Documentation name={item.title} info={item.data} />
+              </Content>
+            }
+          />
+        );
+        break;
+      default:
+        throw new Error(`Unknown type ${item.type}`);
+    }
+
+    /* $FlowFixMe */
+    return {
+      ...item,
+      render,
+    };
+  });
 };
 
 type Props = {
   name: string,
-  data: Array<Array<Metadata>>,
+  data: Data,
   layout: React.ComponentType<*>,
 };
 

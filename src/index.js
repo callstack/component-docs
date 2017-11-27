@@ -7,52 +7,46 @@ import hotMiddleware from 'webpack-hot-middleware';
 import fs from 'fs';
 import path from 'path';
 import watch from 'node-watch';
-import { buildRoutes } from './templates/App';
 import buildEntry from './buildEntry';
 import buildHTML from './buildHTML';
 import markdown from './parsers/markdown';
 import component from './parsers/component';
 import configureWebpack from './configureWebpack';
+import type { Options, Page, Separator, Metadata, PageInfo } from './types';
 
-type Files = Array<string | Array<string>>;
+const getPageList = (pages: Array<Page | Separator>): Page[] =>
+  (pages.filter(it => it.type !== 'separator'): any);
 
-type Options = {
-  files: Files | (() => Files),
-  output: string,
-  port?: number,
-  layout?: string,
+const buildPageInfo = (data: Array<Metadata | Separator>): PageInfo[] =>
+  (data.filter(it => it.type !== 'separator'): any);
+
+const renderPage = (page: Page) => {
+  switch (page.type) {
+    case 'markdown':
+      return markdown(page.file);
+    case 'component':
+      return component(page.file);
+    default:
+      throw new Error(`Invalid type ${String(page.type)} for ${page.file}`);
+  }
 };
 
-const collectData = files => {
-  const data = files
-    .reduce((acc, file) => {
-      if (Array.isArray(file)) {
-        return [...acc, file];
-      }
-      return [...acc, [file]];
-    }, [])
-    .map(items =>
-      items.map(it => {
-        if (it.endsWith('.md')) {
-          return markdown(it);
-        }
-        if (it.endsWith('.js')) {
-          return component(it);
-        }
-        throw new Error('Unknown extension ', it);
-      })
-    );
+const collectData = (pages: Array<Page | Separator>) =>
+  pages.map(page => {
+    if (page.type === 'separator') {
+      return page;
+    }
 
-  return data;
-};
+    return renderPage(page);
+  });
 
 export function build({
-  files: getFiles,
+  pages: getPages,
   output,
   layout = require.resolve('./templates/Layout'),
 }: Options) {
-  const files = typeof getFiles === 'function' ? getFiles() : getFiles;
-  const data = collectData(files, output);
+  const pages = typeof getPages === 'function' ? getPages() : getPages;
+  const data = collectData(pages);
 
   if (!fs.existsSync(output)) {
     fs.mkdirSync(output);
@@ -62,10 +56,10 @@ export function build({
   fs.writeFileSync(path.join(output, 'app.data.json'), JSON.stringify(data));
 
   buildEntry({ layout });
-  buildRoutes(data).forEach(route => {
+  buildPageInfo(data).forEach(info => {
     fs.writeFileSync(
-      path.join(output, `${route.name}.html`),
-      buildHTML({ layout, data, route, sheet: 'app.css' })
+      path.join(output, `${info.name}.html`),
+      buildHTML({ layout, data, info, sheet: 'app.css' })
     );
   });
 
@@ -87,13 +81,13 @@ export function build({
 }
 
 export function serve({
-  files: getFiles,
+  pages: getPages,
   output,
   port = 3031,
   layout = require.resolve('./templates/Layout'),
 }: Options) {
-  let files = typeof getFiles === 'function' ? getFiles() : getFiles;
-  let data = collectData(files, output);
+  let pages = typeof getPages === 'function' ? getPages() : getPages;
+  let data = collectData(pages);
 
   if (!fs.existsSync(output)) {
     fs.mkdirSync(output);
@@ -102,39 +96,32 @@ export function serve({
   fs.writeFileSync(path.join(output, 'app.src.js'), buildEntry({ layout }));
   fs.writeFileSync(path.join(output, 'app.data.json'), JSON.stringify(data));
 
-  let routes = buildRoutes(data).reduce((acc, route) => {
-    acc[route.name] = buildHTML({ layout, data, route });
+  let routes = buildPageInfo(data).reduce((acc, info) => {
+    acc[info.name] = buildHTML({ layout, data, info });
     return acc;
   }, {});
 
   const dirs = [];
 
-  files
-    .reduce((acc, file) => {
-      if (Array.isArray(file)) {
-        return [...acc, ...file];
-      }
-      return [...acc, file];
-    }, [])
-    .forEach(file => {
-      const dir = path.dirname(file);
-      if (!dirs.includes(dir)) {
-        dirs.push(dir);
-      }
-    });
+  getPageList(pages).forEach(page => {
+    const dir = path.dirname(page.file);
+    if (!dirs.includes(dir)) {
+      dirs.push(dir);
+    }
+  });
 
   watch(dirs, (event, file) => {
     if (!path.relative(path.dirname(file), output)) {
       return;
     }
 
-    files = typeof getFiles === 'function' ? getFiles() : getFiles;
-    data = collectData(files, output);
+    pages = typeof getPages === 'function' ? getPages() : getPages;
+    data = collectData(pages);
 
     fs.writeFileSync(path.join(output, 'app.data.json'), JSON.stringify(data));
 
-    routes = buildRoutes(data).reduce((acc, route) => {
-      acc[route.name] = buildHTML({ layout, data, route });
+    routes = buildPageInfo(data).reduce((acc, info) => {
+      acc[info.name] = buildHTML({ layout, data, info });
       return acc;
     }, {});
   });

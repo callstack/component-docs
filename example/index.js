@@ -9,15 +9,26 @@ const output = path.join(__dirname, 'dist');
 const fixtures = path.join(__dirname, '__fixtures__');
 
 function pages() {
-  const list = fs.readdirSync(fixtures).map(f => path.join(fixtures, f));
-  const md = list
-    .filter(f => f.endsWith('.md'))
-    .map(file => ({ type: 'markdown', file }));
-  const js = list
-    .filter(f => f.endsWith('.js'))
-    .map(file => ({ type: 'component', file }));
+  const markdown = path.join(fixtures, 'markdown');
+  const component = path.join(fixtures, 'component');
+  const custom = path.join(fixtures, 'custom');
 
-  return [...md, { type: 'separator' }, ...js];
+  return [
+    ...fs
+      .readdirSync(markdown)
+      .map(f => path.join(markdown, f))
+      .map(file => ({ type: 'markdown', file })),
+    { type: 'separator' },
+    ...fs
+      .readdirSync(component)
+      .map(f => path.join(component, f))
+      .map(file => ({ type: 'component', file })),
+    { type: 'separator' },
+    ...fs
+      .readdirSync(custom)
+      .map(f => path.join(custom, f))
+      .map(file => ({ type: 'custom', file })),
+  ];
 }
 
 if (task !== 'build') {

@@ -11,6 +11,7 @@ import buildEntry from './buildEntry';
 import buildHTML from './buildHTML';
 import markdown from './parsers/markdown';
 import component from './parsers/component';
+import custom from './parsers/custom';
 import configureWebpack from './configureWebpack';
 import type { Options, Page, Separator, Metadata, PageInfo } from './types';
 
@@ -20,25 +21,30 @@ const getPageList = (pages: Array<Page | Separator>): Page[] =>
 const buildPageInfo = (data: Array<Metadata | Separator>): PageInfo[] =>
   (data.filter(it => it.type !== 'separator'): any);
 
-const renderPage = (page: Page) => {
-  switch (page.type) {
-    case 'markdown':
-      return markdown(page.file);
-    case 'component':
-      return component(page.file);
-    default:
-      throw new Error(`Invalid type ${String(page.type)} for ${page.file}`);
-  }
-};
-
 const collectData = (pages: Array<Page | Separator>) =>
   pages.map(page => {
     if (page.type === 'separator') {
       return page;
     }
 
-    return renderPage(page);
+    switch (page.type) {
+      case 'markdown':
+        return markdown(page.file);
+      case 'component':
+        return component(page.file);
+      case 'custom':
+        return custom(page.file);
+      default:
+        throw new Error(`Invalid type ${String(page.type)} for ${page.file}`);
+    }
   });
+
+const stringifyData = data => `module.exports = [
+  ${data
+    /* $FlowFixMe */
+    .map(item => (item.stringify ? item.stringify() : JSON.stringify(item)))
+    .join(',')}
+]`;
 
 export function build({
   pages: getPages,
@@ -53,7 +59,7 @@ export function build({
   }
 
   fs.writeFileSync(path.join(output, 'app.src.js'), buildEntry({ layout }));
-  fs.writeFileSync(path.join(output, 'app.data.json'), JSON.stringify(data));
+  fs.writeFileSync(path.join(output, 'app.data.js'), stringifyData(data));
 
   buildEntry({ layout });
   buildPageInfo(data).forEach(info => {
@@ -94,7 +100,7 @@ export function serve({
   }
 
   fs.writeFileSync(path.join(output, 'app.src.js'), buildEntry({ layout }));
-  fs.writeFileSync(path.join(output, 'app.data.json'), JSON.stringify(data));
+  fs.writeFileSync(path.join(output, 'app.data.js'), stringifyData(data));
 
   let routes = buildPageInfo(data).reduce((acc, info) => {
     acc[info.name] = buildHTML({ layout, data, info });
@@ -118,7 +124,7 @@ export function serve({
     pages = typeof getPages === 'function' ? getPages() : getPages;
     data = collectData(pages);
 
-    fs.writeFileSync(path.join(output, 'app.data.json'), JSON.stringify(data));
+    fs.writeFileSync(path.join(output, 'app.data.js'), stringifyData(data));
 
     routes = buildPageInfo(data).reduce((acc, info) => {
       acc[info.name] = buildHTML({ layout, data, info });

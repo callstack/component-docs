@@ -49,6 +49,17 @@ const buildRoutes = (
           />
         );
         break;
+      case 'custom':
+        {
+          const CustomComponent = item.data;
+          render = (props: any) => (
+            <Layout
+              sidebar={<Sidebar {...props} data={data} />}
+              content={<CustomComponent />}
+            />
+          );
+        }
+        break;
       default:
         throw new Error(`Unknown type ${item.type}`);
     }

@@ -11,17 +11,19 @@ export default function(file: string): Metadata {
 
   const lines = text.split('\n');
 
-  for (let i = 0, l = lines.length; i < l; i++) {
-    const line = lines[i];
-    if (/.+:.+/.test(line)) {
-      slugs.push(line);
-    } else {
-      if (/^-+$/.test(line.trim())) {
-        text = lines.slice(i + 1).join('\n');
+  if (/^-+$/.test(lines[0])) {
+    for (let i = 1, l = lines.length; i < l; i++) {
+      const line = lines[i];
+      if (/.+:.+/.test(line)) {
+        slugs.push(line);
       } else {
-        slugs = [];
+        if (/^-+$/.test(line.trim())) {
+          text = lines.slice(i + 1).join('\n');
+        } else {
+          slugs = [];
+        }
+        break;
       }
-      break;
     }
   }
 

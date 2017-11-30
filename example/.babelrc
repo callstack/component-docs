@@ -1,0 +1,13 @@
+{
+  "presets": [
+    "env",
+    "react",
+    "stage-2",
+    [
+      "linaria/babel",
+      {
+        "outDir": "../dist/styles/build"
+      }
+    ]
+  ]
+}

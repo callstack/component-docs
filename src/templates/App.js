@@ -25,37 +25,29 @@ const buildRoutes = (
       case 'markdown':
         {
           const source = item.data;
-          render = (props: any) => (
-            <Layout
-              sidebar={<Sidebar {...props} data={data} />}
-              content={
-                <Content {...props}>
-                  <Markdown source={source} />
-                </Content>
-              }
-            />
+          render = (props: { path: string }) => (
+            <Layout {...props} data={data} Sidebar={Sidebar} Content={Content}>
+              <Markdown source={source} />
+            </Layout>
           );
         }
         break;
       case 'component':
-        render = (props: any) => (
-          <Layout
-            sidebar={<Sidebar {...props} data={data} />}
-            content={
-              <Content {...props}>
-                <Documentation name={item.title} info={item.data} />
-              </Content>
-            }
-          />
+        render = (props: { path: string }) => (
+          <Layout {...props} data={data} Sidebar={Sidebar} Content={Content}>
+            <Documentation name={item.title} info={item.data} />
+          </Layout>
         );
         break;
       case 'custom':
         {
           const CustomComponent = item.data;
-          render = (props: any) => (
+          render = (props: { path: string }) => (
             <Layout
-              sidebar={<Sidebar {...props} data={data} />}
-              content={<CustomComponent />}
+              {...props}
+              data={data}
+              Sidebar={Sidebar}
+              Content={CustomComponent}
             />
           );
         }

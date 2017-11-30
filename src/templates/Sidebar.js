@@ -78,11 +78,11 @@ const active = css`
 `;
 
 type Props = {
-  name: string,
+  path: string,
   data: Array<Metadata | Separator>,
 };
 
-export default function Sidebar({ name, data }: Props) {
+export default function Sidebar({ path, data }: Props) {
   const links = data.map((item, i) => {
     if (item.type === 'separator') {
       return <hr key={`separator-${i + 1}`} className={separator} />;
@@ -90,9 +90,9 @@ export default function Sidebar({ name, data }: Props) {
 
     return (
       <Link
-        key={item.name}
-        to={item.name}
-        className={`${link} ${name === item.name ? active : ''}`}
+        key={item.path}
+        to={item.path}
+        className={`${link} ${path === item.path ? active : ''}`}
       >
         {item.title}
       </Link>

@@ -10,7 +10,7 @@ type Props = {
 export default class Router extends Component<Props, void> {
   props: Props;
 
-  _handleClick = (event: any) => {
+  _handleClick = (event: MouseEvent) => {
     event.preventDefault();
     const path = `${this.props.to}.html`;
     try {

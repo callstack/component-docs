@@ -17,9 +17,9 @@ export type Options = {
 };
 
 export type PageInfo = {
-  name: string,
   title: string,
   description: string,
+  path: string,
 };
 
 export type Metadata =

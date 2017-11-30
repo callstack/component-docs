@@ -5,12 +5,12 @@ import createHistory from 'history/createBrowserHistory';
 import type { Route } from '../types';
 
 type Props = {
-  name: string,
+  path: string,
   routes: Array<Route>,
 };
 
 type State = {
-  name: string,
+  path: string,
 };
 
 // eslint-disable-next-line import/no-mutable-exports
@@ -26,7 +26,7 @@ export default class Router extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      name: history ? this._parse(history.location.pathname) : props.name,
+      path: history ? this._parse(history.location.pathname) : props.path,
     };
   }
 
@@ -35,16 +35,16 @@ export default class Router extends Component<Props, State> {
   componentDidMount() {
     this._unlisten = history.listen(location =>
       this.setState({
-        name: this._parse(location.pathname),
+        path: this._parse(location.pathname),
       })
     );
   }
 
-  componentDidUpdate(prevProps: any, prevState: any) {
-    if (prevState.name) {
-      const route = this.props.routes.find(r => r.name === this.state.name);
-      if (route && route.title) {
-        document.title = route.title;
+  componentDidUpdate(prevProps: Props, prevState: State) {
+    if (prevState.path !== this.state.path) {
+      const route = this.props.routes.find(r => r.path === this.state.path);
+      if (route) {
+        document.title = route.title || '';
       }
     }
   }
@@ -61,15 +61,15 @@ export default class Router extends Component<Props, State> {
       .pop()
       .split('.')[0] || 'index';
 
-  _unlisten: Function;
+  _unlisten: () => void;
 
   render() {
-    const route = this.props.routes.find(r => r.name === this.state.name);
+    const route = this.props.routes.find(r => r.path === this.state.path);
 
     if (route) {
       return route.render({
         ...route.props,
-        name: this.state.name,
+        path: this.state.path,
       });
     }
 

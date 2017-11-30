@@ -65,7 +65,7 @@ export function build({
   buildEntry({ layout });
   buildPageInfo(data).forEach(info => {
     fs.writeFileSync(
-      path.join(output, `${info.name}.html`),
+      path.join(output, `${info.path}.html`),
       buildHTML({ layout, data, info, sheet: 'app.css' })
     );
   });
@@ -106,7 +106,7 @@ export function serve({
   fs.writeFileSync(path.join(output, 'app.data.js'), stringifyData(data));
 
   let routes = buildPageInfo(data).reduce((acc, info) => {
-    acc[info.name] = buildHTML({ layout, data, info });
+    acc[info.path] = buildHTML({ layout, data, info });
     return acc;
   }, {});
 
@@ -130,7 +130,7 @@ export function serve({
     fs.writeFileSync(path.join(output, 'app.data.js'), stringifyData(data));
 
     routes = buildPageInfo(data).reduce((acc, info) => {
-      acc[info.name] = buildHTML({ layout, data, info });
+      acc[info.path] = buildHTML({ layout, data, info });
       return acc;
     }, {});
   });

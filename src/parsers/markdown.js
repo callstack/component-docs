@@ -3,6 +3,7 @@
 import fs from 'fs';
 import path from 'path';
 import dashify from 'dashify';
+import getNameFromPath from '../utils/getNameFromPath';
 import type { Metadata } from '../types';
 
 export default function(file: string): Metadata {
@@ -48,16 +49,12 @@ export default function(file: string): Metadata {
     })
     .join('\n');
 
-  const name = file
-    .split('/')
-    .pop()
-    .replace(/\.md$/, '')
-    .replace(/^\d+\./, '');
+  const name = getNameFromPath(file);
 
   return {
     title: meta.title || name,
-    name: meta.permalink || dashify(name),
     description: meta.description,
+    path: meta.permalink || dashify(name),
     data: text,
     type: 'markdown',
   };

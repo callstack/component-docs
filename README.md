@@ -45,4 +45,4 @@ You can also use the server while actively working on documentation. Just replac
 
 ## Example
 
-`component-docs` is used for [react-native-paper](https://react-native-paper.github.io/)
+`component-docs` is used for [react-native-paper](https://callstack.github.io/react-native-paper)

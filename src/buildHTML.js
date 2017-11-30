@@ -18,7 +18,7 @@ export default function buildHTML({ info, data, layout, sheet }: Options) {
   const Layout = require(layout); // eslint-disable-line global-require
   const html = ReactDOMServer.renderToString(
     <App
-      name={info.name}
+      path={info.path}
       data={data}
       layout={Layout.__esModule ? Layout.default : Layout}
     />
@@ -28,7 +28,7 @@ export default function buildHTML({ info, data, layout, sheet }: Options) {
 
   body += `
     <script>
-      window.__INITIAL_PATH__ = '${info.name}';
+      window.__INITIAL_PATH__ = '${info.path}';
     </script>
   `;
 

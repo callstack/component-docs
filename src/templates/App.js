@@ -73,12 +73,12 @@ const buildRoutes = (
 };
 
 type Props = {
-  name: string,
+  path: string,
   data: Data,
   layout: React.ComponentType<*>,
 };
 
-export default function App({ name, data, layout }: Props) {
+export default function App({ path, data, layout }: Props) {
   const routes = buildRoutes(data, layout);
-  return <Router name={name} routes={routes} />;
+  return <Router path={path} routes={routes} />;
 }

@@ -29,14 +29,7 @@ const babelrc = {
     ],
     'react',
     'stage-2',
-    [
-      'linaria/babel',
-      {
-        single: true,
-        filename: 'styles.css',
-        outDir: 'dist',
-      },
-    ],
+    'linaria/babel',
   ],
   env: {
     development: {

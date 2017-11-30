@@ -6,9 +6,7 @@
     [
       "linaria/babel",
       {
-        "single": true,
-        "filename": "styles.css",
-        "outDir": "dist"
+        "outDir": "dist/styles/build"
       }
     ]
   ]

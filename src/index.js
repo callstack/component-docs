@@ -1,5 +1,6 @@
 /* @flow */
 
+import 'ignore-styles';
 import express from 'express';
 import webpack from 'webpack';
 import devMiddleware from 'webpack-dev-middleware';
@@ -79,9 +80,11 @@ export function build({
     },
     production: true,
   });
-  webpack(config, (err, stats) => {
+  webpack(config).run((err, stats) => {
     if (err || stats.hasErrors()) {
       console.log(err, stats);
+    } else {
+      console.log(stats);
     }
   });
 }

@@ -12,7 +12,6 @@ import Layout from '${layout}';
 import data from './app.data';
 import '${path.resolve(__dirname, './styles/reset.css')}';
 import '${path.resolve(__dirname, './styles/globals.css')}';
-import '${path.resolve(__dirname, '../dist/styles.css')}';
 
 const root = document.getElementById('root');
 const render = () => {

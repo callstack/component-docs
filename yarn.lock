@@ -3131,6 +3131,10 @@ ieee754@^1.1.4:
   version "1.1.8"
   resolved "https://registry.yarnpkg.com/ieee754/-/ieee754-1.1.8.tgz#be33d40ac10ef1926701f6f08a2d86fbfd1ad3e4"
 
+ignore-styles@^5.0.1:
+  version "5.0.1"
+  resolved "https://registry.yarnpkg.com/ignore-styles/-/ignore-styles-5.0.1.tgz#b49ef2274bdafcd8a4880a966bfe38d1a0bf4671"
+
 ignore@^3.3.3:
   version "3.3.7"
   resolved "https://registry.yarnpkg.com/ignore/-/ignore-3.3.7.tgz#612289bfb3c220e186a58118618d5be8c1bab021"
@@ -3609,9 +3613,9 @@ levn@^0.3.0, levn@~0.3.0:
     prelude-ls "~1.1.2"
     type-check "~0.3.2"
 
-linaria@^0.4.0:
-  version "0.4.0"
-  resolved "https://registry.yarnpkg.com/linaria/-/linaria-0.4.0.tgz#8334c3c3a24bedd6e9934b50a5a0f091e2c08088"
+linaria@^0.4.1:
+  version "0.4.1"
+  resolved "https://registry.yarnpkg.com/linaria/-/linaria-0.4.1.tgz#c4719d5744afae166038f0119d9ed2a71247d875"
   dependencies:
     babel-code-frame "^6.26.0"
     babel-core "^6.26.0"

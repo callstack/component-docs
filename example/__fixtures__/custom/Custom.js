@@ -2,6 +2,12 @@
 /* eslint-disable jsx-a11y/accessible-emoji */
 
 import * as React from 'react';
+import { css } from 'linaria';
+
+const container = css`
+  padding: 24px;
+  font-size: 24px;
+`;
 
 export default class Custom extends React.Component<{}> {
   static meta = {
@@ -11,8 +17,6 @@ export default class Custom extends React.Component<{}> {
   };
 
   render() {
-    return (
-      <div style={{ padding: 24, fontSize: 24 }}>🌹 🌻 🌷 🌿 🌵 🌾 🌼⁣</div>
-    );
+    return <div className={container}>🌹 🌻 🌷 🌿 🌵 🌾 🌼⁣</div>;
   }
 }

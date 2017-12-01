@@ -21,7 +21,7 @@ type Props = {
  * );
  * ```
  */
-export default class Button extends React.Component<Props> {
+export default class Link extends React.Component<Props> {
   render() {
     return null;
   }

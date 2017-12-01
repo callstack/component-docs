@@ -1,7 +1,7 @@
 /* @flow */
 
 import * as React from 'react';
-import { css } from 'linaria';
+import { css, names } from 'linaria';
 import Markdown from './Markdown';
 
 const container = css`
@@ -150,7 +150,7 @@ export default function Documentation({ name, info }: any) {
               </a>
             </span>
             <Markdown
-              className={`${propDetails} ${markdown}`}
+              className={names(propDetails, markdown)}
               source={info.props[prop].description}
             />
           </div>
@@ -159,7 +159,7 @@ export default function Documentation({ name, info }: any) {
       {restProps && restProps.length
         ? restProps.map(prop => (
             <a
-              className={`${propLabel} ${rest}`}
+              className={names(propLabel, rest)}
               key={prop.name}
               href={prop.link}
             >

@@ -6,16 +6,22 @@ import Link from './Link';
 import type { Metadata, Separator } from '../types';
 
 const sidebar = css`
-  padding: 24px;
   background-color: #fafafa;
   box-shadow: 0 0.5px 1.5px rgba(0, 0, 0, 0.32);
+
+  @media (min-width: 640px) {
+    height: 100%;
+    width: 240px;
+    overflow: auto;
+  }
+`;
+
+const navigation = css`
+  padding: 24px;
   display: none;
 
   @media (min-width: 640px) {
     display: block;
-    height: 100%;
-    width: 240px;
-    overflow: auto;
   }
 `;
 
@@ -100,7 +106,7 @@ export default function Sidebar({ path, data }: Props) {
   });
 
   return (
-    <div>
+    <div className={sidebar}>
       <input
         className={menuButton}
         id="slide-sidebar"
@@ -111,7 +117,7 @@ export default function Sidebar({ path, data }: Props) {
         <span>☰</span>
         <span>✕</span>
       </label>
-      <nav className={sidebar}>{links}</nav>
+      <nav className={navigation}>{links}</nav>
     </div>
   );
 }

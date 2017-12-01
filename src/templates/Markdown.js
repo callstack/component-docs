@@ -3,7 +3,7 @@
 import * as React from 'react';
 import Remarkable from 'react-remarkable';
 import { highlight, getLanguage } from 'illuminate-js';
-import { css } from 'linaria';
+import { css, names } from 'linaria';
 
 const markdown = css`
   .token.comment,
@@ -85,7 +85,7 @@ type Props = {
 export default function Markdown(props: Props) {
   const { source, className, ...rest } = props;
   return (
-    <div {...rest} className={`${markdown} ${className || ''}`}>
+    <div {...rest} className={names(markdown, className)}>
       <Remarkable
         source={source}
         options={{

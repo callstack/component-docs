@@ -1,5 +1,6 @@
 component-docs
 ==============
+![styled_with linaria](https://img.shields.io/badge/styled_with-linaria-de2d68.svg)
 
 📝 Simple documentation for your React components.
 

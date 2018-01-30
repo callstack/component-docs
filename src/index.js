@@ -62,7 +62,8 @@ export function build({
 
   fs.writeFileSync(path.join(output, 'app.src.js'), buildEntry({ layout }));
   fs.writeFileSync(path.join(output, 'app.data.js'), stringifyData(data));
-  fs.copySync(assets, path.join(output, 'assets'));
+
+  assets && fs.copySync(assets, path.join(output, 'assets'));
 
   buildEntry({ layout });
   buildPageInfo(data).forEach(info => {
@@ -140,8 +141,12 @@ export function serve({
 
   const app = express();
 
-  app.get('/assets/*', (req, res) => {
-    res.sendFile(path.join(assets, req.path.replace(/^\/assets\//, '')));
+  app.get('/assets/*', (req, res, next) => {
+    if (assets) {
+      res.sendFile(path.join(assets, req.path.replace(/^\/assets\//, '')));
+    } else {
+      next();
+    }
   });
 
   app.get('*', (req, res, next) => {

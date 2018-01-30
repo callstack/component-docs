@@ -1,5 +1,6 @@
 {
   "name": "component-docs",
+  "version": "0.0.0-development",
   "description": "Documentation for React components",
   "scripts": {
     "build": "babel -sd dist/ src/ --copy-files",
@@ -29,6 +30,7 @@
     "dedent": "^0.7.0",
     "express": "^4.16.2",
     "extract-text-webpack-plugin": "^3.0.2",
+    "fs-extra": "^5.0.0",
     "history": "^4.7.2",
     "ignore-styles": "^5.0.1",
     "illuminate-js": "^0.3.0",

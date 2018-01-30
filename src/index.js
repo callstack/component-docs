@@ -5,7 +5,7 @@ import express from 'express';
 import webpack from 'webpack';
 import devMiddleware from 'webpack-dev-middleware';
 import hotMiddleware from 'webpack-hot-middleware';
-import fs from 'fs';
+import fs from 'fs-extra';
 import path from 'path';
 import watch from 'node-watch';
 import buildEntry from './buildEntry';
@@ -48,6 +48,7 @@ const stringifyData = data => `module.exports = [
 ]`;
 
 export function build({
+  assets,
   pages: getPages,
   output,
   layout = require.resolve('./templates/Layout'),
@@ -61,6 +62,7 @@ export function build({
 
   fs.writeFileSync(path.join(output, 'app.src.js'), buildEntry({ layout }));
   fs.writeFileSync(path.join(output, 'app.data.js'), stringifyData(data));
+  fs.copySync(assets, path.join(output, 'assets'));
 
   buildEntry({ layout });
   buildPageInfo(data).forEach(info => {
@@ -90,6 +92,7 @@ export function build({
 }
 
 export function serve({
+  assets,
   pages: getPages,
   output,
   port = 3031,
@@ -136,6 +139,10 @@ export function serve({
   });
 
   const app = express();
+
+  app.get('/assets/*', (req, res) => {
+    res.sendFile(path.join(assets, req.path.replace(/^\/assets\//, '')));
+  });
 
   app.get('*', (req, res, next) => {
     const page = req.path.slice(1).replace(/\.html$/, '');

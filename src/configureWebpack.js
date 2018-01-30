@@ -81,10 +81,6 @@ export default ({ root, entry, output, production }: Options) => ({
         },
       },
       {
-        test: /\.(bmp|gif|jpg|jpeg|png|svg|webp|ttf|otf)$/,
-        use: { loader: 'url-loader', options: { limit: 25000 } },
-      },
-      {
         test: /\.css$/,
         use: production
           ? ExtractTextPlugin.extract({

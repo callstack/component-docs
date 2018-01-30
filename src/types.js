@@ -10,6 +10,7 @@ export type Page =
 export type Separator = { type: 'separator' };
 
 export type Options = {
+  assets: string,
   pages: Array<Page | Separator> | (() => Array<Page | Separator>),
   output: string,
   port?: number,

@@ -6,7 +6,13 @@ import PropTypes from 'prop-types';
 /**
  * Buttons communicate the action that will occur when the user touches them
  *
- * **Usage:**
+ * <div class="screenshots">
+ *    <img src="screenshots/button-raised.png" />
+ *    <img src="screenshots/button-primary.png" />
+ *    <img src="screenshots/button-custom.png" />
+ * </div>
+ *
+ * ### Usage
  * ```js
  * const MyComponent = () => (
  *   <Button raised onPress={() => console.log('Pressed')}>

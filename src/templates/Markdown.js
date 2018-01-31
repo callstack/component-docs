@@ -90,6 +90,7 @@ export default function Markdown(props: Props) {
         source={source}
         options={{
           linkify: true,
+          html: true,
           highlight: (text, lang) => {
             const language = lang === 'js' ? 'jsx' : lang;
             return getLanguage(language) ? highlight(text, language) : null;

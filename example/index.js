@@ -33,11 +33,15 @@ function pages() {
 
 if (task !== 'build') {
   serve({
+    assets: [path.join(fixtures, 'assets', 'screenshots')],
+    styles: [path.join(fixtures, 'assets', 'styles.css')],
     pages,
     output,
   });
 } else {
   build({
+    assets: [path.join(fixtures, 'assets', 'screenshots')],
+    styles: [path.join(fixtures, 'assets', 'styles.css')],
     pages,
     output,
   });

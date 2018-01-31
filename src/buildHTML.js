@@ -10,10 +10,17 @@ type Options = {
   data: Array<Metadata | Separator>,
   info: PageInfo,
   layout: string,
-  sheet?: string,
+  sheets?: string[],
+  scripts?: string[],
 };
 
-export default function buildHTML({ info, data, layout, sheet }: Options) {
+export default function buildHTML({
+  info,
+  data,
+  layout,
+  sheets,
+  scripts,
+}: Options) {
   /* $FlowFixMe */
   const Layout = require(layout); // eslint-disable-line global-require
   const html = ReactDOMServer.renderToString(
@@ -34,13 +41,19 @@ export default function buildHTML({ info, data, layout, sheet }: Options) {
 
   body += '<script src="app.bundle.js"></script>';
 
+  if (scripts) {
+    scripts.forEach(s => {
+      body += `<script src="${s}"></script>`;
+    });
+  }
+
   return ReactDOMServer.renderToString(
     // eslint-disable-next-line react/jsx-pascal-case
     <HTML
       title={info.title}
       description={info.description || ''}
       body={body}
-      sheet={sheet}
+      sheets={sheets}
     />
   );
 }

@@ -49,6 +49,8 @@ const stringifyData = data => `module.exports = [
 
 export function build({
   assets,
+  scripts,
+  styles,
   pages: getPages,
   output,
   layout = require.resolve('./templates/Layout'),
@@ -63,13 +65,38 @@ export function build({
   fs.writeFileSync(path.join(output, 'app.src.js'), buildEntry({ layout }));
   fs.writeFileSync(path.join(output, 'app.data.js'), stringifyData(data));
 
-  assets && fs.copySync(assets, path.join(output, 'assets'));
+  if (assets) {
+    assets.forEach(dir => {
+      fs.copySync(dir, path.join(output, path.basename(dir)));
+    });
+  }
+
+  if (styles) {
+    styles.forEach(name => {
+      fs.copySync(name, path.join(output, 'styles', path.basename(name)));
+    });
+  }
+
+  if (scripts) {
+    scripts.forEach(name => {
+      fs.copySync(name, path.join(output, 'scripts', path.basename(name)));
+    });
+  }
 
   buildEntry({ layout });
   buildPageInfo(data).forEach(info => {
     fs.writeFileSync(
       path.join(output, `${info.path}.html`),
-      buildHTML({ layout, data, info, sheet: 'app.css' })
+      buildHTML({
+        layout,
+        data,
+        info,
+        sheets: [
+          'app.css',
+          ...(styles ? styles.map(s => `styles/${path.basename(s)}`) : []),
+        ],
+        scripts: scripts ? scripts.map(s => `scripts/${path.basename(s)}`) : [],
+      })
     );
   });
 
@@ -94,6 +121,8 @@ export function build({
 
 export function serve({
   assets,
+  scripts,
+  styles,
   pages: getPages,
   output,
   port = 3031,
@@ -101,6 +130,11 @@ export function serve({
 }: Options) {
   let pages = typeof getPages === 'function' ? getPages() : getPages;
   let data = collectData(pages);
+
+  const extras = {
+    sheets: styles ? styles.map(s => `styles/${path.basename(s)}`) : [],
+    scripts: scripts ? scripts.map(s => `scripts/${path.basename(s)}`) : [],
+  };
 
   if (!fs.existsSync(output)) {
     fs.mkdirSync(output);
@@ -110,7 +144,12 @@ export function serve({
   fs.writeFileSync(path.join(output, 'app.data.js'), stringifyData(data));
 
   let routes = buildPageInfo(data).reduce((acc, info) => {
-    acc[info.path] = buildHTML({ layout, data, info });
+    acc[info.path] = buildHTML({
+      layout,
+      data,
+      info,
+      ...extras,
+    });
     return acc;
   }, {});
 
@@ -134,20 +173,41 @@ export function serve({
     fs.writeFileSync(path.join(output, 'app.data.js'), stringifyData(data));
 
     routes = buildPageInfo(data).reduce((acc, info) => {
-      acc[info.path] = buildHTML({ layout, data, info });
+      acc[info.path] = buildHTML({
+        layout,
+        data,
+        info,
+        ...extras,
+      });
       return acc;
     }, {});
   });
 
   const app = express();
 
-  app.get('/assets/*', (req, res, next) => {
-    if (assets) {
-      res.sendFile(path.join(assets, req.path.replace(/^\/assets\//, '')));
-    } else {
-      next();
-    }
-  });
+  if (assets) {
+    assets.forEach(dir => {
+      app.get(`/${path.basename(dir)}/*`, (req, res) => {
+        res.sendFile(path.join(path.dirname(dir), req.path));
+      });
+    });
+  }
+
+  if (styles) {
+    styles.forEach(name => {
+      app.get(`/styles/${path.basename(name)}`, (req, res) => {
+        res.sendFile(name);
+      });
+    });
+  }
+
+  if (scripts) {
+    scripts.forEach(name => {
+      app.get(`/scripts/${path.basename(name)}`, (req, res) => {
+        res.sendFile(name);
+      });
+    });
+  }
 
   app.get('*', (req, res, next) => {
     const page = req.path.slice(1).replace(/\.html$/, '');

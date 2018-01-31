@@ -7,10 +7,10 @@ type Props = {
   title: string,
   description: string,
   body: string,
-  sheet: ?string,
+  sheets: ?(string[]),
 };
 
-export default function HTML({ title, description, body, sheet }: Props) {
+export default function HTML({ title, description, body, sheets }: Props) {
   return (
     <html lang="en">
       <head>
@@ -34,7 +34,11 @@ export default function HTML({ title, description, body, sheet }: Props) {
 
         <title>{title}</title>
 
-        {sheet ? <link type="text/css" rel="stylesheet" href={sheet} /> : null}
+        {sheets
+          ? sheets.map(sheet => (
+              <link key={sheet} type="text/css" rel="stylesheet" href={sheet} />
+            ))
+          : null}
       </head>
       <body dangerouslySetInnerHTML={{ __html: body }} />
     </html>

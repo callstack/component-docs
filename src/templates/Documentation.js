@@ -14,7 +14,7 @@ const container = css`
 
 const title = css`
   font-size: 36px;
-  margin: 0 0 8px -24px;
+  margin: 0 0 8px 0;
 
   & > code {
     background-color: transparent;
@@ -123,9 +123,7 @@ export default function Documentation({ name, info }: any) {
 
   return (
     <div className={container}>
-      <h1 className={title}>
-        <code>{`<${name} />`}</code>
-      </h1>
+      <h1 className={title}>{name}</h1>
       <Markdown
         className={markdown}
         source={description}

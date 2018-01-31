@@ -11,7 +11,7 @@ const sidebar = css`
 
   @media (min-width: 640px) {
     height: 100%;
-    width: 240px;
+    min-width: 240px;
     overflow: auto;
   }
 `;

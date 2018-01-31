@@ -31,11 +31,6 @@ const babelrc = {
     'stage-2',
     'linaria/babel',
   ],
-  env: {
-    development: {
-      presets: ['react-hmre'],
-    },
-  },
 };
 
 export default ({ root, entry, output, production }: Options) => ({
@@ -77,7 +72,12 @@ export default ({ root, entry, output, production }: Options) => ({
         exclude: /node_modules/,
         use: {
           loader: 'babel-loader',
-          options: babelrc,
+          options: production
+            ? babelrc
+            : {
+                ...babelrc,
+                presets: [...babelrc.presets, 'react-hmre'],
+              },
         },
       },
       {

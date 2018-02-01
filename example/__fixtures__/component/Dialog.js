@@ -6,6 +6,15 @@ import * as React from 'react';
 type Props = {
   source: { uri: string },
   onPress: () => mixed,
+  children: React.Node,
+  /**
+   * @internal
+   */
+  siblings: string[],
+  /**
+   * @optional
+   */
+  theme: any,
   style?: any,
 };
 

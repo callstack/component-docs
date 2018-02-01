@@ -103,20 +103,30 @@ export default function Documentation({ name, info }: any) {
       <h2 className={propsHeader}>Props</h2>
       {Object.keys(info.props).map(prop => {
         const { flowType, type, required, defaultValue } = info.props[prop];
+        const details = info.props[prop].description;
+
+        if (details.startsWith('@internal')) {
+          return null;
+        }
+
+        const isRequired = required && !details.startsWith('@optional');
+        const typeName =
+          (!flowType || flowType.name === 'any') && type
+            ? type.raw || type.name
+            : flowType.raw || flowType.name;
+
         return (
           <div className={propInfo} key={prop}>
             <a className={propLabel} name={prop} href={`#${prop}`}>
               <code>{prop}</code>
-              {required ? ' (required)' : ''}
+              {isRequired ? ' (required)' : ''}
             </a>
-            <div className={propItem}>
-              <span>Type: </span>
-              <code>
-                {(!flowType || flowType.name === 'any') && type
-                  ? type.raw || type.name
-                  : flowType.raw || flowType.name}
-              </code>
-            </div>
+            {typeName && typeName !== 'unknown' ? (
+              <div className={propItem}>
+                <span>Type: </span>
+                <code>{typeName}</code>
+              </div>
+            ) : null}
             {defaultValue ? (
               <div className={propItem}>
                 <span>Default value: </span>
@@ -125,7 +135,7 @@ export default function Documentation({ name, info }: any) {
             ) : null}
             <Markdown
               className={names(propItem, markdown)}
-              source={info.props[prop].description}
+              source={details.replace(/^@optional/, '').trim()}
             />
           </div>
         );

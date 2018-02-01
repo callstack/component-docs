@@ -37,6 +37,7 @@ const menuIcon = css`
   right: 0;
   padding: 16px;
   z-index: 10;
+  -webkit-tap-highlight-color: transparent;
 
   @media (min-width: 640px) {
     display: none;
@@ -124,7 +125,7 @@ export default class Sidebar extends React.Component<Props, State> {
           key={item.path}
           to={item.path}
           className={`${link} ${path === item.path ? active : ''}`}
-          onClick={() => this.setState({ open: false })}
+          onClick={() => this.setState({ open: false, query: '' })}
         >
           {item.title}
         </Link>

@@ -18,6 +18,9 @@ const sidebar = css`
 
 const navigation = css`
   padding: 24px;
+`;
+
+const menu = css`
   display: none;
 
   @media (min-width: 640px) {
@@ -26,13 +29,13 @@ const navigation = css`
 `;
 
 const menuIcon = css`
-  font-size: 24px;
+  font-size: 20px;
   line-height: 1;
   cursor: pointer;
   position: absolute;
   top: 0;
   right: 0;
-  padding: 24px;
+  padding: 16px;
   z-index: 10;
 
   @media (min-width: 640px) {
@@ -43,7 +46,7 @@ const menuIcon = css`
 const menuButton = css`
   display: none;
 
-  &:checked ~ nav {
+  &:checked ~ .${menu} {
     display: block;
   }
 
@@ -51,13 +54,21 @@ const menuButton = css`
     color: #111;
     user-select: none;
   }
+`;
 
-  &:checked ~ label > span:first-of-type {
-    display: none;
-  }
+const searchbar = css`
+  appearance: none;
+  width: 100%;
+  padding: 16px 48px 16px 24px;
+  font-size: 1em;
+  border-width: 0 0 1px 0;
+  border-style: solid;
+  border-color: rgba(0, 0, 0, 0.08);
+  background-color: white;
+  outline: 0;
 
-  &:not(:checked) ~ label > span:last-of-type {
-    display: none;
+  @media (min-width: 640px) {
+    padding: 12px 24px;
   }
 `;
 
@@ -80,7 +91,9 @@ const link = css`
 `;
 
 const active = css`
-  color: #111;
+  color: #333;
+  -webkit-text-stroke-color: currentColor;
+  -webkit-text-stroke-width: 1px;
 `;
 
 type Props = {
@@ -88,36 +101,74 @@ type Props = {
   data: Array<Metadata | Separator>,
 };
 
-export default function Sidebar({ path, data }: Props) {
-  const links = data.map((item, i) => {
-    if (item.type === 'separator') {
-      return <hr key={`separator-${i + 1}`} className={separator} />;
-    }
+type State = {
+  query: string,
+  open: boolean,
+};
+
+export default class Sidebar extends React.Component<Props, State> {
+  state = {
+    query: '',
+    open: false,
+  };
+
+  render() {
+    const { path, data } = this.props;
+    const mapper = (item, i) => {
+      if (item.type === 'separator') {
+        return <hr key={`separator-${i + 1}`} className={separator} />;
+      }
+
+      return (
+        <Link
+          key={item.path}
+          to={item.path}
+          className={`${link} ${path === item.path ? active : ''}`}
+          onClick={() => this.setState({ open: false })}
+        >
+          {item.title}
+        </Link>
+      );
+    };
+
+    const links = this.state.query
+      ? data
+          .filter(item => {
+            if (item.type === 'separator') {
+              return false;
+            }
+
+            return item.title
+              .toLowerCase()
+              .includes(this.state.query.toLowerCase());
+          })
+          .map(mapper)
+      : data.map(mapper);
 
     return (
-      <Link
-        key={item.path}
-        to={item.path}
-        className={`${link} ${path === item.path ? active : ''}`}
-      >
-        {item.title}
-      </Link>
+      <div className={sidebar}>
+        <input
+          className={menuButton}
+          id="slide-sidebar"
+          type="checkbox"
+          role="button"
+          checked={this.state.open}
+          onChange={e => this.setState({ open: e.target.checked })}
+        />
+        <label className={menuIcon} htmlFor="slide-sidebar">
+          ☰
+        </label>
+        <div className={menu}>
+          <input
+            type="search"
+            value={this.state.query}
+            onChange={e => this.setState({ query: e.target.value })}
+            placeholder="Filter…"
+            className={searchbar}
+          />
+          <nav className={navigation}>{links}</nav>
+        </div>
+      </div>
     );
-  });
-
-  return (
-    <div className={sidebar}>
-      <input
-        className={menuButton}
-        id="slide-sidebar"
-        type="checkbox"
-        role="button"
-      />
-      <label className={menuIcon} htmlFor="slide-sidebar">
-        <span>☰</span>
-        <span>✕</span>
-      </label>
-      <nav className={navigation}>{links}</nav>
-    </div>
-  );
+  }
 }

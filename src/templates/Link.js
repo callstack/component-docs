@@ -5,6 +5,7 @@ import { history } from './Router';
 
 type Props = {
   to: string,
+  onClick?: Function,
 };
 
 export default class Router extends Component<Props, void> {
@@ -33,6 +34,8 @@ export default class Router extends Component<Props, void> {
         window.location.pathname = `${parts.join('/')}/${path}`;
       }
     }
+
+    this.props.onClick && this.props.onClick(event);
   };
 
   render() {

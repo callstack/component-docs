@@ -24,25 +24,29 @@ import PropTypes from 'prop-types';
 export default class Button extends Component {
   static propTypes = {
     /**
-     * Disable the button
+     * Whether to disable the button.
      */
     disabled: PropTypes.bool,
     /**
-     * Use to primary color from theme
+     * Whether to use to primary color from theme.
      */
     primary: PropTypes.bool,
     /**
-     * Button text
+     * Content of the button.
      */
     children: PropTypes.oneOfType([
       PropTypes.string,
       PropTypes.arrayOf(PropTypes.string),
     ]).isRequired,
     /**
-     * Function to execute on press
+     * Function to execute on press.
      */
     onPress: PropTypes.func,
     style: PropTypes.any,
+  };
+
+  static defaultProps = {
+    disabled: false,
   };
 
   render() {

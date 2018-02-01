@@ -43,41 +43,11 @@ const propInfo = css`
   margin: 16px 0;
 `;
 
-const propRequired = css`
-  position: absolute;
-  top: -2px;
-  left: -18px;
-  font-size: 22px;
-  line-height: 1;
-  color: #c1c2ca;
-  background-color: transparent;
-  border: 0;
-
-  &:hover:after {
-    content: attr(data-hint);
-    display: inline-block;
-    position: absolute;
-    left: 0;
-    border-radius: 2px;
-    bottom: 32px;
-    padding: 4px 8px;
-    font-size: 12px;
-    color: #fff;
-    background: #262939;
-    z-index: 10;
-  }
-`;
-
-const propLabelContainer = css`
-  position: relative;
-`;
-
 const propLabel = css`
+  display: block;
   color: inherit;
-  background-color: #fafafa;
-  border-radius: 2px;
-  padding: 4px 8px;
-  margin: 4px 16px 4px 0;
+  font-size: 20px;
+  margin: 24px 0 8px 0;
   text-decoration: none;
   white-space: nowrap;
 
@@ -86,16 +56,17 @@ const propLabel = css`
   }
 
   & > code {
+    font-size: inherit;
     background-color: transparent;
     border: 0;
   }
 `;
 
-const propDetails = css`
+const propItem = css`
   margin: 8px 0;
 
-  @media (min-width: 960px) {
-    display: inline-block;
+  & > code {
+    font-size: inherit;
   }
 `;
 
@@ -131,24 +102,29 @@ export default function Documentation({ name, info }: any) {
       />
       <h2 className={propsHeader}>Props</h2>
       {Object.keys(info.props).map(prop => {
-        const { flowType, type, required } = info.props[prop];
+        const { flowType, type, required, defaultValue } = info.props[prop];
         return (
           <div className={propInfo} key={prop}>
-            <span className={propLabelContainer}>
-              <code className={propRequired} data-hint="required">
-                {required ? '*' : ''}
+            <a className={propLabel} name={prop} href={`#${prop}`}>
+              <code>{prop}</code>
+              {required ? ' (required)' : ''}
+            </a>
+            <div className={propItem}>
+              <span>Type: </span>
+              <code>
+                {(!flowType || flowType.name === 'any') && type
+                  ? type.raw || type.name
+                  : flowType.raw || flowType.name}
               </code>
-              <a className={propLabel} name={prop} href={`#${prop}`}>
-                <code>
-                  {prop}:{' '}
-                  {(!flowType || flowType.name === 'any') && type
-                    ? type.raw || type.name
-                    : flowType.raw || flowType.name}
-                </code>
-              </a>
-            </span>
+            </div>
+            {defaultValue ? (
+              <div className={propItem}>
+                <span>Default value: </span>
+                <code>{defaultValue.value}</code>
+              </div>
+            ) : null}
             <Markdown
-              className={names(propDetails, markdown)}
+              className={names(propItem, markdown)}
               source={info.props[prop].description}
             />
           </div>

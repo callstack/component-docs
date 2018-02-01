@@ -17,7 +17,7 @@
   "main": "dist/index.js",
   "files": [
     "dist/",
-    "components"
+    "components.js"
   ],
   "dependencies": {
     "babel-core": "^6.26.0",

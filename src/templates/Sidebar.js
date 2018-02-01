@@ -62,11 +62,16 @@ const searchbar = css`
   width: 100%;
   padding: 16px 48px 16px 24px;
   font-size: 1em;
+  background-color: white;
   border-width: 0 0 1px 0;
   border-style: solid;
   border-color: rgba(0, 0, 0, 0.08);
-  background-color: white;
+  transition: 0.3s;
   outline: 0;
+
+  &:focus {
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  }
 
   @media (min-width: 640px) {
     padding: 12px 24px;

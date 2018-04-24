@@ -8,6 +8,8 @@ import hotMiddleware from 'webpack-hot-middleware';
 import fs from 'fs-extra';
 import path from 'path';
 import watch from 'node-watch';
+import chalk from 'chalk';
+import opn from 'opn';
 import buildEntry from './buildEntry';
 import buildHTML from './buildHTML';
 import markdown from './parsers/markdown';
@@ -132,6 +134,7 @@ export function serve({
   output,
   port = 3031,
   layout = require.resolve('./templates/Layout'),
+  quiet = false,
 }: Options) {
   let pages = typeof getPages === 'function' ? getPages() : getPages;
   let data = collectData(pages);
@@ -250,5 +253,13 @@ export function serve({
   app.use(hotMiddleware(compiler));
   app.listen(port);
 
-  console.log(`Open http://localhost:${port} in your browser.\n`);
+  const url = `http://localhost:${port}`;
+
+  if (quiet) {
+    console.log(`Open ${chalk.blue(url)} in your browser.\n`);
+  } else {
+    console.log(`Opening ${chalk.blue(url)} in your browser…\n`);
+
+    opn(url);
+  }
 }

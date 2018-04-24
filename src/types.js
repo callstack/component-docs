@@ -17,6 +17,7 @@ export type Options = {
   output: string,
   port?: number,
   layout?: string,
+  open?: boolean,
 };
 
 export type PageInfo = {

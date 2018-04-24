@@ -134,7 +134,7 @@ export function serve({
   output,
   port = 3031,
   layout = require.resolve('./templates/Layout'),
-  quiet = false,
+  open = true,
 }: Options) {
   let pages = typeof getPages === 'function' ? getPages() : getPages;
   let data = collectData(pages);
@@ -255,11 +255,11 @@ export function serve({
 
   const url = `http://localhost:${port}`;
 
-  if (quiet) {
-    console.log(`Open ${chalk.blue(url)} in your browser.\n`);
-  } else {
+  if (open) {
     console.log(`Opening ${chalk.blue(url)} in your browser…\n`);
 
     opn(url);
+  } else {
+    console.log(`Open ${chalk.blue(url)} in your browser.\n`);
   }
 }

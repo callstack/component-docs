@@ -25,9 +25,40 @@ export type PageInfo = {
   path: string,
 };
 
+export type TypeAnnotation = {
+  name: string,
+  raw: string,
+};
+
+export type Docs = {
+  description: string,
+  props: {
+    [prop: string]: {
+      description: string,
+      required?: boolean,
+      defaultValue?: {
+        value: string,
+      },
+      flowType?: TypeAnnotation,
+      type?: TypeAnnotation,
+    },
+  },
+  methods: Array<{
+    name: string,
+    description: string,
+    params: Array<{
+      name: string,
+      type?: TypeAnnotation,
+    }>,
+    returns: ?{
+      type?: TypeAnnotation,
+    },
+  }>,
+};
+
 export type Metadata =
   | (PageInfo & { type: 'markdown', data: string })
-  | (PageInfo & { type: 'component', data: {} })
+  | (PageInfo & { type: 'component', data: Docs })
   | (PageInfo & {
       type: 'custom',
       data: React.ComponentType<{}>,

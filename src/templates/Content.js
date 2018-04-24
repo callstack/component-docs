@@ -27,7 +27,7 @@ type Props = {
 export default function Content({ children }: Props) {
   return (
     <div className={container}>
-      <div className={content}>{children}</div>
+      <main className={content}>{children}</main>
     </div>
   );
 }

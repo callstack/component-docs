@@ -1,7 +1,7 @@
-/* @flow */
+/* @flow weak */
 
 import webpack from 'webpack';
-import ExtractTextPlugin from 'extract-text-webpack-plugin';
+import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 
 type Options = {
   root: string,
@@ -35,12 +35,18 @@ const babelrc = {
 
 export default ({ root, entry, output, production }: Options) => ({
   context: root,
+  mode: production ? 'production' : 'development',
   devtool: 'source-map',
   entry: production ? entry : ['webpack-hot-middleware/client', entry],
   output: {
     path: output.path,
     filename: output.bundle,
     publicPath: '/',
+  },
+  optimization: {
+    minimize: production,
+    namedModules: true,
+    concatenateModules: true,
   },
   plugins: [
     new webpack.DefinePlugin({
@@ -52,16 +58,12 @@ export default ({ root, entry, output, production }: Options) => ({
     production
       ? [
           new webpack.LoaderOptionsPlugin({ minimize: true, debug: false }),
-          new webpack.optimize.UglifyJsPlugin({
-            compress: { warnings: false },
-            sourceMap: true,
+          new MiniCssExtractPlugin({
+            filename: output.style,
           }),
-          new webpack.optimize.ModuleConcatenationPlugin(),
-          new ExtractTextPlugin(output.style),
         ]
       : [
           new webpack.HotModuleReplacementPlugin(),
-          new webpack.NamedModulesPlugin(),
           new webpack.NoEmitOnErrorsPlugin(),
         ]
   ),
@@ -82,12 +84,10 @@ export default ({ root, entry, output, production }: Options) => ({
       },
       {
         test: /\.css$/,
-        use: production
-          ? ExtractTextPlugin.extract({
-              fallback: 'style-loader',
-              use: 'css-loader',
-            })
-          : [{ loader: 'style-loader' }, { loader: 'css-loader' }],
+        use: [
+          { loader: production ? MiniCssExtractPlugin.loader : 'style-loader' },
+          { loader: 'css-loader' },
+        ],
       },
     ],
   },

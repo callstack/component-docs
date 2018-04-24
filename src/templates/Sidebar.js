@@ -66,7 +66,7 @@ const searchbar = css`
   border-width: 0 0 1px 0;
   border-style: solid;
   border-color: rgba(0, 0, 0, 0.08);
-  transition: 0.3s;
+  transition: box-shadow 0.3s;
   outline: 0;
 
   &:focus {
@@ -152,7 +152,7 @@ export default class Sidebar extends React.Component<Props, State> {
       : data.map(mapper);
 
     return (
-      <div className={sidebar}>
+      <aside className={sidebar}>
         <input
           className={menuButton}
           id="slide-sidebar"
@@ -174,7 +174,7 @@ export default class Sidebar extends React.Component<Props, State> {
           />
           <nav className={navigation}>{links}</nav>
         </div>
-      </div>
+      </aside>
     );
   }
 }

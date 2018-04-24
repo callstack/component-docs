@@ -53,7 +53,7 @@ export default function(file: string): Metadata {
 
   return {
     title: meta.title || name,
-    description: meta.description,
+    description: meta.description || '',
     path: meta.permalink || dashify(name),
     data: text,
     type: 'markdown',

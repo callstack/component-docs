@@ -51,7 +51,7 @@ export default function buildHTML({
     // eslint-disable-next-line react/jsx-pascal-case
     <HTML
       title={info.title}
-      description={info.description || ''}
+      description={(info.description || '').split('\n')[0]}
       body={body}
       sheets={sheets}
     />

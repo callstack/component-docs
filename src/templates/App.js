@@ -33,11 +33,14 @@ const buildRoutes = (
         }
         break;
       case 'component':
-        render = (props: { path: string }) => (
-          <Layout {...props} data={data} Sidebar={Sidebar} Content={Content}>
-            <Documentation name={item.title} info={item.data} />
-          </Layout>
-        );
+        {
+          const info = item.data;
+          render = (props: { path: string }) => (
+            <Layout {...props} data={data} Sidebar={Sidebar} Content={Content}>
+              <Documentation name={item.title} info={info} />
+            </Layout>
+          );
+        }
         break;
       case 'custom':
         {
@@ -56,9 +59,9 @@ const buildRoutes = (
         throw new Error(`Unknown type ${item.type}`);
     }
 
-    /* $FlowFixMe */
     return {
       ...item,
+      /* $FlowFixMe */
       render,
     };
   });

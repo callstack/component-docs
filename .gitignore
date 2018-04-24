@@ -18,3 +18,8 @@ dist/
 # Linaria
 #
 .linaria-cache/
+
+# Yarn
+#
+yarn-error.log
+yarn-debug.log

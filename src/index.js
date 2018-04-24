@@ -111,10 +111,15 @@ export function build({
     production: true,
   });
   webpack(config).run((err, stats) => {
-    if (err || stats.hasErrors()) {
-      console.log(err, stats);
+    if (err) {
+      console.log(err);
     } else {
-      console.log(stats);
+      console.log(
+        stats.toString({
+          chunks: false,
+          colors: true,
+        })
+      );
     }
   });
 }

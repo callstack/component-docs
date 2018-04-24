@@ -3,39 +3,11 @@
 import * as React from 'react';
 import { css, names } from 'linaria';
 import Markdown from './Markdown';
+import type { TypeAnnotation, Docs } from '../types';
 
-type TypeAnnotation = {
+type Props = {
   name: string,
-  raw: string,
-};
-
-type Docs = {
-  name: string,
-  info: {
-    description: string,
-    props: {
-      [prop: string]: {
-        description: string,
-        required?: boolean,
-        defaultValue?: {
-          value: string,
-        },
-        flowType?: TypeAnnotation,
-        type?: TypeAnnotation,
-      },
-    },
-    methods: Array<{
-      name: string,
-      description: string,
-      params: Array<{
-        name: string,
-        type?: TypeAnnotation,
-      }>,
-      returns: ?{
-        type?: TypeAnnotation,
-      },
-    }>,
-  },
+  info: Docs,
 };
 
 const container = css`
@@ -49,11 +21,6 @@ const container = css`
 const title = css`
   font-size: 36px;
   margin: 0 0 8px 0;
-
-  & > code {
-    background-color: transparent;
-    border: 0;
-  }
 `;
 
 const markdown = css`
@@ -101,6 +68,7 @@ const propItem = css`
 
   & > code {
     font-size: inherit;
+    white-space: normal;
   }
 `;
 
@@ -111,7 +79,7 @@ const rest = css`
 
 const getTypeName = (flowType: TypeAnnotation) => flowType.raw || flowType.name;
 
-export default function Documentation({ name, info }: Docs) {
+export default function Documentation({ name, info }: Props) {
   const restProps = [];
   const description = info.description
     .split('\n')
@@ -156,7 +124,9 @@ export default function Documentation({ name, info }: Docs) {
           // eslint-disable-next-line no-nested-ternary
           flowType && flowType.name !== 'any'
             ? getTypeName(flowType)
-            : type ? getTypeName(type) : null;
+            : type
+              ? getTypeName(type)
+              : null;
 
         return (
           <div className={propInfo} key={prop}>

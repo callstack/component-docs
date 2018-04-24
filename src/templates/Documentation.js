@@ -97,6 +97,8 @@ export default function Documentation({ name, info }: Props) {
     })
     .join('\n');
 
+  const keys = Object.keys(info.props);
+
   return (
     <div className={container}>
       <h1 className={title}>{name}</h1>
@@ -105,56 +107,57 @@ export default function Documentation({ name, info }: Props) {
         source={description}
         options={{ linkify: true }}
       />
-      <h2 className={propsHeader}>Props</h2>
-      {Object.keys(info.props).map(prop => {
-        const {
-          flowType,
-          type,
-          required,
-          defaultValue,
-          description: details,
-        } = info.props[prop];
+      {keys.length || restProps.length ? (
+        <React.Fragment>
+          <h2 className={propsHeader}>Props</h2>
+          {keys.map(prop => {
+            const {
+              flowType,
+              type,
+              required,
+              defaultValue,
+              description: details,
+            } = info.props[prop];
 
-        if (details.startsWith('@internal')) {
-          return null;
-        }
+            if (details.startsWith('@internal')) {
+              return null;
+            }
 
-        const isRequired = required && !details.startsWith('@optional');
-        const typeName =
-          // eslint-disable-next-line no-nested-ternary
-          flowType && flowType.name !== 'any'
-            ? getTypeName(flowType)
-            : type
-              ? getTypeName(type)
-              : null;
+            const isRequired = required && !details.startsWith('@optional');
+            const typeName =
+              // eslint-disable-next-line no-nested-ternary
+              flowType && flowType.name !== 'any'
+                ? getTypeName(flowType)
+                : type
+                  ? getTypeName(type)
+                  : null;
 
-        return (
-          <div className={propInfo} key={prop}>
-            <a className={propLabel} name={prop} href={`#${prop}`}>
-              <code>{prop}</code>
-              {isRequired ? ' (required)' : ''}
-            </a>
-            {typeName && typeName !== 'unknown' ? (
-              <div className={propItem}>
-                <span>Type: </span>
-                <code>{typeName}</code>
+            return (
+              <div className={propInfo} key={prop}>
+                <a className={propLabel} name={prop} href={`#${prop}`}>
+                  <code>{prop}</code>
+                  {isRequired ? ' (required)' : ''}
+                </a>
+                {typeName && typeName !== 'unknown' ? (
+                  <div className={propItem}>
+                    <span>Type: </span>
+                    <code>{typeName}</code>
+                  </div>
+                ) : null}
+                {defaultValue ? (
+                  <div className={propItem}>
+                    <span>Default value: </span>
+                    <code>{defaultValue.value}</code>
+                  </div>
+                ) : null}
+                <Markdown
+                  className={names(propItem, markdown)}
+                  source={details.replace(/^@optional/, '').trim()}
+                />
               </div>
-            ) : null}
-            {defaultValue ? (
-              <div className={propItem}>
-                <span>Default value: </span>
-                <code>{defaultValue.value}</code>
-              </div>
-            ) : null}
-            <Markdown
-              className={names(propItem, markdown)}
-              source={details.replace(/^@optional/, '').trim()}
-            />
-          </div>
-        );
-      })}
-      {restProps && restProps.length
-        ? restProps.map(prop => (
+            );
+          })}
+          {restProps.map(prop => (
             <a
               className={names(propLabel, rest)}
               key={prop.name}
@@ -162,55 +165,65 @@ export default function Documentation({ name, info }: Props) {
             >
               <code>...{prop.name}</code>
             </a>
-          ))
-        : null}
-      <h2 className={propsHeader}>Methods</h2>
-      {info.methods.map(method => {
-        if (method.name.startsWith('_')) {
-          return null;
-        }
+          ))}
+        </React.Fragment>
+      ) : null}
+      {info.methods.length ? (
+        <React.Fragment>
+          <h2 className={propsHeader}>Methods</h2>
+          {info.methods.map(method => {
+            if (method.name.startsWith('_')) {
+              return null;
+            }
 
-        if (method.description && method.description.startsWith('@internal')) {
-          return null;
-        }
+            if (
+              method.description &&
+              method.description.startsWith('@internal')
+            ) {
+              return null;
+            }
 
-        return (
-          <div className={propInfo} key={method.name}>
-            <a
-              className={propLabel}
-              name={method.name}
-              href={`#${method.name}`}
-            >
-              <code>{method.name}</code>
-            </a>
-            {method.params.length ? (
-              <div className={propItem}>
-                <span>Params: </span>
-                <code>
-                  {method.params
-                    .map(
-                      p =>
-                        `${p.name}${p.type ? `: ${getTypeName(p.type)}` : ''}`
-                    )
-                    .join(', ')}
-                </code>
+            return (
+              <div className={propInfo} key={method.name}>
+                <a
+                  className={propLabel}
+                  name={method.name}
+                  href={`#${method.name}`}
+                >
+                  <code>{method.name}</code>
+                </a>
+                {method.params.length ? (
+                  <div className={propItem}>
+                    <span>Params: </span>
+                    <code>
+                      {method.params
+                        .map(
+                          p =>
+                            `${p.name}${
+                              p.type ? `: ${getTypeName(p.type)}` : ''
+                            }`
+                        )
+                        .join(', ')}
+                    </code>
+                  </div>
+                ) : null}
+                {method.returns && method.returns.type ? (
+                  <div className={propItem}>
+                    <span>Returns: </span>
+                    <code>{getTypeName(method.returns.type)}</code>
+                  </div>
+                ) : null}
+                {method.description ? (
+                  <Markdown
+                    className={names(propItem, markdown)}
+                    source={method.description.trim()}
+                  />
+                ) : null}
               </div>
-            ) : null}
-            {method.returns && method.returns.type ? (
-              <div className={propItem}>
-                <span>Returns: </span>
-                <code>{getTypeName(method.returns.type)}</code>
-              </div>
-            ) : null}
-            {method.description ? (
-              <Markdown
-                className={names(propItem, markdown)}
-                source={method.description.trim()}
-              />
-            ) : null}
-          </div>
-        );
-      })}
+            );
+          })}
+        </React.Fragment>
+      ) : null}
     </div>
   );
 }

@@ -20,6 +20,7 @@ import PropTypes from 'prop-types';
  *   </Button>
  * );
  * ```
+ * @extends TouchableWithoutFeedback props https://facebook.github.io/react-native/docs/touchablewithoutfeedback.html#props
  */
 export default class Button extends Component {
   static propTypes = {

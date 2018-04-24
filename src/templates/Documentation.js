@@ -4,6 +4,40 @@ import * as React from 'react';
 import { css, names } from 'linaria';
 import Markdown from './Markdown';
 
+type TypeAnnotation = {
+  name: string,
+  raw: string,
+};
+
+type Docs = {
+  name: string,
+  info: {
+    description: string,
+    props: {
+      [prop: string]: {
+        description: string,
+        required?: boolean,
+        defaultValue?: {
+          value: string,
+        },
+        flowType?: TypeAnnotation,
+        type?: TypeAnnotation,
+      },
+    },
+    methods: Array<{
+      name: string,
+      description: string,
+      params: Array<{
+        name: string,
+        type?: TypeAnnotation,
+      }>,
+      returns: ?{
+        type?: TypeAnnotation,
+      },
+    }>,
+  },
+};
+
 const container = css`
   padding: 0 12px;
 
@@ -72,9 +106,12 @@ const propItem = css`
 
 const rest = css`
   color: #1976d2;
+  font-size: 16px;
 `;
 
-export default function Documentation({ name, info }: any) {
+const getTypeName = (flowType: TypeAnnotation) => flowType.raw || flowType.name;
+
+export default function Documentation({ name, info }: Docs) {
   const restProps = [];
   const description = info.description
     .split('\n')
@@ -102,8 +139,13 @@ export default function Documentation({ name, info }: any) {
       />
       <h2 className={propsHeader}>Props</h2>
       {Object.keys(info.props).map(prop => {
-        const { flowType, type, required, defaultValue } = info.props[prop];
-        const details = info.props[prop].description;
+        const {
+          flowType,
+          type,
+          required,
+          defaultValue,
+          description: details,
+        } = info.props[prop];
 
         if (details.startsWith('@internal')) {
           return null;
@@ -111,9 +153,10 @@ export default function Documentation({ name, info }: any) {
 
         const isRequired = required && !details.startsWith('@optional');
         const typeName =
-          (!flowType || flowType.name === 'any') && type
-            ? type.raw || type.name
-            : flowType.raw || flowType.name;
+          // eslint-disable-next-line no-nested-ternary
+          flowType && flowType.name !== 'any'
+            ? getTypeName(flowType)
+            : type ? getTypeName(type) : null;
 
         return (
           <div className={propInfo} key={prop}>
@@ -151,6 +194,53 @@ export default function Documentation({ name, info }: any) {
             </a>
           ))
         : null}
+      <h2 className={propsHeader}>Methods</h2>
+      {info.methods.map(method => {
+        if (method.name.startsWith('_')) {
+          return null;
+        }
+
+        if (method.description && method.description.startsWith('@internal')) {
+          return null;
+        }
+
+        return (
+          <div className={propInfo} key={method.name}>
+            <a
+              className={propLabel}
+              name={method.name}
+              href={`#${method.name}`}
+            >
+              <code>{method.name}</code>
+            </a>
+            {method.params.length ? (
+              <div className={propItem}>
+                <span>Params: </span>
+                <code>
+                  {method.params
+                    .map(
+                      p =>
+                        `${p.name}${p.type ? `: ${getTypeName(p.type)}` : ''}`
+                    )
+                    .join(', ')}
+                </code>
+              </div>
+            ) : null}
+            {method.returns && method.returns.type ? (
+              <div className={propItem}>
+                <span>Returns: </span>
+                <code>{getTypeName(method.returns.type)}</code>
+              </div>
+            ) : null}
+            {method.description ? (
+              <Markdown
+                className={names(propItem, markdown)}
+                source={method.description.trim()}
+              />
+            ) : null}
+          </div>
+        );
+      })}
     </div>
   );
 }

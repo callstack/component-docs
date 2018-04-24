@@ -1,10 +1,17 @@
 /* @flow */
-/* eslint-disable react/no-unused-prop-types */
+/* eslint-disable class-methods-use-this, no-unused-vars, react/no-unused-prop-types */
 
 import * as React from 'react';
+import Button from './Button';
 
 type Props = {
+  /**
+   * Image to show in dialog.
+   */
   source: { uri: string },
+  /**
+   * Callback to trigger on press.
+   */
   onPress: () => mixed,
   children: React.Node,
   /**
@@ -58,6 +65,19 @@ type Props = {
  * ```
  */
 export default class Dialog extends React.Component<Props> {
+  static DialogButton = Button;
+
+  /**
+   * Show the dialog
+   */
+  show(animated: boolean, duration: number): Promise<void> {
+    return Promise.resolve();
+  }
+
+  hide() {
+    //
+  }
+
   render() {
     return null;
   }

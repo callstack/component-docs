@@ -126,7 +126,7 @@ export default function Documentation({ name, info }: Props) {
             const isRequired = required && !details.startsWith('@optional');
             const typeName =
               // eslint-disable-next-line no-nested-ternary
-              flowType && flowType.name !== 'any'
+              flowType
                 ? getTypeName(flowType)
                 : type
                   ? getTypeName(type)

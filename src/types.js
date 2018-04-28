@@ -54,6 +54,7 @@ export type Docs = {
     returns: ?{
       type?: TypeAnnotation,
     },
+    modifiers: Array<'static' | 'generator' | 'async'>,
   }>,
 };
 

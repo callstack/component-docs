@@ -98,6 +98,14 @@ export default function Documentation({ name, info }: Props) {
     .join('\n');
 
   const keys = Object.keys(info.props);
+  const methods = info.methods.filter(
+    method =>
+      !(
+        method.name.startsWith('_') ||
+        method.modifiers.includes('static') ||
+        (method.description && method.description.startsWith('@internal'))
+      )
+  );
 
   return (
     <div className={container}>
@@ -168,60 +176,45 @@ export default function Documentation({ name, info }: Props) {
           ))}
         </React.Fragment>
       ) : null}
-      {info.methods.length ? (
+      {methods.length ? (
         <React.Fragment>
           <h2 className={propsHeader}>Methods</h2>
-          {info.methods.map(method => {
-            if (method.name.startsWith('_')) {
-              return null;
-            }
-
-            if (
-              method.description &&
-              method.description.startsWith('@internal')
-            ) {
-              return null;
-            }
-
-            return (
-              <div className={propInfo} key={method.name}>
-                <a
-                  className={propLabel}
-                  name={method.name}
-                  href={`#${method.name}`}
-                >
-                  <code>{method.name}</code>
-                </a>
-                {method.params.length ? (
-                  <div className={propItem}>
-                    <span>Params: </span>
-                    <code>
-                      {method.params
-                        .map(
-                          p =>
-                            `${p.name}${
-                              p.type ? `: ${getTypeName(p.type)}` : ''
-                            }`
-                        )
-                        .join(', ')}
-                    </code>
-                  </div>
-                ) : null}
-                {method.returns && method.returns.type ? (
-                  <div className={propItem}>
-                    <span>Returns: </span>
-                    <code>{getTypeName(method.returns.type)}</code>
-                  </div>
-                ) : null}
-                {method.description ? (
-                  <Markdown
-                    className={names(propItem, markdown)}
-                    source={method.description.trim()}
-                  />
-                ) : null}
-              </div>
-            );
-          })}
+          {methods.map(method => (
+            <div className={propInfo} key={method.name}>
+              <a
+                className={propLabel}
+                name={method.name}
+                href={`#${method.name}`}
+              >
+                <code>{method.name}</code>
+              </a>
+              {method.params.length ? (
+                <div className={propItem}>
+                  <span>Params: </span>
+                  <code>
+                    {method.params
+                      .map(
+                        p =>
+                          `${p.name}${p.type ? `: ${getTypeName(p.type)}` : ''}`
+                      )
+                      .join(', ')}
+                  </code>
+                </div>
+              ) : null}
+              {method.returns && method.returns.type ? (
+                <div className={propItem}>
+                  <span>Returns: </span>
+                  <code>{getTypeName(method.returns.type)}</code>
+                </div>
+              ) : null}
+              {method.description ? (
+                <Markdown
+                  className={names(propItem, markdown)}
+                  source={method.description.trim()}
+                />
+              ) : null}
+            </div>
+          ))}
         </React.Fragment>
       ) : null}
     </div>

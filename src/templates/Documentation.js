@@ -79,6 +79,118 @@ const rest = css`
 
 const getTypeName = (flowType: TypeAnnotation) => flowType.raw || flowType.name;
 
+const PropTypeDoc = ({
+  name,
+  description,
+  flowType,
+  type,
+  required,
+  defaultValue,
+}: *) => {
+  const isRequired = required && !description.startsWith('@optional');
+  const typeName =
+    // eslint-disable-next-line no-nested-ternary
+    flowType ? getTypeName(flowType) : type ? getTypeName(type) : null;
+
+  return (
+    <div className={propInfo}>
+      <a className={propLabel} name={name} href={`#${name}`}>
+        <code>{name}</code>
+        {isRequired ? ' (required)' : ''}
+      </a>
+      {typeName && typeName !== 'unknown' ? (
+        <div className={propItem}>
+          <span>Type: </span>
+          <code>{typeName}</code>
+        </div>
+      ) : null}
+      {defaultValue ? (
+        <div className={propItem}>
+          <span>Default value: </span>
+          <code>{defaultValue.value}</code>
+        </div>
+      ) : null}
+      {description ? (
+        <Markdown
+          className={names(propItem, markdown)}
+          source={description.replace(/^@optional/, '').trim()}
+        />
+      ) : null}
+    </div>
+  );
+};
+
+const MethodDoc = ({ name, description, type, params, returns }) => {
+  const typeName = type ? getTypeName(type) : null;
+
+  return (
+    <div className={propInfo} key={name}>
+      <a className={propLabel} name={name} href={`#${name}`}>
+        <code>{name}</code>
+      </a>
+
+      {typeName && typeName !== 'unknown' ? (
+        <div className={propItem}>
+          <span>Type: </span>
+          <code>{typeName}</code>
+        </div>
+      ) : null}
+      {params.length ? (
+        <div className={propItem}>
+          <span>Params: </span>
+          <code>
+            {params
+              .map(p => `${p.name}${p.type ? `: ${getTypeName(p.type)}` : ''}`)
+              .join(', ')}
+          </code>
+        </div>
+      ) : null}
+      {returns && returns.type ? (
+        <div className={propItem}>
+          <span>Returns: </span>
+          <code>{getTypeName(returns.type)}</code>
+        </div>
+      ) : null}
+      {description ? (
+        <Markdown
+          className={names(propItem, markdown)}
+          source={description.trim()}
+        />
+      ) : null}
+    </div>
+  );
+};
+
+const PropertyDoc = ({ name, description, type, value }: *) => {
+  const typeName = type ? getTypeName(type) : null;
+
+  return (
+    <div className={propInfo}>
+      <a className={propLabel} name={name} href={`#${name}`}>
+        <code>{name}</code>
+      </a>
+      {typeName && typeName !== 'unknown' ? (
+        <div className={propItem}>
+          <span>Type: </span>
+          <code>{typeName}</code>
+        </div>
+      ) : null}
+      {value ? (
+        <div className={propItem}>
+          <span>Value: </span>
+          <code>{value}</code>
+        </div>
+      ) : null}
+      {description ? (
+        <Markdown
+          className={names(propItem, markdown)}
+          source={description.replace(/^@optional/, '').trim()}
+        />
+      ) : null}
+    </div>
+  );
+};
+
 export default function Documentation({ name, info }: Props) {
   const restProps = [];
   const description = info.description
@@ -97,7 +209,9 @@ export default function Documentation({ name, info }: Props) {
     })
     .join('\n');
 
-  const keys = Object.keys(info.props);
+  const keys = Object.keys(info.props).filter(
+    prop => !info.props[prop].description.startsWith('@internal')
+  );
   const methods = info.methods.filter(
     method =>
       !(
@@ -106,6 +220,30 @@ export default function Documentation({ name, info }: Props) {
         (method.description && method.description.startsWith('@internal'))
       )
   );
+  const statics = info.statics
+    .map(prop => ({
+      type: 'property',
+      info: prop,
+    }))
+    .concat(
+      info.methods
+        .filter(method => method.modifiers.includes('static'))
+        .map(method => ({
+          type: 'method',
+          info: {
+            ...method,
+            type: { raw: 'Function' },
+          },
+        }))
+    )
+    .filter(
+      item =>
+        !(
+          item.info.name.startsWith('_') ||
+          (item.info.description &&
+            item.info.description.startsWith('@internal'))
+        )
+    );
 
   return (
     <div className={container}>
@@ -118,53 +256,9 @@ export default function Documentation({ name, info }: Props) {
       {keys.length || restProps.length ? (
         <React.Fragment>
           <h2 className={propsHeader}>Props</h2>
-          {keys.map(prop => {
-            const {
-              flowType,
-              type,
-              required,
-              defaultValue,
-              description: details,
-            } = info.props[prop];
-
-            if (details.startsWith('@internal')) {
-              return null;
-            }
-
-            const isRequired = required && !details.startsWith('@optional');
-            const typeName =
-              // eslint-disable-next-line no-nested-ternary
-              flowType
-                ? getTypeName(flowType)
-                : type
-                  ? getTypeName(type)
-                  : null;
-
-            return (
-              <div className={propInfo} key={prop}>
-                <a className={propLabel} name={prop} href={`#${prop}`}>
-                  <code>{prop}</code>
-                  {isRequired ? ' (required)' : ''}
-                </a>
-                {typeName && typeName !== 'unknown' ? (
-                  <div className={propItem}>
-                    <span>Type: </span>
-                    <code>{typeName}</code>
-                  </div>
-                ) : null}
-                {defaultValue ? (
-                  <div className={propItem}>
-                    <span>Default value: </span>
-                    <code>{defaultValue.value}</code>
-                  </div>
-                ) : null}
-                <Markdown
-                  className={names(propItem, markdown)}
-                  source={details.replace(/^@optional/, '').trim()}
-                />
-              </div>
-            );
-          })}
+          {keys.map(prop => (
+            <PropTypeDoc key={prop} name={prop} {...info.props[prop]} />
+          ))}
           {restProps.map(prop => (
             <a
               className={names(propLabel, rest)}
@@ -179,42 +273,19 @@ export default function Documentation({ name, info }: Props) {
       {methods.length ? (
         <React.Fragment>
           <h2 className={propsHeader}>Methods</h2>
-          {methods.map(method => (
-            <div className={propInfo} key={method.name}>
-              <a
-                className={propLabel}
-                name={method.name}
-                href={`#${method.name}`}
-              >
-                <code>{method.name}</code>
-              </a>
-              {method.params.length ? (
-                <div className={propItem}>
-                  <span>Params: </span>
-                  <code>
-                    {method.params
-                      .map(
-                        p =>
-                          `${p.name}${p.type ? `: ${getTypeName(p.type)}` : ''}`
-                      )
-                      .join(', ')}
-                  </code>
-                </div>
-              ) : null}
-              {method.returns && method.returns.type ? (
-                <div className={propItem}>
-                  <span>Returns: </span>
-                  <code>{getTypeName(method.returns.type)}</code>
-                </div>
-              ) : null}
-              {method.description ? (
-                <Markdown
-                  className={names(propItem, markdown)}
-                  source={method.description.trim()}
-                />
-              ) : null}
-            </div>
-          ))}
+          {methods.map(method => <MethodDoc key={method.name} {...method} />)}
+        </React.Fragment>
+      ) : null}
+      {statics.length ? (
+        <React.Fragment>
+          <h2 className={propsHeader}>Static properties</h2>
+          {statics.map(s => {
+            if (s.type === 'method') {
+              return <MethodDoc key={s.info.name} {...s.info} />;
+            }
+
+            return <PropertyDoc key={s.info.name} {...s.info} />;
+          })}
         </React.Fragment>
       ) : null}
     </div>

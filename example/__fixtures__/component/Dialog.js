@@ -65,17 +65,23 @@ type Props = {
  * ```
  */
 export default class Dialog extends React.Component<Props> {
-  static DialogButton = Button;
+  /**
+   * Duration for showing the dialog.
+   */
+  static DURATION: number = 300;
+
+  /**
+   * Builder can be used to build dialogs.
+   */
+  static Builder(description: string) {
+    return null;
+  }
 
   /**
    * Show the dialog
    */
   show(animated: boolean, duration: number): Promise<void> {
     return Promise.resolve();
-  }
-
-  hide() {
-    //
   }
 
   render() {

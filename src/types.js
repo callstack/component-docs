@@ -27,7 +27,7 @@ export type PageInfo = {
 };
 
 export type TypeAnnotation = {
-  name: ?string,
+  name?: string,
   raw: string,
 };
 
@@ -40,8 +40,8 @@ export type Docs = {
       defaultValue?: {
         value: string,
       },
-      flowType: ?TypeAnnotation,
-      type: ?TypeAnnotation,
+      flowType?: TypeAnnotation,
+      type?: TypeAnnotation,
     },
   },
   methods: Array<{
@@ -49,17 +49,18 @@ export type Docs = {
     description: string,
     params: Array<{
       name: string,
-      type: ?TypeAnnotation,
+      type?: TypeAnnotation,
     }>,
     returns: ?{
-      type: ?TypeAnnotation,
+      type?: TypeAnnotation,
     },
     modifiers: Array<'static' | 'generator' | 'async'>,
   }>,
   statics: Array<{
     name: string,
-    description: ?string,
-    type: ?TypeAnnotation,
+    description?: string,
+    type?: TypeAnnotation,
+    value?: string,
   }>,
 };
 

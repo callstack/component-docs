@@ -79,7 +79,8 @@ const rest = css`
 
 const REACT_STATIC_METHODS = ['getDerivedStateFromProps'];
 
-const getTypeName = (flowType: TypeAnnotation) => flowType.raw || flowType.name;
+const getTypeName = (flowType: TypeAnnotation) =>
+  flowType.raw || flowType.name || '';
 
 const PropTypeDoc = ({
   name,
@@ -279,7 +280,9 @@ export default function Documentation({ name, info }: Props) {
       {methods.length ? (
         <React.Fragment>
           <h2 className={propsHeader}>Methods</h2>
-          {methods.map(method => <MethodDoc key={method.name} {...method} />)}
+          {methods.map(method => (
+            <MethodDoc key={method.name} type={null} {...method} />
+          ))}
         </React.Fragment>
       ) : null}
       {statics.length ? (

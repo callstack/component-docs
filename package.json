@@ -6,13 +6,13 @@
     "build": "babel -sd dist/ src/ --copy-files",
     "lint": "eslint .",
     "flow": "flow",
-    "prepare": "yarn run build",
+    "prepare": "yarn build",
     "semantic-release": "semantic-release pre && npm publish && semantic-release post",
     "test": "echo \"Error: no test specified\" && exit 1",
     "example": "babel-node example/index",
     "prebuild": "del dist/",
-    "preexample": "del example/dist && yarn run build",
-    "precommit": "yarn run lint"
+    "preexample": "del example/dist && yarn build",
+    "precommit": "yarn flow && yarn lint"
   },
   "main": "dist/index.js",
   "files": [

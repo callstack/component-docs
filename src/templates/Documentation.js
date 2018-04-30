@@ -77,6 +77,8 @@ const rest = css`
   font-size: 16px;
 `;
 
+const REACT_STATIC_METHODS = ['getDerivedStateFromProps'];
+
 const getTypeName = (flowType: TypeAnnotation) => flowType.raw || flowType.name;
 
 const PropTypeDoc = ({
@@ -227,7 +229,11 @@ export default function Documentation({ name, info }: Props) {
     }))
     .concat(
       info.methods
-        .filter(method => method.modifiers.includes('static'))
+        .filter(
+          method =>
+            method.modifiers.includes('static') &&
+            !REACT_STATIC_METHODS.includes(method.name)
+        )
         .map(method => ({
           type: 'method',
           info: {

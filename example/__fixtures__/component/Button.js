@@ -50,6 +50,8 @@ export default class Button extends Component {
     disabled: false,
   };
 
+  static getDerivedStateFromProps() {}
+
   render() {
     return null;
   }

@@ -46,7 +46,8 @@ export type Docs = {
   },
   methods: Array<{
     name: string,
-    description: string,
+    description?: string,
+    docblock?: string,
     params: Array<{
       name: string,
       type?: TypeAnnotation,

@@ -79,8 +79,20 @@ const rest = css`
 
 const REACT_STATIC_METHODS = ['getDerivedStateFromProps'];
 
+const ANNOTATION_OPTIONAL = '@optional';
+const ANNOTATION_INTERNAL = '@internal';
+const ANNOTATION_EXTENDS = '@extends';
+
 const getTypeName = (flowType: TypeAnnotation) =>
   flowType.raw || flowType.name || '';
+
+const hasAnnotation = (item: any, annotation: string) =>
+  // eslint-disable-next-line no-nested-ternary
+  item.description
+    ? item.description.startsWith(annotation)
+    : item.docblock
+      ? item.docblock.startsWith(annotation)
+      : false;
 
 const PropTypeDoc = ({
   name,
@@ -90,7 +102,7 @@ const PropTypeDoc = ({
   required,
   defaultValue,
 }: *) => {
-  const isRequired = required && !description.startsWith('@optional');
+  const isRequired = required && !description.startsWith(ANNOTATION_OPTIONAL);
   const typeName =
     // eslint-disable-next-line no-nested-ternary
     flowType ? getTypeName(flowType) : type ? getTypeName(type) : null;
@@ -199,7 +211,7 @@ export default function Documentation({ name, info }: Props) {
   const description = info.description
     .split('\n')
     .filter(line => {
-      if (line.startsWith('@extends ')) {
+      if (line.startsWith(ANNOTATION_EXTENDS)) {
         const parts = line.split(' ').slice(1);
         const link = parts.pop();
         restProps.push({
@@ -213,14 +225,14 @@ export default function Documentation({ name, info }: Props) {
     .join('\n');
 
   const keys = Object.keys(info.props).filter(
-    prop => !info.props[prop].description.startsWith('@internal')
+    prop => !hasAnnotation(info.props[prop], ANNOTATION_INTERNAL)
   );
   const methods = info.methods.filter(
     method =>
       !(
         method.name.startsWith('_') ||
         method.modifiers.includes('static') ||
-        (method.description && method.description.startsWith('@internal'))
+        hasAnnotation(method, ANNOTATION_INTERNAL)
       )
   );
   const statics = info.statics
@@ -247,8 +259,7 @@ export default function Documentation({ name, info }: Props) {
       item =>
         !(
           item.info.name.startsWith('_') ||
-          (item.info.description &&
-            item.info.description.startsWith('@internal'))
+          hasAnnotation(item.info, ANNOTATION_INTERNAL)
         )
     );
 

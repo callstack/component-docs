@@ -38,7 +38,7 @@ export type Docs = {
       description: string,
       required?: boolean,
       defaultValue?: {
-        value: string,
+        value: string | number,
       },
       flowType?: TypeAnnotation,
       type?: TypeAnnotation,

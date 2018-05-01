@@ -42,7 +42,7 @@ function staticPropertyHandler(documentation, path) {
 
         return {
           name: p.node.key.name,
-          description: doctrine.parse(docblock).description || null,
+          description: docblock ? doctrine.parse(docblock).description : null,
           docblock,
           value: p.node.value.value,
           type,

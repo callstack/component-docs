@@ -190,7 +190,7 @@ const PropertyDoc = ({ name, description, type, value }: *) => {
           <code>{typeName}</code>
         </div>
       ) : null}
-      {value ? (
+      {typeof value === 'string' || typeof value === 'number' ? (
         <div className={propItem}>
           <span>Value: </span>
           <code>{value}</code>

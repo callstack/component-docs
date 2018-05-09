@@ -246,17 +246,16 @@ code, tt {
 
 pre code {
   margin: 0;
-  padding: 0;
+  padding: 16px;
   white-space: pre;
   border: none;
+  overflow-x: auto;
 }
 
 pre {
   background-color: #fafafa;
   font-size: 13px;
   line-height: 19px;
-  overflow: auto;
-  padding: 16px;
   border-radius: 2px;
   tab-size: 2;
   hyphens: none;

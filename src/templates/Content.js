@@ -9,6 +9,7 @@ const container = css`
   @media (min-width: 640px) {
     height: 100%;
     overflow: auto;
+    -webkit-overflow-scrolling: touch;
   }
 `;
 

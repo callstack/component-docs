@@ -13,6 +13,7 @@ const sidebar = css`
     height: 100%;
     min-width: 240px;
     overflow: auto;
+    -webkit-overflow-scrolling: touch;
   }
 `;
 

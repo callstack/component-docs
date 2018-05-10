@@ -3,6 +3,8 @@
 
 import * as React from 'react';
 import Button from './Button';
+import DialogButton from './DialogButton';
+import DialogList from './DialogList';
 
 type Props = {
   /**
@@ -26,7 +28,7 @@ type Props = {
 };
 
 /**
- * Link allows to visit a remote URL on tap
+ * Dialog allows you to show information in a dialog.
  *
  * **Usage:**
  * ```js
@@ -76,6 +78,16 @@ export default class Dialog extends React.Component<Props> {
   static Builder(description: string) {
     return null;
   }
+
+  /**
+   * Static prop that allow you to access DialogButton as Dialog.Button
+   */
+  static Button = DialogButton;
+
+  /**
+   * Static prop that allow you to access DialogList as Dialog.List
+   */
+  static List = DialogList;
 
   /**
    * Show the dialog

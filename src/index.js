@@ -175,20 +175,24 @@ export function serve({
       return;
     }
 
-    pages = typeof getPages === 'function' ? getPages() : getPages;
-    data = collectData(pages);
+    try {
+      pages = typeof getPages === 'function' ? getPages() : getPages;
+      data = collectData(pages);
 
-    fs.writeFileSync(path.join(output, 'app.data.js'), stringifyData(data));
+      fs.writeFileSync(path.join(output, 'app.data.js'), stringifyData(data));
 
-    routes = buildPageInfo(data).reduce((acc, info) => {
-      acc[info.path] = buildHTML({
-        layout,
-        data,
-        info,
-        ...extras,
-      });
-      return acc;
-    }, {});
+      routes = buildPageInfo(data).reduce((acc, info) => {
+        acc[info.path] = buildHTML({
+          layout,
+          data,
+          info,
+          ...extras,
+        });
+        return acc;
+      }, {});
+    } catch (e) {
+      console.log(chalk.red(`Error building files: ${e.toString()}`));
+    }
   });
 
   const app = express();

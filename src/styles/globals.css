@@ -247,6 +247,7 @@ code, tt {
 pre code {
   margin: 0;
   padding: 16px;
+  display: block;
   white-space: pre;
   border: none;
   overflow-x: auto;

@@ -19,7 +19,7 @@ const sidebar = css`
 `;
 
 const navigation = css`
-  padding: 56px 24px 24px;
+  padding: 24px;
 
   @media (min-width: 640px) {
     height: 100%;
@@ -31,6 +31,7 @@ const navigation = css`
 const menu = css`
   display: none;
   position: relative;
+  padding-top: 42px;
 
   @media (min-width: 640px) {
     display: block;

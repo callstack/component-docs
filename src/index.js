@@ -64,18 +64,9 @@ export function build({
     fs.mkdirSync(output);
   }
 
-  fs.writeFileSync(path.join(output, 'app.src.js'), buildEntry({ layout }));
-  fs.writeFileSync(path.join(output, 'app.data.js'), stringifyData(data));
-
   if (assets) {
     assets.forEach(dir => {
       fs.copySync(dir, path.join(output, path.basename(dir)));
-    });
-  }
-
-  if (styles) {
-    styles.forEach(name => {
-      fs.copySync(name, path.join(output, 'styles', path.basename(name)));
     });
   }
 
@@ -85,7 +76,13 @@ export function build({
     });
   }
 
-  buildEntry({ layout });
+  fs.writeFileSync(
+    path.join(output, 'app.src.js'),
+    buildEntry({ layout, styles })
+  );
+
+  fs.writeFileSync(path.join(output, 'app.data.js'), stringifyData(data));
+
   buildPageInfo(data).forEach(info => {
     fs.writeFileSync(
       path.join(output, `${info.path}.html`),
@@ -93,10 +90,7 @@ export function build({
         layout,
         data,
         info,
-        sheets: [
-          'app.css',
-          ...(styles ? styles.map(s => `styles/${path.basename(s)}`) : []),
-        ],
+        sheets: ['app.css'],
         scripts: scripts ? scripts.map(s => `scripts/${path.basename(s)}`) : [],
       })
     );
@@ -139,16 +133,15 @@ export function serve({
   let pages = typeof getPages === 'function' ? getPages() : getPages;
   let data = collectData(pages);
 
-  const extras = {
-    sheets: styles ? styles.map(s => `styles/${path.basename(s)}`) : [],
-    scripts: scripts ? scripts.map(s => `scripts/${path.basename(s)}`) : [],
-  };
-
   if (!fs.existsSync(output)) {
     fs.mkdirSync(output);
   }
 
-  fs.writeFileSync(path.join(output, 'app.src.js'), buildEntry({ layout }));
+  fs.writeFileSync(
+    path.join(output, 'app.src.js'),
+    buildEntry({ layout, styles })
+  );
+
   fs.writeFileSync(path.join(output, 'app.data.js'), stringifyData(data));
 
   let routes = buildPageInfo(data).reduce((acc, info) => {
@@ -156,7 +149,7 @@ export function serve({
       layout,
       data,
       info,
-      ...extras,
+      scripts: scripts ? scripts.map(s => `scripts/${path.basename(s)}`) : [],
     });
     return acc;
   }, {});
@@ -186,7 +179,9 @@ export function serve({
           layout,
           data,
           info,
-          ...extras,
+          scripts: scripts
+            ? scripts.map(s => `scripts/${path.basename(s)}`)
+            : [],
         });
         return acc;
       }, {});
@@ -201,14 +196,6 @@ export function serve({
     assets.forEach(dir => {
       app.get(`/${path.basename(dir)}/*`, (req, res) => {
         res.sendFile(path.join(path.dirname(dir), req.path));
-      });
-    });
-  }
-
-  if (styles) {
-    styles.forEach(name => {
-      app.get(`/styles/${path.basename(name)}`, (req, res) => {
-        res.sendFile(name);
       });
     });
   }

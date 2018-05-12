@@ -15,20 +15,26 @@ const sidebar = css`
   @media (min-width: 640px) {
     height: 100%;
     min-width: 240px;
+  }
+`;
+
+const navigation = css`
+  padding: 56px 24px 24px;
+
+  @media (min-width: 640px) {
+    height: 100%;
     overflow: auto;
     -webkit-overflow-scrolling: touch;
   }
 `;
 
-const navigation = css`
-  padding: 24px;
-`;
-
 const menu = css`
   display: none;
+  position: relative;
 
   @media (min-width: 640px) {
     display: block;
+    height: 100%;
   }
 `;
 
@@ -62,6 +68,9 @@ const menuButton = css`
 `;
 
 const searchbar = css`
+  position: absolute;
+  top: 0;
+  right: 0;
   appearance: none;
   width: 100%;
   padding: 16px 48px 16px 24px;

@@ -221,6 +221,12 @@ export default class Sidebar extends React.Component<Props, State> {
     this._measureHeights();
   }
 
+  componentDidUpdate(prevProps: Props) {
+    if (prevProps.data !== this.props.data) {
+      this._measureHeights();
+    }
+  }
+
   _measureHeights = () =>
     this.setState({
       expanded: this.props.data.reduce((acc, item) => {
@@ -258,7 +264,10 @@ export default class Sidebar extends React.Component<Props, State> {
       }
 
       if (item.type === 'section') {
-        const sectionItem = this.state.expanded[item.title];
+        const sectionItem = this.state.expanded[item.title] || {
+          height: null,
+          expanded: true,
+        };
 
         return (
           <div key={item.path}>
@@ -292,9 +301,7 @@ export default class Sidebar extends React.Component<Props, State> {
               <button
                 className={names(
                   buttonIcon,
-                  sectionItem && sectionItem.expanded
-                    ? expandedIcon
-                    : collapsedIcon
+                  sectionItem.expanded ? expandedIcon : collapsedIcon
                 )}
                 style={{
                   opacity: typeof sectionItem.height === 'number' ? 1 : 0,

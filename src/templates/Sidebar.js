@@ -172,11 +172,11 @@ const buttonIcon = css`
 `;
 
 const expandedIcon = css`
-  transform: rotate(180deg);
+  transform: rotate(0deg);
 `;
 
 const collapsedIcon = css`
-  transform: rotate(0deg);
+  transform: rotate(-180deg);
 `;
 
 type Props = {

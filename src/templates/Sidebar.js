@@ -221,6 +221,12 @@ export default class Sidebar extends React.Component<Props, State> {
     this._measureHeights();
   }
 
+  componentDidUpdate(prevProps: Props) {
+    if (prevProps !== this.props) {
+      this._measureHeights();
+    }
+  }
+
   _measureHeights = () =>
     this.setState({
       expanded: this.props.data.reduce((acc, item) => {

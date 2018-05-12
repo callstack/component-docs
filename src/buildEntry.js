@@ -2,7 +2,13 @@
 
 import path from 'path';
 
-export default function buildEntry({ layout }: { layout: string }) {
+export default function buildEntry({
+  layout,
+  styles,
+}: {
+  layout: string,
+  styles?: string[],
+}) {
   return `
 import React from 'react';
 import ReactDOM from 'react-dom';
@@ -12,6 +18,14 @@ import Layout from '${layout}';
 import data from './app.data';
 import '${path.resolve(__dirname, './styles/reset.css')}';
 import '${path.resolve(__dirname, './styles/globals.css')}';
+
+${
+    styles
+      ? styles
+          .map(sheet => `import '${path.resolve(__dirname, sheet)}';`)
+          .join('\n')
+      : ''
+  }
 
 const root = document.getElementById('root');
 const render = () => {

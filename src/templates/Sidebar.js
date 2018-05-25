@@ -151,6 +151,7 @@ const sectionItemsVisible = css`
 
 const sectionItemsHidden = css`
   opacity: 0;
+  pointer-events: none;
 `;
 
 const buttonIcon = css`

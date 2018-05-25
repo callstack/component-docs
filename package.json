@@ -1,6 +1,6 @@
 {
   "name": "component-docs",
-  "version": "0.12.3",
+  "version": "0.12.4",
   "description": "Documentation for React components",
   "scripts": {
     "build": "babel -sd dist/ src/ --copy-files",

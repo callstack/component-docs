@@ -413,14 +413,17 @@ export default class Sidebar extends React.Component<Props, State> {
           const section = groups[title];
 
           if (section) {
-            const exists = acc.some(it => it.title && it.title === title);
+            const previous = acc.find(it => it.title && it.title === title);
 
-            if (!exists) {
-              if (title === item.title) {
-                acc.push({ ...section, path: item.path });
+            if (title === item.title) {
+              if (previous) {
+                /* $FlowFixMe */
+                Object.assign(previous, { path: item.path });
               } else {
-                acc.push(section);
+                acc.push({ ...section, path: item.path });
               }
+            } else if (!previous) {
+              acc.push(section);
             }
           } else {
             acc.push(item);

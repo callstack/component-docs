@@ -291,7 +291,7 @@ export default class Sidebar extends React.Component<Props, State> {
                               : group.expanded,
                         },
                       },
-                      open: false,
+                      open: path === item.path ? state.open : false,
                       query: '',
                     };
                   })

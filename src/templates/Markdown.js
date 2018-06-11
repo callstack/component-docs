@@ -1,7 +1,7 @@
 /* @flow */
 
 import * as React from 'react';
-import Remarkable from 'react-remarkable';
+import Remarkable from 'remarkable';
 import { highlight, getLanguage } from 'illuminate-js';
 import { css, names } from 'linaria';
 
@@ -82,21 +82,25 @@ type Props = {
   className?: string,
 };
 
-export default function Markdown(props: Props) {
-  const { source, className, ...rest } = props;
-  return (
-    <div {...rest} className={names(markdown, className)}>
-      <Remarkable
-        source={source}
-        options={{
-          linkify: true,
-          html: true,
-          highlight: (text, lang) => {
-            const language = lang === 'js' ? 'jsx' : lang;
-            return getLanguage(language) ? highlight(text, language) : null;
-          },
+export default class Markdown extends React.Component<Props> {
+  render() {
+    const md = new Remarkable({
+      linkify: true,
+      html: true,
+      highlight: (text, lang) => {
+        const language = lang === 'js' ? 'jsx' : lang;
+        return getLanguage(language) ? highlight(text, language) : null;
+      },
+    });
+
+    return (
+      <div
+        // eslint-disable-next-line react/no-danger
+        dangerouslySetInnerHTML={{
+          __html: md.render(this.props.source),
         }}
+        className={names(this.props.className, markdown)}
       />
-    </div>
-  );
+    );
+  }
 }

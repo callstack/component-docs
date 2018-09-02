@@ -5,7 +5,7 @@ import { history } from './Router';
 
 type Props = {
   to: string,
-  onClick?: Function,
+  onClick?: (event: *) => mixed,
 };
 
 export default class Router extends Component<Props, void> {
@@ -13,25 +13,31 @@ export default class Router extends Component<Props, void> {
 
   _handleClick = (event: MouseEvent) => {
     event.preventDefault();
-    const path = `${this.props.to}.html`;
-    try {
-      if (history) {
-        history.push(path);
-      } else {
-        throw new Error('');
-      }
-    } catch (e) {
-      if (!e.message.startsWith("Failed to execute 'pushState' on 'History'")) {
-        // Google Chrome throws for file URLs
-        throw e;
-      }
-      const { pathname } = window.location;
-      if (pathname.endsWith('/')) {
-        window.location.pathname = `${pathname}/${path}`;
-      } else {
-        const parts = pathname.split('/');
-        parts.pop();
-        window.location.pathname = `${parts.join('/')}/${path}`;
+
+    if (this.props.to) {
+      const path = `${this.props.to}.html`;
+
+      try {
+        if (history) {
+          history.push(path);
+        } else {
+          throw new Error('');
+        }
+      } catch (e) {
+        if (
+          !e.message.startsWith("Failed to execute 'pushState' on 'History'")
+        ) {
+          // Google Chrome throws for file URLs
+          throw e;
+        }
+        const { pathname } = window.location;
+        if (pathname.endsWith('/')) {
+          window.location.pathname = `${pathname}/${path}`;
+        } else {
+          const parts = pathname.split('/');
+          parts.pop();
+          window.location.pathname = `${parts.join('/')}/${path}`;
+        }
       }
     }
 
@@ -41,7 +47,9 @@ export default class Router extends Component<Props, void> {
   render() {
     const { to, ...rest } = this.props;
 
-    // eslint-disable-next-line jsx-a11y/anchor-has-content
-    return <a {...rest} href={`${to}.html`} onClick={this._handleClick} />;
+    return (
+      // eslint-disable-next-line jsx-a11y/anchor-has-content
+      <a {...rest} href={to ? `${to}.html` : ''} onClick={this._handleClick} />
+    );
   }
 }

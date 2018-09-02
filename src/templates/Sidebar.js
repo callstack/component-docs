@@ -271,7 +271,7 @@ export default class Sidebar extends React.Component<Props, State> {
         };
 
         return (
-          <div key={item.path}>
+          <div key={item.path || item.title + i}>
             <div className={row}>
               <Link
                 to={item.path}
@@ -286,7 +286,7 @@ export default class Sidebar extends React.Component<Props, State> {
                         [item.title]: {
                           ...group,
                           expanded:
-                            path === item.path
+                            path === item.path || !item.path
                               ? !group.expanded
                               : group.expanded,
                         },

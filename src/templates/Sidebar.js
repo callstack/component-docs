@@ -29,13 +29,14 @@ const navigation = css`
 `;
 
 const menu = css`
-  display: none;
-  position: relative;
+  position: absolute;
   padding-top: 42px;
+  transform: translateX(100vw);
 
   @media (min-width: 640px) {
-    display: block;
+    position: relative;
     height: 100%;
+    transform: none;
   }
 `;
 
@@ -59,7 +60,8 @@ const menuButton = css`
   display: none;
 
   &:checked ~ .${menu} {
-    display: block;
+    position: relative;
+    transform: translateX(0);
   }
 
   &:checked ~ label {

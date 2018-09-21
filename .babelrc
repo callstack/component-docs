@@ -1,13 +1,11 @@
 {
   "presets": [
-    "env",
-    "react",
-    "stage-2",
-    [
-      "linaria/babel",
-      {
-        "outDir": "dist/styles/build"
-      }
-    ]
+    "@babel/preset-env",
+    "@babel/preset-react",
+    "@babel/preset-flow",
+    "linaria/babel"
+  ],
+  "plugins": [
+    "@babel/plugin-proposal-class-properties"
   ]
 }

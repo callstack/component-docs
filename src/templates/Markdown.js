@@ -1,9 +1,13 @@
 /* @flow */
 
 import * as React from 'react';
+import { css, cx } from 'linaria';
 import Remarkable from 'remarkable';
-import { highlight, getLanguage } from 'illuminate-js';
-import { css, names } from 'linaria';
+import { highlight, languages } from 'prismjs/components/prism-core';
+import 'prismjs/components/prism-clike';
+import 'prismjs/components/prism-javascript';
+import 'prismjs/components/prism-markup';
+import 'prismjs/components/prism-jsx';
 
 const markdown = css`
   .token.comment,
@@ -68,6 +72,7 @@ const markdown = css`
   .token.bold {
     font-weight: bold;
   }
+
   .token.italic {
     font-style: italic;
   }
@@ -87,9 +92,9 @@ export default class Markdown extends React.Component<Props> {
     const md = new Remarkable({
       linkify: true,
       html: true,
-      highlight: (text, lang) => {
-        const language = lang === 'js' ? 'jsx' : lang;
-        return getLanguage(language) ? highlight(text, language) : null;
+      highlight: (code, lang) => {
+        const language = lang === 'js' ? languages.jsx : languages[lang];
+        return language ? highlight(code, language) : null;
       },
     });
 
@@ -99,7 +104,7 @@ export default class Markdown extends React.Component<Props> {
         dangerouslySetInnerHTML={{
           __html: md.render(this.props.source),
         }}
-        className={names(this.props.className, markdown)}
+        className={cx(this.props.className, markdown)}
       />
     );
   }

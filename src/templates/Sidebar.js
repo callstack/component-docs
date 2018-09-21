@@ -1,7 +1,7 @@
 /* @flow */
 
 import * as React from 'react';
-import { css, names } from 'linaria';
+import { css, cx } from 'linaria';
 import Link from './Link';
 import type { Metadata, Separator } from '../types';
 
@@ -221,7 +221,7 @@ export default class Sidebar extends React.Component<Props, State> {
   };
 
   componentDidMount() {
-    this._measureHeights();
+    setTimeout(() => this._measureHeights(), 1000);
   }
 
   componentDidUpdate(prevProps: Props) {
@@ -277,7 +277,7 @@ export default class Sidebar extends React.Component<Props, State> {
             <div className={row}>
               <Link
                 to={item.path}
-                className={names(link, path === item.path && active)}
+                className={cx(link, path === item.path && active)}
                 onClick={() =>
                   this.setState(state => {
                     const group = state.expanded[item.title];
@@ -302,7 +302,7 @@ export default class Sidebar extends React.Component<Props, State> {
                 {item.title}
               </Link>
               <button
-                className={names(
+                className={cx(
                   buttonIcon,
                   sectionItem.expanded ? expandedIcon : collapsedIcon
                 )}
@@ -340,7 +340,7 @@ export default class Sidebar extends React.Component<Props, State> {
               ref={container => {
                 this._items[item.title] = container;
               }}
-              className={names(
+              className={cx(
                 sectionItems,
                 sectionItem.expanded ? sectionItemsVisible : sectionItemsHidden
               )}
@@ -364,7 +364,7 @@ export default class Sidebar extends React.Component<Props, State> {
         <Link
           key={item.path}
           to={item.path}
-          className={names(link, path === item.path && active)}
+          className={cx(link, path === item.path && active)}
           onClick={() => this.setState({ open: false, query: '' })}
         >
           {item.title}

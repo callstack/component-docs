@@ -16,10 +16,9 @@ type Options = {
 
 const babelrc = {
   babelrc: false,
-  cacheDirectory: false,
   presets: [
     [
-      'env',
+      '@babel/preset-env',
       {
         modules: false,
         targets: {
@@ -27,10 +26,11 @@ const babelrc = {
         },
       },
     ],
-    'react',
-    'stage-2',
+    '@babel/preset-react',
+    '@babel/preset-flow',
     'linaria/babel',
   ],
+  plugins: ['@babel/plugin-proposal-class-properties'],
 };
 
 export default ({ root, entry, output, production }: Options) => ({
@@ -72,21 +72,28 @@ export default ({ root, entry, output, production }: Options) => ({
       {
         test: /\.js$/,
         exclude: /node_modules/,
-        use: {
-          loader: 'babel-loader',
-          options: production
-            ? babelrc
-            : {
-                ...babelrc,
-                presets: [...babelrc.presets, 'react-hmre'],
-              },
-        },
+        use: [
+          {
+            loader: 'linaria/loader',
+            options: { sourceMap: !production },
+          },
+          {
+            loader: 'babel-loader',
+            options: babelrc,
+          },
+        ],
       },
       {
         test: /\.css$/,
         use: [
-          { loader: production ? MiniCssExtractPlugin.loader : 'style-loader' },
-          { loader: 'css-loader' },
+          {
+            loader: production ? MiniCssExtractPlugin.loader : 'style-loader',
+            options: { sourceMap: !production },
+          },
+          {
+            loader: 'css-loader',
+            options: { sourceMap: !production },
+          },
         ],
       },
     ],

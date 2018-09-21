@@ -1,7 +1,7 @@
 /* @flow */
 
 import * as React from 'react';
-import { css, names } from 'linaria';
+import { css, cx } from 'linaria';
 import Markdown from './Markdown';
 import type { TypeAnnotation, Docs } from '../types';
 
@@ -127,7 +127,7 @@ const PropTypeDoc = ({
       ) : null}
       {description ? (
         <Markdown
-          className={names(propItem, markdown)}
+          className={cx(propItem, markdown)}
           source={description.replace(/^@optional/, '').trim()}
         />
       ) : null}
@@ -168,7 +168,7 @@ const MethodDoc = ({ name, description, type, params, returns }) => {
       ) : null}
       {description ? (
         <Markdown
-          className={names(propItem, markdown)}
+          className={cx(propItem, markdown)}
           source={description.trim()}
         />
       ) : null}
@@ -198,7 +198,7 @@ const PropertyDoc = ({ name, description, type, value }: *) => {
       ) : null}
       {description ? (
         <Markdown
-          className={names(propItem, markdown)}
+          className={cx(propItem, markdown)}
           source={description.replace(/^@optional/, '').trim()}
         />
       ) : null}
@@ -278,12 +278,11 @@ export default function Documentation({ name, info }: Props) {
             <PropTypeDoc key={prop} name={prop} {...info.props[prop]} />
           ))}
           {restProps.map(prop => (
-            <a
-              className={names(propLabel, rest)}
-              key={prop.name}
-              href={prop.link}
-            >
-              <code>...{prop.name}</code>
+            <a className={cx(propLabel, rest)} key={prop.name} href={prop.link}>
+              <code>
+                ...
+                {prop.name}
+              </code>
             </a>
           ))}
         </React.Fragment>

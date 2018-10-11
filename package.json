@@ -9,12 +9,15 @@
     "lint": "yarn lint:js && yarn lint:css",
     "flow": "flow",
     "prepare": "yarn build",
-    "semantic-release": "semantic-release pre && npm publish && semantic-release post",
     "test": "echo \"Error: no test specified\" && exit 1",
     "example": "babel-node example/index",
     "prebuild": "del dist/",
     "preexample": "del example/dist && yarn build",
-    "precommit": "yarn flow && yarn lint"
+    "precommit": "yarn flow && yarn lint",
+    "release": "release-it"
+  },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/"
   },
   "main": "dist/index.js",
   "files": [
@@ -59,13 +62,14 @@
     "@babel/node": "^7.0.0",
     "@callstack/eslint-config": "^2.0.0",
     "babel-eslint": "^9.0.0",
+    "conventional-changelog-cli": "^2.0.5",
     "del-cli": "^1.1.0",
     "eslint": "^5.6.0",
     "eslint-plugin-prettier": "^2.6.0",
     "flow-bin": "^0.81.0",
     "husky": "^0.14.3",
     "prettier": "^1.12.1",
-    "semantic-release": "^15.4.1",
+    "release-it": "^7.6.1",
     "stylelint": "^9.5.0",
     "stylelint-config-recommended": "^2.1.0"
   },

@@ -9,8 +9,6 @@ before_install:
 script:
   - yarn run flow
   - yarn run lint
-after_success:
-  - yarn run semantic-release
 branches:
   except:
     - /^v\d+\.\d+\.\d+$/

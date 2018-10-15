@@ -54,14 +54,12 @@ export default ({ root, entry, output, production }: Options) => ({
         NODE_ENV: JSON.stringify(production ? 'production' : 'development'),
       },
     }),
+    new MiniCssExtractPlugin({
+      filename: output.style,
+    }),
   ].concat(
     production
-      ? [
-          new webpack.LoaderOptionsPlugin({ minimize: true, debug: false }),
-          new MiniCssExtractPlugin({
-            filename: output.style,
-          }),
-        ]
+      ? [new webpack.LoaderOptionsPlugin({ minimize: true, debug: false })]
       : [
           new webpack.HotModuleReplacementPlugin(),
           new webpack.NoEmitOnErrorsPlugin(),
@@ -74,20 +72,21 @@ export default ({ root, entry, output, production }: Options) => ({
         exclude: /node_modules/,
         use: [
           {
-            loader: 'linaria/loader',
-            options: { sourceMap: !production },
-          },
-          {
             loader: 'babel-loader',
             options: babelrc,
+          },
+          {
+            loader: 'linaria/loader',
+            options: { sourceMap: !production },
           },
         ],
       },
       {
         test: /\.css$/,
         use: [
+          { loader: 'css-hot-loader' },
           {
-            loader: production ? MiniCssExtractPlugin.loader : 'style-loader',
+            loader: MiniCssExtractPlugin.loader,
             options: { sourceMap: !production },
           },
           {

@@ -149,6 +149,7 @@ export function serve({
       layout,
       data,
       info,
+      sheets: ['app.css'],
       scripts: scripts ? scripts.map(s => `scripts/${path.basename(s)}`) : [],
     });
     return acc;

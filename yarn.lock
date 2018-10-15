@@ -301,6 +301,11 @@
     output-file-sync "^2.0.0"
     v8flags "^3.1.1"
 
+"@babel/parser@7.0.0-beta.53":
+  version "7.0.0-beta.53"
+  resolved "https://registry.yarnpkg.com/@babel/parser/-/parser-7.0.0-beta.53.tgz#1f45eb617bf9463d482b2c04d349d9e4edbf4892"
+  integrity sha1-H0XrYXv5Rj1IKywE00nZ5O2/SJI=
+
 "@babel/parser@^7.0.0", "@babel/parser@^7.1.0":
   version "7.1.0"
   resolved "https://registry.yarnpkg.com/@babel/parser/-/parser-7.1.0.tgz#a7cd42cb3c12aec52e24375189a47b39759b783e"
@@ -1366,11 +1371,6 @@ ast-types@0.11.5:
   resolved "https://registry.yarnpkg.com/ast-types/-/ast-types-0.11.5.tgz#9890825d660c03c28339f315e9fa0a360e31ec28"
   integrity sha512-oJjo+5e7/vEc2FBK8gUalV0pba4L3VdBIs2EKhOLHLcOd2FgQIVQN9xb0eZ9IjEWyAL7vq6fGJxOvVvdCHNyMw==
 
-ast-types@0.9.14:
-  version "0.9.14"
-  resolved "https://registry.yarnpkg.com/ast-types/-/ast-types-0.9.14.tgz#d34ba5dffb9d15a44351fd2a9d82e4ab2838b5ba"
-  integrity sha512-Ebvx7/0lLboCdyEmAw/4GqwBeKIijPveXNiVGhCGCNxc7z26T5he7DC6ARxu8ByKuzUZZcLog+VP8GMyZrBzJw==
-
 async-each@^1.0.0:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/async-each/-/async-each-1.0.1.tgz#19d386a1d9edc6e7c1c85d388aedbcc56d33602d"
@@ -1973,11 +1973,6 @@ babylon@^6.18.0:
   version "6.18.0"
   resolved "https://registry.yarnpkg.com/babylon/-/babylon-6.18.0.tgz#af2f3b88fa6f5c1e4c634d1a0f8eac4f55b395e3"
   integrity sha512-q/UEjfGJ2Cm3oKV71DJz9d25TPnq5rhBVL2Q4fA5wcC3jcrdn7+SssEybFIxwAvvP+YCsCYNKughoF33GxgycQ==
-
-babylon@~5.8.3:
-  version "5.8.38"
-  resolved "http://registry.npmjs.org/babylon/-/babylon-5.8.38.tgz#ec9b120b11bf6ccd4173a18bf217e60b79859ffd"
-  integrity sha1-7JsSCxG/bM1Bc6GL8hfmC3mFn/0=
 
 bail@^1.0.0:
   version "1.0.3"
@@ -2882,7 +2877,7 @@ core-js@^1.0.0:
   resolved "https://registry.yarnpkg.com/core-js/-/core-js-1.2.7.tgz#652294c14651db28fa93bd2d5ff2983a4f08c636"
   integrity sha1-ZSKUwUZR2yj6k70tX/KYOk8IxjY=
 
-core-js@^2.4.0, core-js@^2.4.1:
+core-js@^2.4.0:
   version "2.5.1"
   resolved "https://registry.yarnpkg.com/core-js/-/core-js-2.5.1.tgz#ae6874dc66937789b80754ff5428df66819ca50b"
   integrity sha1-rmh03GaTd4m4B1T/VCjfZoGcpQs=
@@ -7050,18 +7045,18 @@ rc@^1.2.7:
     minimist "^1.2.0"
     strip-json-comments "~2.0.1"
 
-react-docgen@^2.21.0:
-  version "2.21.0"
-  resolved "https://registry.yarnpkg.com/react-docgen/-/react-docgen-2.21.0.tgz#e8f9caf50e15510096616850771f243fadbb9d7d"
-  integrity sha512-8xNPTrmvHLGNfqlsCYPdXmSkagP1njI5unP3t8WrjTJ4/5hHuP5nb3XH69CnF67HPV5zTkPoafcRBDGSQO6S6A==
+react-docgen@3.0.0-rc.1:
+  version "3.0.0-rc.1"
+  resolved "https://registry.yarnpkg.com/react-docgen/-/react-docgen-3.0.0-rc.1.tgz#a4e33dba1454459294276afdec87ef3958167eb0"
+  integrity sha512-jOnu9qEqNlBx5Jrgx8mcHmG6FQcrBIpdZ5HTcZqW5hOkYsmCAPID0vEm66mkVbh3anli9+WWK2wL3AKK1ivNBA==
   dependencies:
+    "@babel/parser" "7.0.0-beta.53"
     async "^2.1.4"
     babel-runtime "^6.9.2"
-    babylon "~5.8.3"
     commander "^2.9.0"
     doctrine "^2.0.0"
     node-dir "^0.1.10"
-    recast "^0.12.6"
+    recast "^0.15.0"
 
 react-dom@~16.5.2:
   version "16.5.2"
@@ -7175,18 +7170,7 @@ readdirp@^2.0.0:
     readable-stream "^2.0.2"
     set-immediate-shim "^1.0.1"
 
-recast@^0.12.6:
-  version "0.12.8"
-  resolved "https://registry.yarnpkg.com/recast/-/recast-0.12.8.tgz#bb5dc9501dfa0cd075686e1daf9d67797cc5499f"
-  integrity sha512-sqhh1Rn20bAqVMtXzURPM1Py6sAfwJtN9LMWd11pZBJsbD6SO7oxgwZiUVpfUnBDClwrjB88a/hkP/SWNkcaCA==
-  dependencies:
-    ast-types "0.9.14"
-    core-js "^2.4.1"
-    esprima "~4.0.0"
-    private "~0.1.5"
-    source-map "~0.6.1"
-
-recast@^0.15.5:
+recast@^0.15.0, recast@^0.15.5:
   version "0.15.5"
   resolved "https://registry.yarnpkg.com/recast/-/recast-0.15.5.tgz#6871177ee26720be80d7624e4283d5c855a5cb0b"
   integrity sha512-nkAYNqarh73cMWRKFiPQ8I9dOLFvFk6SnG8u/LUlOYfArDOD/EjsVRAs860TlBLrpxqAXHGET/AUAVjdEymL5w==

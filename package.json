@@ -48,7 +48,7 @@
     "prismjs": "^1.15.0",
     "prop-types": "^15.6.1",
     "react": "~16.5.2",
-    "react-docgen": "^2.21.0",
+    "react-docgen": "3.0.0-rc.1",
     "react-dom": "~16.5.2",
     "recast": "^0.15.5",
     "redbox-react": "^1.6.0",

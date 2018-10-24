@@ -43,6 +43,7 @@
     "ignore-styles": "^5.0.1",
     "linaria": "^1.0.0-alpha.9",
     "markdown-it": "^8.4.2",
+    "markdown-it-github-headings": "^1.1.1",
     "mini-css-extract-plugin": "^0.4.0",
     "node-watch": "^0.5.8",
     "opn": "^5.3.0",

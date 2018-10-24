@@ -3,6 +3,7 @@
 import * as React from 'react';
 import { css, cx } from 'linaria';
 import MarkdownIt from 'markdown-it';
+import headings from 'markdown-it-github-headings';
 import { highlight, languages } from 'prismjs/components/prism-core';
 import 'prismjs/components/prism-clike';
 import 'prismjs/components/prism-javascript';
@@ -10,6 +11,26 @@ import 'prismjs/components/prism-markup';
 import 'prismjs/components/prism-jsx';
 
 const markdown = css`
+  .anchor {
+    margin-left: -20px;
+    padding-right: 4px;
+    opacity: 0;
+
+    &:hover {
+      opacity: 1;
+    }
+  }
+
+  h1:hover > .anchor,
+  h2:hover > .anchor,
+  h3:hover > .anchor,
+  h4:hover > .anchor,
+  h5:hover > .anchor,
+  h6:hover > .anchor {
+    opacity: 1;
+  }
+
+  /* Syntax highlighting */
   .token.comment,
   .token.prolog,
   .token.doctype,
@@ -96,7 +117,7 @@ export default class Markdown extends React.Component<Props> {
         const language = lang === 'js' ? languages.jsx : languages[lang];
         return language ? highlight(code, language) : null;
       },
-    });
+    }).use(headings);
 
     return (
       <div

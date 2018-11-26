@@ -31,12 +31,13 @@ const navigation = css`
 const menu = css`
   position: absolute;
   padding-top: 42px;
-  transform: translateX(100vw);
+  opacity: 0;
+  pointer-events: none;
 
   @media (min-width: 640px) {
-    position: relative;
     height: 100%;
-    transform: none;
+    opacity: 1;
+    pointer-events: auto;
   }
 `;
 
@@ -61,7 +62,8 @@ const menuButton = css`
 
   &:checked ~ .${menu} {
     position: relative;
-    transform: translateX(0);
+    opacity: 1;
+    pointer-events: auto;
   }
 
   &:checked ~ label {

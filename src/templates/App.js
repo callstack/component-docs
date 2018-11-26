@@ -12,7 +12,8 @@ type Data = Array<Metadata | Separator>;
 
 const buildRoutes = (
   data: Data,
-  layout: React.ComponentType<*>
+  layout: React.ComponentType<*>,
+  github?: string
 ): Array<Route> => {
   const Layout = layout;
 
@@ -37,7 +38,12 @@ const buildRoutes = (
           const info = item.data;
           render = (props: { path: string }) => (
             <Layout {...props} data={data} Sidebar={Sidebar} Content={Content}>
-              <Documentation name={item.title} info={info} />
+              <Documentation
+                name={item.title}
+                info={info}
+                github={github}
+                filepath={item.filepath}
+              />
             </Layout>
           );
         }
@@ -71,9 +77,10 @@ type Props = {
   path: string,
   data: Data,
   layout: React.ComponentType<*>,
+  github?: string,
 };
 
-export default function App({ path, data, layout }: Props) {
-  const routes = buildRoutes(data, layout);
+export default function App({ path, data, layout, github }: Props) {
+  const routes = buildRoutes(data, layout, github);
   return <Router path={path} routes={routes} />;
 }

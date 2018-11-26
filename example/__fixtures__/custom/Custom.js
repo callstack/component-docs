@@ -13,7 +13,7 @@ export default class Custom extends React.Component<{}> {
   static meta = {
     title: 'Custom 🎉',
     description: 'Custom React Component',
-    permalink: 'custom-component',
+    link: 'custom-component',
   };
 
   render() {

@@ -5,9 +5,11 @@ import path from 'path';
 export default function buildEntry({
   layout,
   styles,
+  github,
 }: {
   layout: string,
   styles?: string[],
+  github?: string,
 }) {
   return `
 import React from 'react';
@@ -34,6 +36,7 @@ const render = () => {
       <App
         name={window.__INITIAL_PATH__}
         data={data}
+        github={${JSON.stringify(github)}}
         layout={Layout}
       />,
       root

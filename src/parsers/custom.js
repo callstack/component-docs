@@ -1,5 +1,6 @@
 /* @flow */
 
+import path from 'path';
 import dedent from 'dedent';
 import dashify from 'dashify';
 import getNameFromPath from '../utils/getNameFromPath';
@@ -14,14 +15,15 @@ export default function(file: string): Metadata {
 
   const title = meta.title || name;
   const description = meta.description;
-  const permalink = meta.permalink || dashify(name);
+  const link = meta.link || dashify(name);
   const type = 'custom';
 
   return {
+    filepath: path.relative(process.cwd(), file),
     title,
     description,
     type,
-    path: permalink,
+    link,
     data: component,
     stringify() {
       return dedent`
@@ -31,7 +33,7 @@ export default function(file: string): Metadata {
           var m = c.meta || {};
           return {
              title: m.title || ${JSON.stringify(title)},
-             path: m.permalink || ${JSON.stringify(permalink)},
+             path: m.link || ${JSON.stringify(link)},
              description: m.description,
              type: ${JSON.stringify(type)},
              data: c

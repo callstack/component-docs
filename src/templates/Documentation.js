@@ -3,11 +3,14 @@
 import * as React from 'react';
 import { css, cx } from 'linaria';
 import Markdown from './Markdown';
+import EditButton from './EditButton';
 import type { TypeAnnotation, Docs } from '../types';
 
 type Props = {
   name: string,
   info: Docs,
+  filepath: string,
+  github?: string,
 };
 
 const container = css`
@@ -213,7 +216,7 @@ const PropertyDoc = ({ name, description, type, value }: *) => {
   );
 };
 
-export default function Documentation({ name, info }: Props) {
+export default function Documentation({ name, info, github, filepath }: Props) {
   const restProps = [];
   const description = info.description
     .split('\n')
@@ -272,6 +275,7 @@ export default function Documentation({ name, info }: Props) {
 
   return (
     <div className={container}>
+      <EditButton github={github} filepath={filepath} />
       <h1 className={title}>{name}</h1>
       <Markdown
         className={markdown}

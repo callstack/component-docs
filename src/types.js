@@ -18,12 +18,14 @@ export type Options = {
   port?: number,
   layout?: string,
   open?: boolean,
+  github?: string,
 };
 
 export type PageInfo = {
   title: string,
   description: string,
-  path: string,
+  link: string,
+  filepath: string,
 };
 
 export type TypeAnnotation = {

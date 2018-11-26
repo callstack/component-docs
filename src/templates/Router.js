@@ -42,7 +42,7 @@ export default class Router extends Component<Props, State> {
 
   componentDidUpdate(prevProps: Props, prevState: State) {
     if (prevState.path !== this.state.path) {
-      const route = this.props.routes.find(r => r.path === this.state.path);
+      const route = this.props.routes.find(r => r.link === this.state.path);
       if (route) {
         document.title = route.title || '';
       }
@@ -64,7 +64,7 @@ export default class Router extends Component<Props, State> {
   _unlisten: () => void;
 
   render() {
-    const route = this.props.routes.find(r => r.path === this.state.path);
+    const route = this.props.routes.find(r => r.link === this.state.path);
 
     if (route) {
       return route.render({

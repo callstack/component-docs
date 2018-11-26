@@ -362,9 +362,9 @@ export default class Sidebar extends React.Component<Props, State> {
 
       return (
         <Link
-          key={item.path}
-          to={item.path}
-          className={cx(link, path === item.path && active)}
+          key={item.link}
+          to={item.link}
+          className={cx(link, path === item.link && active)}
           onClick={() => this.setState({ open: false, query: '' })}
         >
           {item.title}
@@ -421,9 +421,9 @@ export default class Sidebar extends React.Component<Props, State> {
             if (title === item.title) {
               if (previous) {
                 /* $FlowFixMe */
-                Object.assign(previous, { path: item.path });
+                Object.assign(previous, { path: item.link });
               } else {
-                acc.push({ ...section, path: item.path });
+                acc.push({ ...section, path: item.link });
               }
             } else if (!previous) {
               acc.push(section);

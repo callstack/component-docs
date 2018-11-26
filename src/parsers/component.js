@@ -1,6 +1,7 @@
 /* @flow */
 
 import fs from 'fs';
+import path from 'path';
 import { types } from 'recast';
 import { parse, utils, defaultHandlers } from 'react-docgen';
 import doctrine from 'doctrine';
@@ -17,11 +18,11 @@ const REACT_STATICS = [
   'propTypes',
 ];
 
-function staticPropertyHandler(documentation, path) {
+function staticPropertyHandler(documentation, propertyPath) {
   let statics = [];
 
-  if (types.namedTypes.ClassDeclaration.check(path.node)) {
-    statics = path
+  if (types.namedTypes.ClassDeclaration.check(propertyPath.node)) {
+    statics = propertyPath
       .get('body', 'body')
       .filter(
         p =>
@@ -61,9 +62,10 @@ export default function(file: string): Metadata {
   const name = info.displayName || getNameFromPath(file);
 
   return {
+    filepath: path.relative(process.cwd(), file),
     title: name,
     description: info.description,
-    path: dashify(name),
+    link: dashify(name),
     data: info,
     type: 'component',
   };

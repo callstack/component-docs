@@ -52,9 +52,10 @@ export default function(file: string): Metadata {
   const name = getNameFromPath(file);
 
   return {
+    filepath: path.relative(process.cwd(), file),
     title: meta.title || name,
     description: meta.description || '',
-    path: meta.permalink || dashify(name),
+    link: meta.link || dashify(name),
     data: text,
     type: 'markdown',
   };

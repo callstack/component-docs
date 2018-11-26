@@ -9,14 +9,16 @@ import type { Metadata, PageInfo, Separator } from './types';
 type Options = {
   data: Array<Metadata | Separator>,
   info: PageInfo,
+  github?: string,
   layout: string,
   sheets?: string[],
   scripts?: string[],
 };
 
 export default function buildHTML({
-  info,
   data,
+  info,
+  github,
   layout,
   sheets,
   scripts,
@@ -25,8 +27,9 @@ export default function buildHTML({
   const Layout = require(layout); // eslint-disable-line global-require
   const html = ReactDOMServer.renderToString(
     <App
-      path={info.path}
+      path={info.link}
       data={data}
+      github={github}
       layout={Layout.__esModule ? Layout.default : Layout}
     />
   );
@@ -35,7 +38,7 @@ export default function buildHTML({
 
   body += `
     <script>
-      window.__INITIAL_PATH__ = '${info.path}';
+      window.__INITIAL_PATH__ = '${info.link}';
     </script>
   `;
 

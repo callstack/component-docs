@@ -54,6 +54,7 @@ export function build({
   scripts,
   styles,
   pages: getPages,
+  github,
   output,
   layout = require.resolve('./templates/Layout'),
 }: Options) {
@@ -78,18 +79,19 @@ export function build({
 
   fs.writeFileSync(
     path.join(output, 'app.src.js'),
-    buildEntry({ layout, styles })
+    buildEntry({ layout, styles, github })
   );
 
   fs.writeFileSync(path.join(output, 'app.data.js'), stringifyData(data));
 
   buildPageInfo(data).forEach(info => {
     fs.writeFileSync(
-      path.join(output, `${info.path}.html`),
+      path.join(output, `${info.link}.html`),
       buildHTML({
         layout,
         data,
         info,
+        github,
         sheets: ['app.css'],
         scripts: scripts ? scripts.map(s => `scripts/${path.basename(s)}`) : [],
       })
@@ -125,6 +127,7 @@ export function serve({
   scripts,
   styles,
   pages: getPages,
+  github,
   output,
   port = 3031,
   layout = require.resolve('./templates/Layout'),
@@ -139,16 +142,17 @@ export function serve({
 
   fs.writeFileSync(
     path.join(output, 'app.src.js'),
-    buildEntry({ layout, styles })
+    buildEntry({ layout, styles, github })
   );
 
   fs.writeFileSync(path.join(output, 'app.data.js'), stringifyData(data));
 
   let routes = buildPageInfo(data).reduce((acc, info) => {
-    acc[info.path] = buildHTML({
+    acc[info.link] = buildHTML({
       layout,
       data,
       info,
+      github,
       sheets: ['app.css'],
       scripts: scripts ? scripts.map(s => `scripts/${path.basename(s)}`) : [],
     });
@@ -176,7 +180,7 @@ export function serve({
       fs.writeFileSync(path.join(output, 'app.data.js'), stringifyData(data));
 
       routes = buildPageInfo(data).reduce((acc, info) => {
-        acc[info.path] = buildHTML({
+        acc[info.link] = buildHTML({
           layout,
           data,
           info,

@@ -7,6 +7,7 @@ import { build, serve } from '../src';
 const task = process.argv[2];
 const output = path.join(__dirname, 'dist');
 const fixtures = path.join(__dirname, '__fixtures__');
+const github = 'https://github.com/callstack/component-docs/edit/master';
 
 function pages() {
   const markdown = path.join(fixtures, 'markdown');
@@ -37,6 +38,7 @@ if (task !== 'build') {
     styles: [path.join(fixtures, 'assets', 'styles.css')],
     pages,
     output,
+    github,
   });
 } else {
   build({
@@ -44,5 +46,6 @@ if (task !== 'build') {
     styles: [path.join(fixtures, 'assets', 'styles.css')],
     pages,
     output,
+    github,
   });
 }

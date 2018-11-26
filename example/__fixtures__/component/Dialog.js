@@ -80,12 +80,12 @@ export default class Dialog extends React.Component<Props> {
   }
 
   /**
-   * Static prop that allow you to access DialogButton as Dialog.Button
+   * Static prop that allows you to access DialogButton as Dialog.Button
    */
   static Button = DialogButton;
 
   /**
-   * Static prop that allow you to access DialogList as Dialog.List
+   * Static prop that allows you to access DialogList as Dialog.List
    */
   static List = DialogList;
 

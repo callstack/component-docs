@@ -94,6 +94,9 @@ const hasAnnotation = (item: any, annotation: string) =>
       ? item.docblock.startsWith(annotation)
       : false;
 
+const pascalToCamelCase = (text: string) =>
+  text.replace(/^[A-Z]+/g, $1 => $1.toLowerCase());
+
 const PropTypeDoc = ({
   name,
   description,
@@ -102,7 +105,11 @@ const PropTypeDoc = ({
   required,
   defaultValue,
 }: *) => {
-  const isRequired = required && !description.startsWith(ANNOTATION_OPTIONAL);
+  const isRequired =
+    required &&
+    defaultValue == null &&
+    !description.startsWith(ANNOTATION_OPTIONAL);
+
   const typeName =
     // eslint-disable-next-line no-nested-ternary
     flowType ? getTypeName(flowType) : type ? getTypeName(type) : null;
@@ -290,6 +297,17 @@ export default function Documentation({ name, info }: Props) {
       {methods.length ? (
         <React.Fragment>
           <h2 className={propsHeader}>Methods</h2>
+          <p>
+            These methods can be accessed on the <code>ref</code> of the
+            component, e.g.{' '}
+            <code>
+              {pascalToCamelCase(name)}
+              Ref.
+              {methods[0].name}
+              (...args)
+            </code>
+            .
+          </p>
           {methods.map(method => (
             <MethodDoc key={method.name} type={null} {...method} />
           ))}
@@ -298,6 +316,14 @@ export default function Documentation({ name, info }: Props) {
       {statics.length ? (
         <React.Fragment>
           <h2 className={propsHeader}>Static properties</h2>
+          <p>
+            These properties can be accessed on <code>{name}</code> by using the
+            dot notation, e.g.{' '}
+            <code>
+              {name}.{statics[0].info.name}
+            </code>
+            .
+          </p>
           {statics.map(s => {
             if (s.type === 'method') {
               return <MethodDoc key={s.info.name} {...s.info} />;

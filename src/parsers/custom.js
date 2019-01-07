@@ -9,7 +9,8 @@ import type { Metadata } from '../types';
 export default function(file: string): Metadata {
   /* $FlowFixMe */
   const exported = require(file); // eslint-disable-line global-require
-  const component = exported.__esModule ? exported.default : exported;
+  const component =
+    typeof exported.default === 'function' ? exported.default : exported;
   const name = component.displayName || component.name || getNameFromPath(file);
   const meta = component.meta || {};
 
@@ -29,11 +30,11 @@ export default function(file: string): Metadata {
       return dedent`
         (function() {
           var e = require(${JSON.stringify(file)});
-          var c = e.__esModule ? e.default : e;
+          var c = typeof e.default === 'function' ? e.default : e;
           var m = c.meta || {};
           return {
              title: m.title || ${JSON.stringify(title)},
-             path: m.link || ${JSON.stringify(link)},
+             link: m.link || ${JSON.stringify(link)},
              description: m.description,
              type: ${JSON.stringify(type)},
              data: c

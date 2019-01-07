@@ -50,7 +50,7 @@ export default function buildHTML({
     });
   }
 
-  return ReactDOMServer.renderToString(
+  return ReactDOMServer.renderToStaticMarkup(
     // eslint-disable-next-line react/jsx-pascal-case
     <HTML
       title={info.title}

@@ -113,7 +113,7 @@ const renderer = new marked.Renderer();
 
 renderer.heading = function heading(...args) {
   return marked.Renderer.prototype.heading.apply(this, args).replace(
-    /^(<h[1-3] .+>)(.+)(<\/h[1-3]>)/,
+    /^(<h[1-3] [^>]+>)(.+)(<\/h[1-3]>)/,
     (match, p1, p2, p3) =>
       `${p1}
           <a class="anchor" href="#${p2

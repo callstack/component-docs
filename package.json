@@ -3,7 +3,7 @@
   "version": "0.13.2",
   "description": "Documentation for React components",
   "scripts": {
-    "build": "babel -sd dist/ src/ --copy-files",
+    "build": "babel -sd dist/ src/ --copy-files && linaria -o dist/css -r src -i dist src/**/*.js",
     "lint:js": "eslint .",
     "lint:css": "stylelint src/**/*.js",
     "lint": "yarn lint:js && yarn lint:css",
@@ -42,7 +42,7 @@
     "fs-extra": "^7.0.0",
     "history": "^4.7.2",
     "ignore-styles": "^5.0.1",
-    "linaria": "^1.0.0-alpha.9",
+    "linaria": "^1.0.0-beta.8",
     "markdown-it-github-headings": "^1.1.1",
     "marked": "^0.5.2",
     "mini-css-extract-plugin": "^0.4.0",

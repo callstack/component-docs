@@ -35,6 +35,7 @@ const menu = css`
   pointer-events: none;
 
   @media (min-width: 640px) {
+    position: relative;
     height: 100%;
     opacity: 1;
     pointer-events: auto;

@@ -185,6 +185,8 @@ export function serve({
             layout,
             data,
             info,
+            github,
+            sheets: ['app.css'],
             scripts: scripts
               ? scripts.map(s => `scripts/${path.basename(s)}`)
               : [],

@@ -11,8 +11,8 @@ type Options = {
   info: PageInfo,
   github?: string,
   layout: string,
-  sheets?: string[],
-  scripts?: string[],
+  sheets: string[],
+  scripts: string[],
 };
 
 export default function buildHTML({
@@ -44,11 +44,9 @@ export default function buildHTML({
 
   body += '<script src="app.bundle.js"></script>';
 
-  if (scripts) {
-    scripts.forEach(s => {
-      body += `<script src="${s}"></script>`;
-    });
-  }
+  scripts.forEach(s => {
+    body += `<script src="${s}"></script>`;
+  });
 
   return ReactDOMServer.renderToStaticMarkup(
     // eslint-disable-next-line react/jsx-pascal-case

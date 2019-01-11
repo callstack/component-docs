@@ -7,7 +7,7 @@ type Props = {
   title: string,
   description: string,
   body: string,
-  sheets: ?(string[]),
+  sheets: string[],
 };
 
 export default function HTML({ title, description, body, sheets }: Props) {
@@ -34,11 +34,9 @@ export default function HTML({ title, description, body, sheets }: Props) {
 
         <title>{title}</title>
 
-        {sheets
-          ? sheets.map(sheet => (
-              <link key={sheet} type="text/css" rel="stylesheet" href={sheet} />
-            ))
-          : null}
+        {sheets.map(sheet => (
+          <link key={sheet} type="text/css" rel="stylesheet" href={sheet} />
+        ))}
       </head>
       <body dangerouslySetInnerHTML={{ __html: body }} />
     </html>

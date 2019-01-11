@@ -2,7 +2,10 @@
 
 import * as React from 'react';
 
-export type Page = { type: 'md' | 'component' | 'custom', file: string };
+export type Page = {
+  type: 'md' | 'mdx' | 'component' | 'custom',
+  file: string,
+};
 
 export type Separator = { type: 'separator' };
 
@@ -66,8 +69,13 @@ export type Docs = {
 };
 
 export type Metadata =
-  | (PageInfo & { type: 'md', data: string })
   | (PageInfo & { type: 'component', data: Docs })
+  | (PageInfo & { type: 'md', data: string })
+  | (PageInfo & {
+      type: 'mdx',
+      data: React.ComponentType<{}>,
+      stringify: () => string,
+    })
   | (PageInfo & {
       type: 'custom',
       data: React.ComponentType<{}>,

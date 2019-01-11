@@ -4,9 +4,9 @@ import * as React from 'react';
 import Router from './Router';
 import Documentation from './Documentation';
 import Markdown from './Markdown';
+import Layout from './Layout';
 import Sidebar from './Sidebar';
 import Content from './Content';
-import Layout from './Layout';
 import type { Metadata, Route, Separator } from '../types';
 
 type Data = Array<Metadata | Separator>;

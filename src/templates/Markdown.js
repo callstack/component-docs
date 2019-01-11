@@ -3,12 +3,7 @@
 import * as React from 'react';
 import marked from 'marked';
 import sanitize from 'sanitize-html';
-import escape from 'escape-html';
-import { highlight, languages } from 'prismjs/components/prism-core';
-import 'prismjs/components/prism-clike';
-import 'prismjs/components/prism-javascript';
-import 'prismjs/components/prism-markup';
-import 'prismjs/components/prism-jsx';
+import highlightCode from '../utils/highlightCode.js';
 
 type Props = {
   source: string,
@@ -41,13 +36,9 @@ export default class Markdown extends React.Component<Props> {
       renderer,
       gfm: true,
       silent: true,
-      highlight: (code, lang) => {
-        const grammar = lang === 'js' ? languages.jsx : languages[lang];
-        return grammar ? highlight(code, grammar) : escape(code);
-      },
+      highlight: highlightCode,
     });
 
-    // eslint-disable-next-line global-require
     html = sanitize(html, require('../configs/santize-config.json'));
 
     return (

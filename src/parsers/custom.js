@@ -11,7 +11,7 @@ export default function custom(
   { root }: { root: string }
 ): Metadata {
   /* $FlowFixMe */
-  const exported = require(filepath); // eslint-disable-line global-require
+  const exported = require(filepath);
   const component =
     typeof exported.default === 'function' ? exported.default : exported;
   const name =

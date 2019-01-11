@@ -173,7 +173,12 @@ export function serve({
         pages = typeof getPages === 'function' ? getPages() : getPages;
         data = collectData(pages, { root });
 
-        fs.writeFileSync(path.join(output, 'app.data.js'), stringifyData(data));
+        const filepath = path.join(output, 'app.data.js');
+        const content = stringifyData(data);
+
+        if (content !== fs.readFileSync(filepath, 'utf-8')) {
+          fs.writeFileSync(filepath, content);
+        }
 
         routes = buildPageInfo(data).reduce((acc, info) => {
           acc[info.link] = buildHTML({

@@ -21,7 +21,10 @@ import type { Options, Page, Separator, Metadata, PageInfo } from './types';
 const buildPageInfo = (data: Array<Metadata | Separator>): PageInfo[] =>
   (data.filter(it => it.type !== 'separator'): any);
 
-const collectData = (pages: Array<Page | Separator>) =>
+const collectData = (
+  pages: Array<Page | Separator>,
+  options: { root: string }
+) =>
   pages.map(page => {
     if (page.type === 'separator') {
       return page;
@@ -29,11 +32,11 @@ const collectData = (pages: Array<Page | Separator>) =>
 
     switch (page.type) {
       case 'markdown':
-        return markdown(page.file);
+        return markdown(page.file, options);
       case 'component':
-        return component(page.file);
+        return component(page.file, options);
       case 'custom':
-        return custom(page.file);
+        return custom(page.file, options);
       default:
         throw new Error(`Invalid type ${String(page.type)} for ${page.file}`);
     }
@@ -47,6 +50,7 @@ const stringifyData = data => `module.exports = [
 ]`;
 
 export function build({
+  root = process.cwd(),
   assets,
   scripts,
   styles,
@@ -56,7 +60,7 @@ export function build({
   layout = require.resolve('./templates/Layout'),
 }: Options) {
   const pages = typeof getPages === 'function' ? getPages() : getPages;
-  const data = collectData(pages);
+  const data = collectData(pages, { root });
 
   if (!fs.existsSync(output)) {
     fs.mkdirSync(output);
@@ -96,7 +100,7 @@ export function build({
   });
 
   const config = configureWebpack({
-    root: process.cwd(),
+    root,
     entry: path.join(output, 'app.src.js'),
     output: {
       path: output,
@@ -120,6 +124,7 @@ export function build({
 }
 
 export function serve({
+  root = process.cwd(),
   assets,
   scripts,
   styles,
@@ -131,7 +136,7 @@ export function serve({
   open = true,
 }: Options) {
   let pages = typeof getPages === 'function' ? getPages() : getPages;
-  let data = collectData(pages);
+  let data = collectData(pages, { root });
 
   if (!fs.existsSync(output)) {
     fs.mkdirSync(output);
@@ -157,7 +162,7 @@ export function serve({
   }, {});
 
   watch(
-    [process.cwd()],
+    [root],
     { filter: f => !/node_modules/.test(f), delay: 100 },
     (event, file) => {
       if (!path.relative(path.dirname(file), output)) {
@@ -166,7 +171,7 @@ export function serve({
 
       try {
         pages = typeof getPages === 'function' ? getPages() : getPages;
-        data = collectData(pages);
+        data = collectData(pages, { root });
 
         fs.writeFileSync(path.join(output, 'app.data.js'), stringifyData(data));
 
@@ -218,7 +223,7 @@ export function serve({
   });
 
   const config = configureWebpack({
-    root: process.cwd(),
+    root,
     entry: path.join(output, 'app.src.js'),
     output: {
       path: output,

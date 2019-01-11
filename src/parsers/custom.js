@@ -6,12 +6,16 @@ import dashify from 'dashify';
 import getNameFromPath from '../utils/getNameFromPath';
 import type { Metadata } from '../types';
 
-export default function(file: string): Metadata {
+export default function(
+  filepath: string,
+  { root }: { root: string }
+): Metadata {
   /* $FlowFixMe */
-  const exported = require(file); // eslint-disable-line global-require
+  const exported = require(filepath); // eslint-disable-line global-require
   const component =
     typeof exported.default === 'function' ? exported.default : exported;
-  const name = component.displayName || component.name || getNameFromPath(file);
+  const name =
+    component.displayName || component.name || getNameFromPath(filepath);
   const meta = component.meta || {};
 
   const title = meta.title || name;
@@ -20,7 +24,7 @@ export default function(file: string): Metadata {
   const type = 'custom';
 
   return {
-    filepath: path.relative(process.cwd(), file),
+    filepath: path.relative(root, filepath),
     title,
     description,
     type,
@@ -29,7 +33,7 @@ export default function(file: string): Metadata {
     stringify() {
       return dedent`
         (function() {
-          var e = require(${JSON.stringify(file)});
+          var e = require(${JSON.stringify(filepath)});
           var c = typeof e.default === 'function' ? e.default : e;
           var m = c.meta || {};
           return {

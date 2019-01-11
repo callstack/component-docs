@@ -10,6 +10,7 @@ export type Page =
 export type Separator = { type: 'separator' };
 
 export type Options = {
+  root?: string,
   assets?: string[],
   styles?: string[],
   scripts?: string[],

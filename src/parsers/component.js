@@ -54,15 +54,18 @@ function staticPropertyHandler(documentation, propertyPath) {
   documentation.set('statics', statics);
 }
 
-export default function(file: string): Metadata {
-  const info = parse(fs.readFileSync(file).toString(), undefined, [
+export default function(
+  filepath: string,
+  { root }: { root: string }
+): Metadata {
+  const info = parse(fs.readFileSync(filepath, 'utf-8'), undefined, [
     ...defaultHandlers,
     staticPropertyHandler,
   ]);
-  const name = info.displayName || getNameFromPath(file);
+  const name = info.displayName || getNameFromPath(filepath);
 
   return {
-    filepath: path.relative(process.cwd(), file),
+    filepath: path.relative(root, filepath),
     title: name,
     description: info.description,
     link: dashify(name),

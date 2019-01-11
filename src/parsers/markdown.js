@@ -6,8 +6,11 @@ import dashify from 'dashify';
 import getNameFromPath from '../utils/getNameFromPath';
 import type { Metadata } from '../types';
 
-export default function(file: string): Metadata {
-  let text = fs.readFileSync(file).toString();
+export default function(
+  filepath: string,
+  { root }: { root: string }
+): Metadata {
+  let text = fs.readFileSync(filepath, 'utf-8');
   let slugs = [];
 
   const lines = text.split('\n');
@@ -39,7 +42,7 @@ export default function(file: string): Metadata {
       if (/^\/.+\.md$/.test(line)) {
         try {
           return fs
-            .readFileSync(path.join(path.dirname(file), line))
+            .readFileSync(path.join(path.dirname(filepath), line))
             .toString();
         } catch (e) {
           // do nothing
@@ -49,10 +52,10 @@ export default function(file: string): Metadata {
     })
     .join('\n');
 
-  const name = getNameFromPath(file);
+  const name = getNameFromPath(filepath);
 
   return {
-    filepath: path.relative(process.cwd(), file),
+    filepath: path.relative(root, filepath),
     title: meta.title || name,
     description: meta.description || '',
     link: meta.link || dashify(name),

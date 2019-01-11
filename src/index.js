@@ -18,9 +18,6 @@ import custom from './parsers/custom';
 import configureWebpack from './configureWebpack';
 import type { Options, Page, Separator, Metadata, PageInfo } from './types';
 
-const getPageList = (pages: Array<Page | Separator>): Page[] =>
-  (pages.filter(it => it.type !== 'separator'): any);
-
 const buildPageInfo = (data: Array<Metadata | Separator>): PageInfo[] =>
   (data.filter(it => it.type !== 'separator'): any);
 
@@ -159,41 +156,36 @@ export function serve({
     return acc;
   }, {});
 
-  const dirs = [];
+  watch(
+    [process.cwd()],
+    { filter: f => !/node_modules/.test(f), delay: 100 },
+    (event, file) => {
+      if (!path.relative(path.dirname(file), output)) {
+        return;
+      }
 
-  getPageList(pages).forEach(page => {
-    const dir = path.dirname(page.file);
-    if (!dirs.includes(dir)) {
-      dirs.push(dir);
+      try {
+        pages = typeof getPages === 'function' ? getPages() : getPages;
+        data = collectData(pages);
+
+        fs.writeFileSync(path.join(output, 'app.data.js'), stringifyData(data));
+
+        routes = buildPageInfo(data).reduce((acc, info) => {
+          acc[info.link] = buildHTML({
+            layout,
+            data,
+            info,
+            scripts: scripts
+              ? scripts.map(s => `scripts/${path.basename(s)}`)
+              : [],
+          });
+          return acc;
+        }, {});
+      } catch (e) {
+        console.log(chalk.red(`Error building files: ${e.toString()}`));
+      }
     }
-  });
-
-  watch(dirs, (event, file) => {
-    if (!path.relative(path.dirname(file), output)) {
-      return;
-    }
-
-    try {
-      pages = typeof getPages === 'function' ? getPages() : getPages;
-      data = collectData(pages);
-
-      fs.writeFileSync(path.join(output, 'app.data.js'), stringifyData(data));
-
-      routes = buildPageInfo(data).reduce((acc, info) => {
-        acc[info.link] = buildHTML({
-          layout,
-          data,
-          info,
-          scripts: scripts
-            ? scripts.map(s => `scripts/${path.basename(s)}`)
-            : [],
-        });
-        return acc;
-      }, {});
-    } catch (e) {
-      console.log(chalk.red(`Error building files: ${e.toString()}`));
-    }
-  });
+  );
 
   const app = express();
 

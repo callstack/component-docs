@@ -239,11 +239,9 @@ export function serve({
 
   app.use(
     devMiddleware(compiler, {
-      noInfo: true,
+      loglevel: 'warn',
       publicPath: config.output.publicPath,
-      stats: {
-        colors: true,
-      },
+      stats: 'errors-only',
     })
   );
   app.use(hotMiddleware(compiler));

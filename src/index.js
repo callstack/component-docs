@@ -12,7 +12,8 @@ import chalk from 'chalk';
 import opn from 'opn';
 import buildEntry from './buildEntry';
 import buildHTML from './buildHTML';
-import markdown from './parsers/markdown';
+import md from './parsers/md';
+import mdx from './parsers/mdx';
 import component from './parsers/component';
 import custom from './parsers/custom';
 import configureWebpack from './configureWebpack';
@@ -24,7 +25,9 @@ const buildPageInfo = (data: Array<Metadata | Separator>): PageInfo[] =>
 const collectData = (page: Page, options: { root: string }): Metadata => {
   switch (page.type) {
     case 'md':
-      return markdown(page.file, options);
+      return md(page.file, options);
+    case 'mdx':
+      return mdx(page.file, options);
     case 'component':
       return component(page.file, options);
     case 'custom':
@@ -172,7 +175,7 @@ export function serve({
   watch(
     [root],
     {
-      filter: f => /\.(md|js)$/.test(f) && !/node_modules/.test(f),
+      filter: f => /\.(md|mdx|js)$/.test(f) && !/node_modules/.test(f),
       recursive: true,
     },
     (event, file: string) => {

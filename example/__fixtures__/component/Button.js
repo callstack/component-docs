@@ -1,6 +1,6 @@
 /* eslint-disable react/no-unused-prop-types */
 
-import { Component } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 /**
@@ -50,9 +50,13 @@ export default class Button extends Component {
     disabled: false,
   };
 
-  static getDerivedStateFromProps() {}
+  static getDerivedStateFromProps() {
+    return null;
+  }
+
+  state = {};
 
   render() {
-    return null;
+    return <button>{this.props.children}</button>;
   }
 }

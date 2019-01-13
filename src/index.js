@@ -21,26 +21,18 @@ import type { Options, Page, Separator, Metadata, PageInfo } from './types';
 const buildPageInfo = (data: Array<Metadata | Separator>): PageInfo[] =>
   (data.filter(it => it.type !== 'separator'): any);
 
-const collectData = (
-  pages: Array<Page | Separator>,
-  options: { root: string }
-) =>
-  pages.map(page => {
-    if (page.type === 'separator') {
-      return page;
-    }
-
-    switch (page.type) {
-      case 'markdown':
-        return markdown(page.file, options);
-      case 'component':
-        return component(page.file, options);
-      case 'custom':
-        return custom(page.file, options);
-      default:
-        throw new Error(`Invalid type ${String(page.type)} for ${page.file}`);
-    }
-  });
+const collectData = (page: Page, options: { root: string }): Metadata => {
+  switch (page.type) {
+    case 'md':
+      return markdown(page.file, options);
+    case 'component':
+      return component(page.file, options);
+    case 'custom':
+      return custom(page.file, options);
+    default:
+      throw new Error(`Invalid type ${String(page.type)} for ${page.file}`);
+  }
+};
 
 const stringifyData = data => `module.exports = [
   ${data
@@ -60,7 +52,9 @@ export function build({
   layout = require.resolve('./templates/Layout'),
 }: Options) {
   const pages = typeof getPages === 'function' ? getPages() : getPages;
-  const data = collectData(pages, { root });
+  const data = pages.map(
+    page => (page.type === 'separator' ? page : collectData(page, { root }))
+  );
 
   if (!fs.existsSync(output)) {
     fs.mkdirSync(output);
@@ -135,8 +129,26 @@ export function serve({
   layout = require.resolve('./templates/Layout'),
   open = true,
 }: Options) {
+  const cache: Map<string, Metadata> = new Map();
+  const collectAndCache = (page: Page | Separator) => {
+    if (page.type === 'separator') {
+      return page;
+    }
+
+    let result = cache.get(page.file);
+
+    if (result) {
+      return result;
+    }
+
+    result = collectData(page, { root });
+    cache.set(page.file, result);
+
+    return result;
+  };
+
   let pages = typeof getPages === 'function' ? getPages() : getPages;
-  let data = collectData(pages, { root });
+  let data = pages.map(collectAndCache);
 
   if (!fs.existsSync(output)) {
     fs.mkdirSync(output);
@@ -165,17 +177,25 @@ export function serve({
     [root],
     {
       filter: f => /\.(md|js)$/.test(f) && !/node_modules/.test(f),
-      delay: 100,
       recursive: true,
     },
     (event, file: string) => {
-      if (!path.relative(path.dirname(file), output)) {
+      // Ignore files under the output directory
+      if (!path.relative(file, output).startsWith('..')) {
         return;
       }
 
+      // When a file changes, invalidate it's cache and all files dependent on it
+      cache.delete(file);
+      cache.forEach((page, key) => {
+        if (page.dependencies.includes(file)) {
+          cache.delete(key);
+        }
+      });
+
       try {
         pages = typeof getPages === 'function' ? getPages() : getPages;
-        data = collectData(pages, { root });
+        data = pages.map(collectAndCache);
 
         const filepath = path.join(output, 'app.data.js');
         const content = stringifyData(data);

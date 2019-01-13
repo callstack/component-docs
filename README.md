@@ -31,7 +31,7 @@ import path from 'path';
 import { build } from 'component-docs';
 
 const pages = [
-  { type: 'markdown', file: '../docs/Get Started.md' },
+  { type: 'md', file: '../docs/Get Started.md' },
   { type: 'component', file: '../src/Button.js', }
   { type: 'component', file: '../src/Calendar.js' },
 ];

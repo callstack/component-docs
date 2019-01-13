@@ -2,10 +2,7 @@
 
 import * as React from 'react';
 
-export type Page =
-  | { type: 'markdown', file: string }
-  | { type: 'component', file: string }
-  | { type: 'custom', file: string };
+export type Page = { type: 'md' | 'component' | 'custom', file: string };
 
 export type Separator = { type: 'separator' };
 
@@ -27,6 +24,7 @@ export type PageInfo = {
   description: string,
   link: string,
   filepath: string,
+  dependencies: string[],
 };
 
 export type TypeAnnotation = {
@@ -69,7 +67,7 @@ export type Docs = {
 };
 
 export type Metadata =
-  | (PageInfo & { type: 'markdown', data: string })
+  | (PageInfo & { type: 'md', data: string })
   | (PageInfo & { type: 'component', data: Docs })
   | (PageInfo & {
       type: 'custom',

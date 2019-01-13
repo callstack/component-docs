@@ -18,7 +18,7 @@ function pages() {
     ...fs
       .readdirSync(markdown)
       .map(f => path.join(markdown, f))
-      .map(file => ({ type: 'markdown', file })),
+      .map(file => ({ type: 'md', file })),
     { type: 'separator' },
     ...fs
       .readdirSync(component)

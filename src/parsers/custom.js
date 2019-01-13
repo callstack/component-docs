@@ -6,7 +6,7 @@ import dashify from 'dashify';
 import getNameFromPath from '../utils/getNameFromPath';
 import type { Metadata } from '../types';
 
-export default function(
+export default function custom(
   filepath: string,
   { root }: { root: string }
 ): Metadata {
@@ -45,5 +45,6 @@ export default function(
           };
         }())`;
     },
+    dependencies: [],
   };
 }

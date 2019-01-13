@@ -54,7 +54,7 @@ function staticPropertyHandler(documentation, propertyPath) {
   documentation.set('statics', statics);
 }
 
-export default function(
+export default function component(
   filepath: string,
   { root }: { root: string }
 ): Metadata {
@@ -71,5 +71,6 @@ export default function(
     link: dashify(name),
     data: info,
     type: 'component',
+    dependencies: [],
   };
 }

@@ -23,7 +23,7 @@ const buildRoutes = (
     let render;
 
     switch (item.type) {
-      case 'markdown':
+      case 'md':
         {
           const source = item.data;
           render = (props: { path: string }) => (

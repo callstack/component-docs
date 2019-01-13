@@ -2,14 +2,9 @@
 
 import * as React from 'react';
 import { css } from 'linaria';
-import type { Metadata, Separator } from '../types';
 
 type Props = {
-  path: string,
-  data: Array<Metadata | Separator>,
-  Sidebar: React.ComponentType<*>,
-  Content: React.ComponentType<*>,
-  children?: React.Node,
+  children: React.Node,
 };
 
 const wrapper = css`
@@ -22,17 +17,6 @@ const wrapper = css`
   }
 `;
 
-export default function Layout({
-  path,
-  data,
-  children,
-  Sidebar,
-  Content,
-}: Props) {
-  return (
-    <div className={wrapper}>
-      <Sidebar path={path} data={data} />
-      <Content>{children}</Content>
-    </div>
-  );
+export default function Layout({ children }: Props) {
+  return <div className={wrapper}>{children}</div>;
 }

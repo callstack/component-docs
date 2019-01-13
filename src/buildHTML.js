@@ -10,7 +10,6 @@ type Options = {
   data: Array<Metadata | Separator>,
   info: PageInfo,
   github?: string,
-  layout: string,
   sheets: string[],
   scripts: string[],
 };
@@ -19,19 +18,11 @@ export default function buildHTML({
   data,
   info,
   github,
-  layout,
   sheets,
   scripts,
 }: Options) {
-  /* $FlowFixMe */
-  const Layout = require(layout); // eslint-disable-line global-require
   const html = ReactDOMServer.renderToString(
-    <App
-      path={info.link}
-      data={data}
-      github={github}
-      layout={Layout.__esModule ? Layout.default : Layout}
-    />
+    <App path={info.link} data={data} github={github} />
   );
 
   let body = `<div id='root'>${html}</div>`;

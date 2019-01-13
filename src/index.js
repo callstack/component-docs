@@ -49,11 +49,10 @@ export function build({
   pages: getPages,
   github,
   output,
-  layout = require.resolve('./templates/Layout'),
 }: Options) {
   const pages = typeof getPages === 'function' ? getPages() : getPages;
-  const data = pages.map(
-    page => (page.type === 'separator' ? page : collectData(page, { root }))
+  const data = pages.map(page =>
+    page.type === 'separator' ? page : collectData(page, { root })
   );
 
   if (!fs.existsSync(output)) {
@@ -74,7 +73,7 @@ export function build({
 
   fs.writeFileSync(
     path.join(output, 'app.src.js'),
-    buildEntry({ layout, styles, github })
+    buildEntry({ styles, github })
   );
 
   fs.writeFileSync(path.join(output, 'app.data.js'), stringifyData(data));
@@ -83,7 +82,6 @@ export function build({
     fs.writeFileSync(
       path.join(output, `${info.link}.html`),
       buildHTML({
-        layout,
         data,
         info,
         github,
@@ -126,7 +124,6 @@ export function serve({
   github,
   output,
   port = 3031,
-  layout = require.resolve('./templates/Layout'),
   open = true,
 }: Options) {
   const cache: Map<string, Metadata> = new Map();
@@ -156,14 +153,13 @@ export function serve({
 
   fs.writeFileSync(
     path.join(output, 'app.src.js'),
-    buildEntry({ layout, styles, github })
+    buildEntry({ styles, github })
   );
 
   fs.writeFileSync(path.join(output, 'app.data.js'), stringifyData(data));
 
   let routes = buildPageInfo(data).reduce((acc, info) => {
     acc[info.link] = buildHTML({
-      layout,
       data,
       info,
       github,
@@ -206,7 +202,6 @@ export function serve({
 
         routes = buildPageInfo(data).reduce((acc, info) => {
           acc[info.link] = buildHTML({
-            layout,
             data,
             info,
             github,

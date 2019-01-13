@@ -3,11 +3,9 @@
 import path from 'path';
 
 export default function buildEntry({
-  layout,
   styles,
   github,
 }: {
-  layout: string,
   styles?: string[],
   github?: string,
 }) {
@@ -16,7 +14,6 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import RedBox from 'redbox-react';
 import App from '${require.resolve('./templates/App')}';
-import Layout from '${layout}';
 import data from './app.data';
 import '${path.resolve(__dirname, './styles/reset.css')}';
 import '${path.resolve(__dirname, './styles/globals.css')}';
@@ -37,7 +34,6 @@ const render = () => {
         name={window.__INITIAL_PATH__}
         data={data}
         github={${JSON.stringify(github)}}
-        layout={Layout}
       />,
       root
     );

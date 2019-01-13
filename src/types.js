@@ -14,7 +14,6 @@ export type Options = {
   pages: Array<Page | Separator> | (() => Array<Page | Separator>),
   output: string,
   port?: number,
-  layout?: string,
   open?: boolean,
   github?: string,
 };

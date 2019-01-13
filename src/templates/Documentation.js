@@ -2,6 +2,7 @@
 
 import * as React from 'react';
 import { css, cx } from 'linaria';
+import Content from './Content';
 import Markdown from './Markdown';
 import EditButton from './EditButton';
 import type { TypeAnnotation, Docs } from '../types';
@@ -12,14 +13,6 @@ type Props = {
   filepath: string,
   github?: string,
 };
-
-const container = css`
-  padding: 0 12px;
-
-  @media (min-width: 640px) {
-    padding: 0;
-  }
-`;
 
 const title = css`
   font-size: 36px;
@@ -94,8 +87,8 @@ const hasAnnotation = (item: any, annotation: string) =>
   item.description
     ? item.description.startsWith(annotation)
     : item.docblock
-      ? item.docblock.startsWith(annotation)
-      : false;
+    ? item.docblock.startsWith(annotation)
+    : false;
 
 const pascalToCamelCase = (text: string) =>
   text.replace(/^[A-Z]+/g, $1 => $1.toLowerCase());
@@ -274,7 +267,7 @@ export default function Documentation({ name, info, github, filepath }: Props) {
     );
 
   return (
-    <div className={container}>
+    <Content>
       <EditButton github={github} filepath={filepath} />
       <h1 className={title}>{name}</h1>
       <Markdown
@@ -337,6 +330,6 @@ export default function Documentation({ name, info, github, filepath }: Props) {
           })}
         </React.Fragment>
       ) : null}
-    </div>
+    </Content>
   );
 }

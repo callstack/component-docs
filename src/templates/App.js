@@ -6,17 +6,12 @@ import Documentation from './Documentation';
 import Markdown from './Markdown';
 import Sidebar from './Sidebar';
 import Content from './Content';
+import Layout from './Layout';
 import type { Metadata, Route, Separator } from '../types';
 
 type Data = Array<Metadata | Separator>;
 
-const buildRoutes = (
-  data: Data,
-  layout: React.ComponentType<*>,
-  github?: string
-): Array<Route> => {
-  const Layout = layout;
-
+const buildRoutes = (data: Data, github?: string): Array<Route> => {
   const items: any[] = data.filter(item => item.type !== 'separator');
 
   return items.map((item: Metadata) => {
@@ -27,8 +22,11 @@ const buildRoutes = (
         {
           const source = item.data;
           render = (props: { path: string }) => (
-            <Layout {...props} data={data} Sidebar={Sidebar} Content={Content}>
-              <Markdown source={source} />
+            <Layout>
+              <Sidebar path={props.path} data={data} />
+              <Content>
+                <Markdown source={source} />
+              </Content>
             </Layout>
           );
         }
@@ -37,7 +35,8 @@ const buildRoutes = (
         {
           const info = item.data;
           render = (props: { path: string }) => (
-            <Layout {...props} data={data} Sidebar={Sidebar} Content={Content}>
+            <Layout>
+              <Sidebar path={props.path} data={data} />
               <Documentation
                 name={item.title}
                 info={info}
@@ -52,12 +51,10 @@ const buildRoutes = (
         {
           const CustomComponent = item.data;
           render = (props: { path: string }) => (
-            <Layout
-              {...props}
-              data={data}
-              Sidebar={Sidebar}
-              Content={CustomComponent}
-            />
+            <Layout>
+              <Sidebar path={props.path} data={data} />
+              <CustomComponent />
+            </Layout>
           );
         }
         break;
@@ -76,11 +73,10 @@ const buildRoutes = (
 type Props = {
   path: string,
   data: Data,
-  layout: React.ComponentType<*>,
   github?: string,
 };
 
-export default function App({ path, data, layout, github }: Props) {
-  const routes = buildRoutes(data, layout, github);
+export default function App({ path, data, github }: Props) {
+  const routes = buildRoutes(data, github);
   return <Router path={path} routes={routes} />;
 }

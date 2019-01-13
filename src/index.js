@@ -163,8 +163,12 @@ export function serve({
 
   watch(
     [root],
-    { filter: f => !/node_modules/.test(f), delay: 100 },
-    (event, file) => {
+    {
+      filter: f => /\.(md|js)$/.test(f) && !/node_modules/.test(f),
+      delay: 100,
+      recursive: true,
+    },
+    (event, file: string) => {
       if (!path.relative(path.dirname(file), output)) {
         return;
       }

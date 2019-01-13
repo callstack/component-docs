@@ -3,7 +3,20 @@
 import * as React from 'react';
 import marked from 'marked';
 import sanitize from 'sanitize-html';
-import highlightCode from '../utils/highlightCode.js';
+import escape from 'escape-html';
+import { highlight, languages } from 'prismjs/components/prism-core';
+
+// Keep these in sync with MDX
+import 'prismjs/components/prism-clike';
+import 'prismjs/components/prism-javascript';
+import 'prismjs/components/prism-typescript';
+import 'prismjs/components/prism-markup';
+import 'prismjs/components/prism-jsx';
+import 'prismjs/components/prism-json';
+import 'prismjs/components/prism-bash';
+import 'prismjs/components/prism-swift';
+import 'prismjs/components/prism-java';
+import 'prismjs/components/prism-diff';
 
 type Props = {
   source: string,
@@ -36,7 +49,10 @@ export default class Markdown extends React.Component<Props> {
       renderer,
       gfm: true,
       silent: true,
-      highlight: highlightCode,
+      highlight(code, lang) {
+        const grammar = lang === 'js' ? languages.jsx : languages[lang];
+        return grammar ? highlight(code, grammar) : escape(code);
+      },
     });
 
     html = sanitize(html, require('../configs/santize-config.json'));

@@ -63,7 +63,7 @@ For example:
 ```md
 ## Some heading
 
-/../Details.md
+​/../Details.md
 
 Some more text here.
 ```

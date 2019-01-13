@@ -7,10 +7,9 @@ import vm from 'vm';
 import relative from 'require-relative';
 import dashify from 'dashify';
 import mdx from '@mdx-js/mdx';
-import visit from 'unist-util-visit';
 import { transformSync } from '@babel/core';
 import getNameFromPath from '../utils/getNameFromPath';
-import highlightCode from '../utils/highlightCode';
+import rehypePrism from '../utils/rehypePrism';
 import Content from '../templates/Content';
 import type { Metadata } from '../types';
 
@@ -22,19 +21,7 @@ export default function(
 
   const code = mdx.sync(text, {
     filepath,
-    mdPlugins: [
-      () => tree => {
-        visit(tree, 'code', node => {
-          /* eslint-disable no-param-reassign */
-          node.type = 'html';
-          node.value = [
-            `<pre><code class="language-${node.lang}">`,
-            highlightCode(node.value, node.lang),
-            `</code></pre>`,
-          ].join('');
-        });
-      },
-    ],
+    hastPlugins: [rehypePrism],
   });
 
   // Compile code to ES5 so we can run it

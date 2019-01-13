@@ -39,7 +39,6 @@ export default function(
         require.resolve('@babel/preset-env'),
         require.resolve('@babel/preset-react'),
       ],
-      plugins: [require.resolve('babel-plugin-react-html-attrs')],
     }
   ).code;
 

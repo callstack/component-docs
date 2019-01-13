@@ -95,6 +95,15 @@ export default ({ root, entry, output, production }: Options) => ({
           },
         ],
       },
+      {
+        test: /\.(bmp|gif|jpg|jpeg|png|svg|webp|eot|woff|woff2|ttf)$/,
+        use: {
+          loader: 'file-loader',
+          options: {
+            outputPath: 'assets/',
+          },
+        },
+      },
     ],
   },
 });

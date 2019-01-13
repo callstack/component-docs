@@ -39,6 +39,7 @@
     "doctrine": "^2.1.0",
     "escape-html": "^1.0.3",
     "express": "^4.16.3",
+    "file-loader": "^3.0.1",
     "fs-extra": "^7.0.0",
     "history": "^4.7.2",
     "ignore-styles": "^5.0.1",

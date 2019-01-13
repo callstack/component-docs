@@ -16,7 +16,7 @@ export default function custom(
     typeof exported.default === 'function' ? exported.default : exported;
   const name =
     component.displayName || component.name || getNameFromPath(filepath);
-  const meta = component.meta || {};
+  const meta = exported.meta || {};
 
   const title = meta.title || name;
   const description = meta.description;
@@ -35,7 +35,7 @@ export default function custom(
         (function() {
           var e = require(${JSON.stringify(filepath)});
           var c = typeof e.default === 'function' ? e.default : e;
-          var m = c.meta || {};
+          var m = e.meta || {};
           return {
              title: m.title || ${JSON.stringify(title)},
              link: m.link || ${JSON.stringify(link)},

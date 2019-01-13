@@ -10,13 +10,13 @@ const container = css`
 `;
 
 export default class Custom extends React.Component<{}> {
-  static meta = {
-    title: 'Custom 🎉',
-    description: 'Custom React Component',
-    link: 'custom-component',
-  };
-
   render() {
     return <div className={container}>🌹 🌻 🌷 🌿 🌵 🌾 🌼⁣</div>;
   }
 }
+
+export const meta = {
+  title: 'Custom 🎉',
+  description: 'Custom React Component',
+  link: 'custom-component',
+};

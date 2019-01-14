@@ -18,7 +18,7 @@ const babelrc = {
   babelrc: false,
   presets: [
     [
-      '@babel/preset-env',
+      require.resolve('@babel/preset-env'),
       {
         modules: false,
         targets: {
@@ -26,18 +26,20 @@ const babelrc = {
         },
       },
     ],
-    '@babel/preset-react',
-    '@babel/preset-flow',
-    'linaria/babel',
+    require.resolve('@babel/preset-react'),
+    require.resolve('@babel/preset-flow'),
+    require.resolve('linaria/babel'),
   ],
-  plugins: ['@babel/plugin-proposal-class-properties'],
+  plugins: [require.resolve('@babel/plugin-proposal-class-properties')],
 };
 
 export default ({ root, entry, output, production }: Options) => ({
   context: root,
   mode: production ? 'production' : 'development',
   devtool: 'source-map',
-  entry: production ? entry : ['webpack-hot-middleware/client', entry],
+  entry: production
+    ? entry
+    : [require.resolve('webpack-hot-middleware/client'), entry],
   output: {
     path: output.path,
     filename: output.bundle,
@@ -72,11 +74,11 @@ export default ({ root, entry, output, production }: Options) => ({
         exclude: /node_modules/,
         use: [
           {
-            loader: 'babel-loader',
+            loader: require.resolve('babel-loader'),
             options: babelrc,
           },
           {
-            loader: 'linaria/loader',
+            loader: require.resolve('linaria/loader'),
             options: { sourceMap: !production },
           },
         ],
@@ -84,13 +86,13 @@ export default ({ root, entry, output, production }: Options) => ({
       {
         test: /\.css$/,
         use: [
-          { loader: 'css-hot-loader' },
+          { loader: require.resolve('css-hot-loader') },
           {
             loader: MiniCssExtractPlugin.loader,
             options: { sourceMap: !production },
           },
           {
-            loader: 'css-loader',
+            loader: require.resolve('css-loader'),
             options: { sourceMap: !production },
           },
         ],
@@ -98,7 +100,7 @@ export default ({ root, entry, output, production }: Options) => ({
       {
         test: /\.(bmp|gif|jpg|jpeg|png|svg|webp|eot|woff|woff2|ttf)$/,
         use: {
-          loader: 'file-loader',
+          loader: require.resolve('file-loader'),
           options: {
             outputPath: 'assets/',
             publicPath: 'assets/',

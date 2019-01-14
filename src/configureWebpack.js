@@ -101,6 +101,7 @@ export default ({ root, entry, output, production }: Options) => ({
           loader: 'file-loader',
           options: {
             outputPath: 'assets/',
+            publicPath: 'assets/',
           },
         },
       },

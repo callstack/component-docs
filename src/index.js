@@ -7,7 +7,8 @@ import devMiddleware from 'webpack-dev-middleware';
 import hotMiddleware from 'webpack-hot-middleware';
 import fs from 'fs-extra';
 import path from 'path';
-import watch from 'node-watch';
+import inside from 'path-is-inside';
+import sane from 'sane';
 import chalk from 'chalk';
 import opn from 'opn';
 import buildEntry from './buildEntry';
@@ -172,54 +173,59 @@ export function serve({
     return acc;
   }, {});
 
-  watch(
-    [root],
-    {
-      filter: f => /\.(md|mdx|js)$/.test(f) && !/node_modules/.test(f),
-      recursive: true,
-    },
-    (event, file: string) => {
-      // Ignore files under the output directory
-      if (!path.relative(file, output).startsWith('..')) {
-        return;
-      }
+  const callback = () => (relative: string, base: string) => {
+    const file = path.join(base, relative);
 
-      // When a file changes, invalidate it's cache and all files dependent on it
-      cache.delete(file);
-      cache.forEach((page, key) => {
-        if (page.dependencies.includes(file)) {
-          cache.delete(key);
-        }
-      });
-
-      try {
-        pages = typeof getPages === 'function' ? getPages() : getPages;
-        data = pages.map(collectAndCache);
-
-        const filepath = path.join(output, 'app.data.js');
-        const content = stringifyData(data);
-
-        if (content !== fs.readFileSync(filepath, 'utf-8')) {
-          fs.writeFileSync(filepath, content);
-        }
-
-        routes = buildPageInfo(data).reduce((acc, info) => {
-          acc[info.link] = buildHTML({
-            data,
-            info,
-            github,
-            sheets: ['app.css'],
-            scripts: scripts
-              ? scripts.map(s => `scripts/${path.basename(s)}`)
-              : [],
-          });
-          return acc;
-        }, {});
-      } catch (e) {
-        console.log(chalk.red(`Error building files: ${e.toString()}`));
-      }
+    // Ignore files under the output directory
+    if (inside(file, output)) {
+      return;
     }
-  );
+
+    // When a file changes, invalidate it's cache and all files dependent on it
+    cache.delete(file);
+    cache.forEach((page, key) => {
+      if (page.dependencies.includes(file)) {
+        cache.delete(key);
+      }
+    });
+
+    try {
+      pages = typeof getPages === 'function' ? getPages() : getPages;
+      data = pages.map(collectAndCache);
+
+      const filepath = path.join(output, 'app.data.js');
+      const content = stringifyData(data);
+
+      if (content !== fs.readFileSync(filepath, 'utf-8')) {
+        fs.writeFileSync(filepath, content);
+      }
+
+      routes = buildPageInfo(data).reduce((acc, info) => {
+        acc[info.link] = buildHTML({
+          data,
+          info,
+          github,
+          sheets: ['app.css'],
+          scripts: scripts
+            ? scripts.map(s => `scripts/${path.basename(s)}`)
+            : [],
+        });
+        return acc;
+      }, {});
+    } catch (e) {
+      console.log(chalk.red(`Error building files: ${e.toString()}`));
+    }
+  };
+
+  const watcher = sane(root, {
+    watchman: true,
+    glob: ['**/*.md', '**/*.mdx', '**/*.js'],
+    ignored: /node_modules/,
+  });
+
+  watcher.on('change', callback());
+  watcher.on('add', callback());
+  watcher.on('delete', callback());
 
   const app = express();
 

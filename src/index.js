@@ -173,11 +173,32 @@ export function serve({
     return acc;
   }, {});
 
-  const callback = () => (relative: string, base: string) => {
+  const callback = (event: 'change' | 'add' | 'delete') => (
+    relative: string,
+    base: string
+  ) => {
     const file = path.join(base, relative);
 
     // Ignore files under the output directory
     if (inside(file, output)) {
+      return;
+    }
+
+    if (
+      event === 'change' &&
+      !pages.some(page => {
+        // Check if the changed file was a page
+        if (page.type !== 'separator' && page.file === file) {
+          return true;
+        }
+
+        // Check if the changed file was a dependency
+        return data.some(item =>
+          item.type !== 'separator' ? item.dependencies.includes(file) : false
+        );
+      })
+    ) {
+      // Ignore if the changed file is not in the dependency tree
       return;
     }
 
@@ -223,9 +244,9 @@ export function serve({
     ignored: /node_modules/,
   });
 
-  watcher.on('change', callback());
-  watcher.on('add', callback());
-  watcher.on('delete', callback());
+  watcher.on('change', callback('change'));
+  watcher.on('add', callback('add'));
+  watcher.on('delete', callback('delete'));
 
   const app = express();
 

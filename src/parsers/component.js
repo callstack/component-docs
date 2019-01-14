@@ -71,6 +71,6 @@ export default function component(
     link: dashify(name),
     data: info,
     type: 'component',
-    dependencies: [],
+    dependencies: [filepath],
   };
 }

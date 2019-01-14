@@ -248,6 +248,17 @@ export function serve({
   watcher.on('add', callback('add'));
   watcher.on('delete', callback('delete'));
 
+  const cleanup = () => {
+    watcher.close();
+    process.exit();
+  };
+
+  process.stdin.resume();
+  process.on('SIGINT', cleanup);
+  process.on('SIGUSR1', cleanup);
+  process.on('SIGUSR2', cleanup);
+  process.on('uncaughtException', cleanup);
+
   const app = express();
 
   if (assets) {

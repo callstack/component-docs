@@ -11,7 +11,11 @@ import type { Metadata, Route, Separator } from '../types';
 
 type Data = Array<Metadata | Separator>;
 
-const buildRoutes = (data: Data, github?: string): Array<Route> => {
+const buildRoutes = (
+  data: Data,
+  github?: string,
+  logo?: string
+): Array<Route> => {
   const items: any[] = data.filter(item => item.type !== 'separator');
 
   return items.map((item: Metadata) => {
@@ -23,7 +27,7 @@ const buildRoutes = (data: Data, github?: string): Array<Route> => {
           const source = item.data;
           render = (props: { path: string }) => (
             <Layout>
-              <Sidebar path={props.path} data={data} />
+              <Sidebar logo={logo} path={props.path} data={data} />
               <Content>
                 <Markdown source={source} />
               </Content>
@@ -36,7 +40,7 @@ const buildRoutes = (data: Data, github?: string): Array<Route> => {
           const info = item.data;
           render = (props: { path: string }) => (
             <Layout>
-              <Sidebar path={props.path} data={data} />
+              <Sidebar logo={logo} path={props.path} data={data} />
               <Documentation
                 name={item.title}
                 info={info}
@@ -52,7 +56,7 @@ const buildRoutes = (data: Data, github?: string): Array<Route> => {
           const CustomComponent = item.data;
           render = (props: { path: string }) => (
             <Layout>
-              <Sidebar path={props.path} data={data} />
+              <Sidebar logo={logo} path={props.path} data={data} />
               <CustomComponent />
             </Layout>
           );
@@ -74,9 +78,10 @@ type Props = {
   path: string,
   data: Data,
   github?: string,
+  logo?: string,
 };
 
-export default function App({ path, data, github }: Props) {
-  const routes = buildRoutes(data, github);
+export default function App({ path, data, github, logo }: Props) {
+  const routes = buildRoutes(data, github, logo);
   return <Router path={path} routes={routes} />;
 }

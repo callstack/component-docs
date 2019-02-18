@@ -7,6 +7,7 @@ import { build, serve } from '../src';
 const task = process.argv[2];
 const output = path.join(__dirname, 'dist');
 const fixtures = path.join(__dirname, '__fixtures__');
+const assets = path.join(fixtures, 'assets');
 const github = 'https://github.com/callstack/component-docs/edit/master';
 
 function pages() {
@@ -32,20 +33,17 @@ function pages() {
   ];
 }
 
+const options = {
+  logo: 'images/logo.svg',
+  assets: [path.join(assets, 'screenshots'), path.join(assets, 'images')],
+  styles: [path.join(assets, 'styles.css')],
+  pages,
+  output,
+  github,
+};
+
 if (task !== 'build') {
-  serve({
-    assets: [path.join(fixtures, 'assets', 'screenshots')],
-    styles: [path.join(fixtures, 'assets', 'styles.css')],
-    pages,
-    output,
-    github,
-  });
+  serve(options);
 } else {
-  build({
-    assets: [path.join(fixtures, 'assets', 'screenshots')],
-    styles: [path.join(fixtures, 'assets', 'styles.css')],
-    pages,
-    output,
-    github,
-  });
+  build(options);
 }

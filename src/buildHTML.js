@@ -10,6 +10,7 @@ type Options = {
   data: Array<Metadata | Separator>,
   info: PageInfo,
   github?: string,
+  logo?: string,
   sheets: string[],
   scripts: string[],
 };
@@ -18,11 +19,12 @@ export default function buildHTML({
   data,
   info,
   github,
+  logo,
   sheets,
   scripts,
 }: Options) {
   const html = ReactDOMServer.renderToString(
-    <App path={info.link} data={data} github={github} />
+    <App logo={logo} path={info.link} data={data} github={github} />
   );
 
   let body = `<div id='root'>${html}</div>`;

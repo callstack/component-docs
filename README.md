@@ -1,6 +1,6 @@
-# component-docs
+# Component Docs
 
-![styled_with linaria](https://img.shields.io/badge/styled_with-linaria-de2d68.svg)
+![styled_with linaria](https://img.shields.io/badge/styled_with-linaria-de2d68.svg?style=flat-square)
 
 📝 Simple documentation for your React components.
 
@@ -14,14 +14,10 @@
 - Supports rendering React Components as well as markdown and MDX files
 - Support including markdown from a file reference in markdown files
 
-## Non-Goals
-
-- Customizability - it's easy enough to use `react-docgen` directly, though we need some simple customization features
-
 ## Installation
 
 ```sh
-npm install --save-dev component-docs
+yarn add --dev component-docs
 ```
 
 ## API

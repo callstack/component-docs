@@ -5,9 +5,11 @@ import path from 'path';
 export default function buildEntry({
   styles,
   github,
+  logo,
 }: {
   styles?: string[],
   github?: string,
+  logo?: string,
 }) {
   return `
 import React from 'react';
@@ -19,12 +21,12 @@ import '${path.resolve(__dirname, './styles/reset.css')}';
 import '${path.resolve(__dirname, './styles/globals.css')}';
 
 ${
-    styles
-      ? styles
-          .map(sheet => `import '${path.resolve(__dirname, sheet)}';`)
-          .join('\n')
-      : ''
-  }
+  styles
+    ? styles
+        .map(sheet => `import '${path.resolve(__dirname, sheet)}';`)
+        .join('\n')
+    : ''
+}
 
 const root = document.getElementById('root');
 const render = () => {
@@ -34,6 +36,7 @@ const render = () => {
         name={window.__INITIAL_PATH__}
         data={data}
         github={${JSON.stringify(github)}}
+        logo={${JSON.stringify(logo)}}
       />,
       root
     );

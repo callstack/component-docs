@@ -13,7 +13,7 @@ const editButton = css`
   position: absolute;
   top: 0;
   right: 48px;
-  padding: 16px;
+  padding: 30px;
   z-index: 10;
   color: inherit;
 

@@ -11,6 +11,7 @@ export type Separator = { type: 'separator' };
 
 export type Options = {
   root?: string,
+  logo?: string,
   assets?: string[],
   styles?: string[],
   scripts?: string[],

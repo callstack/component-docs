@@ -7,30 +7,29 @@ import type { Metadata, Separator } from '../types';
 
 const TEXT_COLOR = '#888';
 const TEXT_HOVER_COLOR = '#111';
+const TEXT_ACTIVE_COLOR = '#397AF9';
 
 const sidebar = css`
-  background-color: #fafafa;
-  box-shadow: 0 0.5px 1.5px rgba(0, 0, 0, 0.32);
+  background-color: #f8f9fa;
 
   @media (min-width: 640px) {
     height: 100%;
     min-width: 240px;
-  }
-`;
-
-const navigation = css`
-  padding: 24px;
-
-  @media (min-width: 640px) {
-    height: 100%;
     overflow: auto;
     -webkit-overflow-scrolling: touch;
   }
 `;
 
+const navigation = css`
+  padding: 12px 24px;
+
+  @media (min-width: 640px) {
+    padding: 20px 32px;
+  }
+`;
+
 const menu = css`
   position: absolute;
-  padding-top: 42px;
   opacity: 0;
   pointer-events: none;
 
@@ -49,7 +48,7 @@ const menuIcon = css`
   position: absolute;
   top: 0;
   right: 0;
-  padding: 16px;
+  padding: 30px;
   z-index: 10;
   -webkit-tap-highlight-color: transparent;
 
@@ -73,42 +72,48 @@ const menuButton = css`
   }
 `;
 
+const logoImage = css`
+  display: block;
+  height: 48px;
+  width: auto;
+  margin: 32px 32px 0;
+`;
+
 const searchbar = css`
-  position: absolute;
-  top: 0;
-  right: 0;
   appearance: none;
-  width: 100%;
-  padding: 16px 48px 16px 24px;
+  width: calc(100% - 48px);
+  padding: 8px 12px;
+  margin: 72px 24px 0;
   font-size: 1em;
-  background-color: white;
-  border-width: 0 0 1px 0;
-  border-style: solid;
-  border-color: rgba(0, 0, 0, 0.08);
-  transition: box-shadow 0.3s;
+  background-color: rgba(0, 0, 55, 0.08);
+  transition: background-color 0.3s;
+  border-radius: 3px;
+  border: 0;
   outline: 0;
 
   &:focus {
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+    background-color: rgba(0, 0, 55, 0.12);
   }
 
   @media (min-width: 640px) {
-    padding: 12px 24px;
+    width: calc(100% - 64px);
+    margin: 32px 32px 0;
   }
 `;
 
 const separator = css`
   border: 0;
-  background-color: rgba(0, 0, 0, 0.08);
+  background-color: rgba(0, 0, 0, 0.04);
   height: 1px;
-  margin: 8px 0;
+  margin: 20px 0;
 `;
 
 const link = css`
   display: block;
-  padding: 8px 0;
+  padding: 12px 0;
   text-decoration: none;
   color: ${TEXT_COLOR};
+  line-height: 1;
 
   &:hover {
     color: ${TEXT_HOVER_COLOR};
@@ -116,9 +121,11 @@ const link = css`
 `;
 
 const active = css`
-  color: #333;
-  -webkit-text-stroke-color: currentColor;
-  -webkit-text-stroke-width: 1px;
+  color: ${TEXT_ACTIVE_COLOR};
+
+  &:hover {
+    color: ${TEXT_ACTIVE_COLOR};
+  }
 `;
 
 const row = css`
@@ -134,19 +141,19 @@ const row = css`
 
 const sectionItems = css`
   position: relative;
-  padding-left: 15px;
+  padding-left: 12px;
   transition: 0.3s;
 
   &:before {
     content: '';
     display: block;
     position: absolute;
-    background-color: rgba(0, 0, 0, 0.08);
+    background-color: rgba(0, 0, 0, 0.04);
     width: 1px;
     top: 0;
     bottom: 0;
     left: 0;
-    margin: 8px 0;
+    margin: 12px 0;
   }
 `;
 
@@ -162,14 +169,15 @@ const sectionItemsHidden = css`
 const buttonIcon = css`
   background-color: transparent;
   border: none;
-  color: ${TEXT_COLOR};
+  color: #aaa;
   cursor: pointer;
   margin: 0;
   padding: 10px 12px;
   transition: 0.3s;
+  opacity: 0.8;
 
   &:hover {
-    color: ${TEXT_HOVER_COLOR};
+    color: #555;
   }
 
   &:focus {
@@ -186,6 +194,7 @@ const collapsedIcon = css`
 `;
 
 type Props = {
+  logo?: string,
   path: string,
   data: Array<Metadata | Separator>,
 };
@@ -263,7 +272,7 @@ export default class Sidebar extends React.Component<Props, State> {
   _items: { [key: string]: ?HTMLDivElement } = {};
 
   render() {
-    const { path, data } = this.props;
+    const { path, data, logo } = this.props;
     const mapper = (item, i) => {
       if (item.type === 'separator') {
         return <hr key={`separator-${i + 1}`} className={separator} />;
@@ -456,6 +465,7 @@ export default class Sidebar extends React.Component<Props, State> {
           ☰
         </label>
         <div className={menu}>
+          {logo ? <img className={logoImage} src={logo} alt="Logo" /> : null}
           <input
             type="search"
             value={this.state.query}

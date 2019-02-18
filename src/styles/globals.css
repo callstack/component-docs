@@ -15,19 +15,20 @@ body {
 }
 
 a {
-  color: #1976D2;
+  color: #397AF9;
   text-decoration: none;
 }
 
 a:hover {
-  color: #2196F3;
+  color: #0053FA;
 }
 
 h1, h2, h3, h4, h5, h6 {
-  margin: 20px 0 10px;
+  margin: 24px 0 12px;
   padding: 0;
   font-weight: bold;
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   cursor: text;
   position: relative;
 }
@@ -62,17 +63,28 @@ h6 tt, h6 code {
 }
 
 h1 {
-  font-size: 28px;
+  font-size: 36px;
+  line-height: 1.4;
+  margin-top: 48px;
+  margin-bottom: 24px;
   color: black;
+  font-weight: 400;
 }
 
 h2 {
   font-size: 24px;
+  line-height: 1.4;
+  margin-top: 36px;
+  margin-bottom: 12px;
   color: black;
+  font-weight: 500;
 }
 
 h3 {
   font-size: 18px;
+  line-height: 1.4;
+  color: black;
+  font-weight: 500;
 }
 
 h4 {
@@ -93,7 +105,7 @@ ul, ol {
 }
 
 p, blockquote, ul, ol, dl, li, table, pre {
-  margin: 15px 0;
+  margin: 14px 0;
 }
 
 hr {
@@ -133,7 +145,7 @@ h1 p, h2 p, h3 p, h4 p, h5 p, h6 p {
 }
 
 ul, ol {
-  padding-left: 30px;
+  padding-left: 36px;
 }
 
 ul :first-child, ol :first-child {
@@ -153,7 +165,7 @@ dl dt {
   font-weight: bold;
   font-style: italic;
   padding: 0;
-  margin: 15px 0 5px;
+  margin: 14px 0 8px;
 }
 
 dl dt:first-child {
@@ -169,8 +181,8 @@ dl dt > :last-child {
 }
 
 dl dd {
-  margin: 0 0 15px;
-  padding: 0 15px;
+  margin: 0 0 14px;
+  padding: 0 14px;
 }
 
 dl dd > :first-child {
@@ -183,7 +195,7 @@ dl dd > :last-child {
 
 blockquote {
   border-left: 4px solid #dddddd;
-  padding: 0 15px;
+  padding: 0 14px;
   color: #777777;
 }
 
@@ -215,14 +227,14 @@ table tr th {
   border: 1px solid #cccccc;
   text-align: left;
   margin: 0;
-  padding: 6px 13px;
+  padding: 8px 14px;
 }
 
 table tr td {
   border: 1px solid #cccccc;
   text-align: left;
   margin: 0;
-  padding: 6px 13px;
+  padding: 8px 14px;
 }
 
 table tr th :first-child, table tr td :first-child {
@@ -238,15 +250,15 @@ img {
 }
 
 code, tt {
-  font-family: "Roboto Mono", "Fira Code", "Operator Mono", "Ubuntu Mono", "Droid Sans Mono", "Liberation Mono", "Source Code Pro", Menlo, Consolas, Courier, monospace;
+  font-family: "Fira Code", "Operator Mono", "Ubuntu Mono", "Droid Sans Mono", "Liberation Mono", "Source Code Pro", Menlo, Consolas, Courier, monospace;
   white-space: nowrap;
-  font-weight: bold;
   font-size: 13px;
+  font-weight: 500;
 }
 
 pre code {
   margin: 0;
-  padding: 16px;
+  padding: 14px;
   display: block;
   white-space: pre;
   border: none;
@@ -254,9 +266,9 @@ pre code {
 }
 
 pre {
-  background-color: #fafafa;
+  background-color: #F8F9FA;
   font-size: 13px;
-  line-height: 19px;
+  line-height: 1.5;
   border-radius: 2px;
   tab-size: 2;
   hyphens: none;
@@ -266,4 +278,11 @@ pre code, pre tt {
   background-color: transparent;
   border: none;
   font-weight: normal;
+}
+
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  body {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
 }

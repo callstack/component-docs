@@ -14,15 +14,19 @@ const container = css`
 `;
 
 const content = css`
-  padding: 24px 36px;
+  padding: 64px 24px 24px;
 
   @media (min-width: 640px) {
-    padding: 24px 48px;
+    padding: 64px;
+  }
+
+  @media (min-width: 960px) {
+    padding: 86px;
   }
 
   .anchor {
     margin-left: -20px;
-    margin-right: -2px;
+    margin-right: -1.5px;
     opacity: 0;
 
     &:hover {

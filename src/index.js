@@ -52,6 +52,7 @@ export function build({
   styles,
   pages: getPages,
   github,
+  logo,
   output,
 }: Options) {
   const pages = typeof getPages === 'function' ? getPages() : getPages;
@@ -77,7 +78,7 @@ export function build({
 
   fs.writeFileSync(
     path.join(output, 'app.src.js'),
-    buildEntry({ styles, github })
+    buildEntry({ styles, github, logo })
   );
 
   fs.writeFileSync(path.join(output, 'app.data.js'), stringifyData(data));
@@ -89,6 +90,7 @@ export function build({
         data,
         info,
         github,
+        logo,
         sheets: ['app.css'],
         scripts: scripts ? scripts.map(s => `scripts/${path.basename(s)}`) : [],
       })
@@ -126,6 +128,7 @@ export function serve({
   styles,
   pages: getPages,
   github,
+  logo,
   output,
   port = 3031,
   open = true,
@@ -157,7 +160,7 @@ export function serve({
 
   fs.writeFileSync(
     path.join(output, 'app.src.js'),
-    buildEntry({ styles, github })
+    buildEntry({ styles, github, logo })
   );
 
   fs.writeFileSync(path.join(output, 'app.data.js'), stringifyData(data));
@@ -167,6 +170,7 @@ export function serve({
       data,
       info,
       github,
+      logo,
       sheets: ['app.css'],
       scripts: scripts ? scripts.map(s => `scripts/${path.basename(s)}`) : [],
     });
@@ -226,6 +230,7 @@ export function serve({
           data,
           info,
           github,
+          logo,
           sheets: ['app.css'],
           scripts: scripts
             ? scripts.map(s => `scripts/${path.basename(s)}`)

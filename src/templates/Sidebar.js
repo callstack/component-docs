@@ -28,6 +28,28 @@ const navigation = css`
   }
 `;
 
+const searchbar = css`
+  appearance: none;
+  width: calc(100% - 48px);
+  padding: 8px 12px;
+  margin: 32px 24px 0;
+  font-size: 1em;
+  background-color: rgba(0, 0, 55, 0.08);
+  transition: background-color 0.3s;
+  border-radius: 3px;
+  border: 0;
+  outline: 0;
+
+  &:focus {
+    background-color: rgba(0, 0, 55, 0.12);
+  }
+
+  @media (min-width: 640px) {
+    width: calc(100% - 64px);
+    margin: 32px 32px 0;
+  }
+`;
+
 const menu = css`
   position: absolute;
   opacity: 0;
@@ -38,6 +60,12 @@ const menu = css`
     height: 100%;
     opacity: 1;
     pointer-events: auto;
+  }
+
+  @media (max-width: 639px) {
+    .${searchbar}:first-child {
+      margin-top: 72px;
+    }
   }
 `;
 
@@ -77,28 +105,6 @@ const logoImage = css`
   height: 48px;
   width: auto;
   margin: 32px 32px 0;
-`;
-
-const searchbar = css`
-  appearance: none;
-  width: calc(100% - 48px);
-  padding: 8px 12px;
-  margin: 72px 24px 0;
-  font-size: 1em;
-  background-color: rgba(0, 0, 55, 0.08);
-  transition: background-color 0.3s;
-  border-radius: 3px;
-  border: 0;
-  outline: 0;
-
-  &:focus {
-    background-color: rgba(0, 0, 55, 0.12);
-  }
-
-  @media (min-width: 640px) {
-    width: calc(100% - 64px);
-    margin: 32px 32px 0;
-  }
 `;
 
 const separator = css`

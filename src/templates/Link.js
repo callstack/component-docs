@@ -8,7 +8,7 @@ type Props = {
   onClick?: (event: *) => mixed,
 };
 
-export default class Router extends Component<Props, void> {
+export default class Link extends Component<Props, void> {
   props: Props;
 
   _handleClick = (event: MouseEvent) => {

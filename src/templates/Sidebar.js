@@ -51,13 +51,12 @@ const searchbar = css`
 `;
 
 const menu = css`
-  position: absolute;
+  position: fixed;
   opacity: 0;
   pointer-events: none;
 
   @media (min-width: 640px) {
     position: relative;
-    height: 100%;
     opacity: 1;
     pointer-events: auto;
   }

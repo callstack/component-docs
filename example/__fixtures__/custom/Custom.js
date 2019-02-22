@@ -2,16 +2,16 @@
 /* eslint-disable jsx-a11y/accessible-emoji */
 
 import * as React from 'react';
-import { css } from 'linaria';
+import { styled } from 'linaria/react';
 
-const container = css`
+const Container = styled.div`
   padding: 24px;
   font-size: 24px;
 `;
 
 export default class Custom extends React.Component<{}> {
   render() {
-    return <div className={container}>🌹 🌻 🌷 🌿 🌵 🌾 🌼⁣</div>;
+    return <Container>🌹 🌻 🌷 🌿 🌵 🌾 🌼⁣</Container>;
   }
 }
 

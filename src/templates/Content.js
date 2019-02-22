@@ -1,9 +1,9 @@
 /* @flow */
 
 import * as React from 'react';
-import { css } from 'linaria';
+import { styled } from 'linaria/react';
 
-const container = css`
+const Container = styled.main`
   flex: 1;
 
   @media (min-width: 640px) {
@@ -13,7 +13,7 @@ const container = css`
   }
 `;
 
-const content = css`
+const Inner = styled.div`
   padding: 64px 24px 24px;
 
   @media (min-width: 640px) {
@@ -122,8 +122,8 @@ type Props = {
 
 export default function Content({ children }: Props) {
   return (
-    <main className={container}>
-      <div className={content}>{children}</div>
-    </main>
+    <Container>
+      <Inner>{children}</Inner>
+    </Container>
   );
 }

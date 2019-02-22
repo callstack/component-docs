@@ -1,13 +1,8 @@
 /* @flow */
 
-import * as React from 'react';
-import { css } from 'linaria';
+import { styled } from 'linaria/react';
 
-type Props = {
-  children: React.Node,
-};
-
-const wrapper = css`
+const Layout = styled.div`
   display: flex;
   height: 100%;
   flex-direction: column;
@@ -17,6 +12,4 @@ const wrapper = css`
   }
 `;
 
-export default function Layout({ children }: Props) {
-  return <div className={wrapper}>{children}</div>;
-}
+export default Layout;

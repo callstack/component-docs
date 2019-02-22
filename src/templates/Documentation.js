@@ -1,7 +1,7 @@
 /* @flow */
 
 import * as React from 'react';
-import { css, cx } from 'linaria';
+import { styled } from 'linaria/react';
 import Content from './Content';
 import Markdown from './Markdown';
 import EditButton from './EditButton';
@@ -14,11 +14,11 @@ type Props = {
   github?: string,
 };
 
-const title = css`
+const Title = styled.h1`
   margin-top: 0;
 `;
 
-const markdown = css`
+const MarkdownContent = styled(Markdown)`
   p:first-of-type {
     margin-top: 0;
   }
@@ -28,11 +28,11 @@ const markdown = css`
   }
 `;
 
-const propInfo = css`
+const PropInfo = styled.div`
   margin: 14px 0;
 `;
 
-const propLabel = css`
+const PropLabel = styled.a`
   display: block;
   color: inherit;
   font-size: 18px;
@@ -51,7 +51,7 @@ const propLabel = css`
   }
 `;
 
-const propItem = css`
+const PropItem = styled.div`
   margin: 8px 0;
 
   & > code {
@@ -60,7 +60,7 @@ const propItem = css`
   }
 `;
 
-const restPropsLabel = css`
+const RestPropsLabel = styled.a`
   display: block;
   margin: 24px 0 8px 0;
 `;
@@ -103,30 +103,30 @@ const PropTypeDoc = ({
     flowType ? getTypeName(flowType) : type ? getTypeName(type) : null;
 
   return (
-    <div className={propInfo}>
-      <a className={propLabel} name={name} href={`#${name}`}>
+    <PropInfo>
+      <PropLabel name={name} href={`#${name}`}>
         <code>{name}</code>
         {isRequired ? ' (required)' : ''}
-      </a>
+      </PropLabel>
       {typeName && typeName !== 'unknown' ? (
-        <div className={propItem}>
+        <PropItem>
           <span>Type: </span>
           <code>{typeName}</code>
-        </div>
+        </PropItem>
       ) : null}
       {defaultValue ? (
-        <div className={propItem}>
+        <PropItem>
           <span>Default value: </span>
           <code>{defaultValue.value}</code>
-        </div>
+        </PropItem>
       ) : null}
       {description ? (
-        <Markdown
-          className={cx(propItem, markdown)}
+        <PropItem
+          as={MarkdownContent}
           source={description.replace(/^@optional/, '').trim()}
         />
       ) : null}
-    </div>
+    </PropInfo>
   );
 };
 
@@ -134,40 +134,37 @@ const MethodDoc = ({ name, description, type, params, returns }) => {
   const typeName = type ? getTypeName(type) : null;
 
   return (
-    <div className={propInfo} key={name}>
-      <a className={propLabel} name={name} href={`#${name}`}>
+    <PropInfo key={name}>
+      <PropLabel name={name} href={`#${name}`}>
         <code>{name}</code>
-      </a>
+      </PropLabel>
 
       {typeName && typeName !== 'unknown' ? (
-        <div className={propItem}>
+        <PropItem>
           <span>Type: </span>
           <code>{typeName}</code>
-        </div>
+        </PropItem>
       ) : null}
       {params.length ? (
-        <div className={propItem}>
+        <PropItem>
           <span>Params: </span>
           <code>
             {params
               .map(p => `${p.name}${p.type ? `: ${getTypeName(p.type)}` : ''}`)
               .join(', ')}
           </code>
-        </div>
+        </PropItem>
       ) : null}
       {returns && returns.type ? (
-        <div className={propItem}>
+        <PropItem>
           <span>Returns: </span>
           <code>{getTypeName(returns.type)}</code>
-        </div>
+        </PropItem>
       ) : null}
       {description ? (
-        <Markdown
-          className={cx(propItem, markdown)}
-          source={description.trim()}
-        />
+        <PropItem as={MarkdownContent} source={description.trim()} />
       ) : null}
-    </div>
+    </PropInfo>
   );
 };
 
@@ -175,29 +172,29 @@ const PropertyDoc = ({ name, description, type, value }: *) => {
   const typeName = type ? getTypeName(type) : null;
 
   return (
-    <div className={propInfo}>
-      <a className={propLabel} name={name} href={`#${name}`}>
+    <PropInfo>
+      <PropLabel name={name} href={`#${name}`}>
         <code>{name}</code>
-      </a>
+      </PropLabel>
       {typeName && typeName !== 'unknown' ? (
-        <div className={propItem}>
+        <PropItem>
           <span>Type: </span>
           <code>{typeName}</code>
-        </div>
+        </PropItem>
       ) : null}
       {typeof value === 'string' || typeof value === 'number' ? (
-        <div className={propItem}>
+        <PropItem>
           <span>Value: </span>
           <code>{value}</code>
-        </div>
+        </PropItem>
       ) : null}
       {description ? (
-        <Markdown
-          className={cx(propItem, markdown)}
+        <PropItem
+          as={MarkdownContent}
           source={description.replace(/^@optional/, '').trim()}
         />
       ) : null}
-    </div>
+    </PropInfo>
   );
 };
 
@@ -261,12 +258,8 @@ export default function Documentation({ name, info, github, filepath }: Props) {
   return (
     <Content>
       <EditButton github={github} filepath={filepath} />
-      <h1 className={title}>{name}</h1>
-      <Markdown
-        className={markdown}
-        source={description}
-        options={{ linkify: true }}
-      />
+      <Title>{name}</Title>
+      <MarkdownContent source={description} options={{ linkify: true }} />
       {keys.length || restProps.length ? (
         <React.Fragment>
           <h2>Props</h2>
@@ -274,12 +267,12 @@ export default function Documentation({ name, info, github, filepath }: Props) {
             <PropTypeDoc key={prop} name={prop} {...info.props[prop]} />
           ))}
           {restProps.map(prop => (
-            <a className={restPropsLabel} key={prop.name} href={prop.link}>
+            <RestPropsLabel key={prop.name} href={prop.link}>
               <code>
                 ...
                 {prop.name}
               </code>
-            </a>
+            </RestPropsLabel>
           ))}
         </React.Fragment>
       ) : null}

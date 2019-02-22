@@ -58,7 +58,7 @@
     "hast-util-to-string": "^1.0.1",
     "history": "^4.7.2",
     "ignore-styles": "^5.0.1",
-    "linaria": "^1.1.0",
+    "linaria": "^1.1.3",
     "markdown-it-github-headings": "^1.1.1",
     "marked": "^0.6.0",
     "mini-css-extract-plugin": "^0.5.0",
@@ -83,6 +83,7 @@
   "devDependencies": {
     "@babel/cli": "^7.2.3",
     "@babel/node": "^7.2.2",
+    "@babel/plugin-proposal-export-namespace-from": "^7.2.0",
     "@callstack/eslint-config": "^3.0.2",
     "babel-eslint": "^10.0.1",
     "conventional-changelog-cli": "^2.0.12",

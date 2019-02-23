@@ -2,9 +2,9 @@
 
 import * as React from 'react';
 import ReactDOMServer from 'react-dom/server';
-import HTML from './templates/HTML';
-import App from './templates/App';
-import type { Metadata, PageInfo, Separator } from './types';
+import HTML from '../templates/HTML';
+import App from '../templates/App';
+import type { Metadata, PageInfo, Separator } from '../types';
 
 type Options = {
   data: Array<Metadata | Separator>,

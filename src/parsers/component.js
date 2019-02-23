@@ -72,5 +72,6 @@ export default function component(
     data: info,
     type: 'component',
     dependencies: [filepath],
+    group: name.includes('.') ? name.split('.')[0] : undefined,
   };
 }

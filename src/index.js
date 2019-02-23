@@ -24,18 +24,30 @@ const buildPageInfo = (data: Array<Metadata | Separator>): PageInfo[] =>
   (data.filter(it => it.type !== 'separator'): any);
 
 const collectData = (page: Page, options: { root: string }): Metadata => {
+  let data: Metadata;
+
   switch (page.type) {
     case 'md':
-      return md(page.file, options);
+      data = md(page.file, options);
+      break;
     case 'mdx':
-      return mdx(page.file, options);
+      data = mdx(page.file, options);
+      break;
     case 'component':
-      return component(page.file, options);
+      data = component(page.file, options);
+      break;
     case 'custom':
-      return custom(page.file, options);
+      data = custom(page.file, options);
+      break;
     default:
       throw new Error(`Invalid type ${String(page.type)} for ${page.file}`);
   }
+
+  /* $FlowFixMe */
+  return {
+    ...data,
+    group: page.group !== undefined ? page.group : data.group,
+  };
 };
 
 const stringifyData = data => `module.exports = [

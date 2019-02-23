@@ -5,6 +5,7 @@ import * as React from 'react';
 export type Page = {
   type: 'md' | 'mdx' | 'component' | 'custom',
   file: string,
+  group?: ?string,
 };
 
 export type Separator = { type: 'separator' };
@@ -28,6 +29,7 @@ export type PageInfo = {
   link: string,
   filepath: string,
   dependencies: string[],
+  group?: ?string,
 };
 
 export type TypeAnnotation = {

@@ -144,7 +144,7 @@ const row = css`
   }
 `;
 
-const sectionItems = css`
+const groupItems = css`
   position: relative;
   padding-left: 12px;
   transition: 0.3s;
@@ -162,11 +162,11 @@ const sectionItems = css`
   }
 `;
 
-const sectionItemsVisible = css`
+const groupItemsVisible = css`
   opacity: 1;
 `;
 
-const sectionItemsHidden = css`
+const groupItemsHidden = css`
   opacity: 0;
   pointer-events: none;
 `;
@@ -221,12 +221,11 @@ export default class Sidebar extends React.Component<Props, State> {
         return acc;
       }
 
-      if (item.title.includes('.')) {
-        const title = item.title.split('.')[0];
-        const section = acc[title];
+      if (item.group) {
+        const group = acc[item.group];
 
-        if (!section) {
-          acc[title] = {
+        if (!group) {
+          acc[item.group] = {
             height: null,
             expanded: true,
           };
@@ -254,16 +253,15 @@ export default class Sidebar extends React.Component<Props, State> {
           return acc;
         }
 
-        if (item.title.includes('.')) {
-          const title = item.title.split('.')[0];
-          const section = acc[title];
+        if (item.group) {
+          const group = acc[item.group];
 
-          const height = this._items[title]
-            ? this._items[title].clientHeight
+          const height = this._items[item.group]
+            ? this._items[item.group].clientHeight
             : null;
 
-          if (!section) {
-            acc[title] = {
+          if (!group) {
+            acc[item.group] = {
               height,
               expanded: true,
             };
@@ -283,8 +281,8 @@ export default class Sidebar extends React.Component<Props, State> {
         return <hr key={`separator-${i + 1}`} className={separator} />;
       }
 
-      if (item.type === 'section') {
-        const sectionItem = this.state.expanded[item.title] || {
+      if (item.type === 'group') {
+        const groupItem = this.state.expanded[item.title] || {
           height: null,
           expanded: true,
         };
@@ -321,10 +319,10 @@ export default class Sidebar extends React.Component<Props, State> {
               <button
                 className={cx(
                   buttonIcon,
-                  sectionItem.expanded ? expandedIcon : collapsedIcon
+                  groupItem.expanded ? expandedIcon : collapsedIcon
                 )}
                 style={{
-                  opacity: typeof sectionItem.height === 'number' ? 1 : 0,
+                  opacity: typeof groupItem.height === 'number' ? 1 : 0,
                 }}
                 onClick={() =>
                   this.setState(state => {
@@ -358,15 +356,13 @@ export default class Sidebar extends React.Component<Props, State> {
                 this._items[item.title] = container;
               }}
               className={cx(
-                sectionItems,
-                sectionItem.expanded ? sectionItemsVisible : sectionItemsHidden
+                groupItems,
+                groupItem.expanded ? groupItemsVisible : groupItemsHidden
               )}
               style={
-                typeof sectionItem.height === 'number'
+                typeof groupItem.height === 'number'
                   ? {
-                      height: `${
-                        sectionItem.expanded ? sectionItem.height : 0
-                      }px`,
+                      height: `${groupItem.expanded ? groupItem.height : 0}px`,
                     }
                   : null
               }
@@ -407,16 +403,15 @@ export default class Sidebar extends React.Component<Props, State> {
           return acc;
         }
 
-        if (item.title.includes('.')) {
-          const title = item.title.split('.')[0];
-          const section = acc[title];
+        if (item.group) {
+          const group = acc[item.group];
 
-          if (section) {
-            section.items.push(item);
+          if (group) {
+            group.items.push(item);
           } else {
-            acc[title] = {
-              type: 'section',
-              title,
+            acc[item.group] = {
+              type: 'group',
+              title: item.group,
               items: [item],
             };
           }
@@ -429,21 +424,22 @@ export default class Sidebar extends React.Component<Props, State> {
         if (item.type === 'separator') {
           acc.push(item);
         } else {
-          const title = item.title.split('.')[0];
-          const section = groups[title];
+          const group = item.group ? groups[item.group] : undefined;
 
-          if (section) {
-            const previous = acc.find(it => it.title && it.title === title);
+          if (group) {
+            const previous = acc.find(
+              it => it.title && it.title === item.group && it.type === 'group'
+            );
 
-            if (title === item.title) {
+            if (item.group === item.title) {
               if (previous) {
                 /* $FlowFixMe */
                 Object.assign(previous, { path: item.link });
               } else {
-                acc.push({ ...section, path: item.link });
+                acc.push({ ...group, path: item.link });
               }
             } else if (!previous) {
-              acc.push(section);
+              acc.push(group);
             }
           } else {
             acc.push(item);

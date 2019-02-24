@@ -16,7 +16,6 @@ const { argv } = yargs
   .option('output', {
     type: 'string',
     description: 'Output directory for generated files',
-    default: 'dist',
     requiresArg: true,
   })
   .option('assets', {

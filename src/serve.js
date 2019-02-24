@@ -12,6 +12,7 @@ import chalk from 'chalk';
 import opn from 'opn';
 import buildEntry from './utils/buildEntry';
 import buildHTML from './utils/buildHTML';
+import build404 from './utils/build404';
 import buildPageInfo from './utils/buildPageInfo';
 import configureWebpack from './utils/configureWebpack';
 import collectData from './utils/collectData';
@@ -65,6 +66,7 @@ export default function serve(options: Options) {
 
   fs.writeFileSync(path.join(output, 'app.data.js'), stringifyData(data));
 
+  let fallback = build404({ data, sheets: ['app.css'] });
   let routes = buildPageInfo(data).reduce((acc, info) => {
     acc[info.link] = buildHTML({
       data,
@@ -125,6 +127,7 @@ export default function serve(options: Options) {
         fs.writeFileSync(filepath, content);
       }
 
+      fallback = build404({ data, sheets: ['app.css'] });
       routes = buildPageInfo(data).reduce((acc, info) => {
         acc[info.link] = buildHTML({
           data,
@@ -189,18 +192,6 @@ export default function serve(options: Options) {
     });
   }
 
-  app.get('*', (req, res, next) => {
-    const page = req.path.slice(1).replace(/\.html$/, '');
-
-    if (page === '' && routes.index) {
-      res.send(routes.index);
-    } else if (routes[page]) {
-      res.send(routes[page]);
-    } else {
-      next();
-    }
-  });
-
   const config = configureWebpack({
     root,
     entry: path.join(output, 'app.src.js'),
@@ -211,6 +202,7 @@ export default function serve(options: Options) {
     },
     production: false,
   });
+
   const compiler = webpack(config);
 
   app.use(
@@ -220,7 +212,21 @@ export default function serve(options: Options) {
       stats: 'errors-only',
     })
   );
+
   app.use(hotMiddleware(compiler));
+
+  app.get('*', (req, res) => {
+    const page = req.path.slice(1).replace(/\.html$/, '');
+
+    if (page === '' && routes.index) {
+      res.send(routes.index);
+    } else if (routes[page]) {
+      res.send(routes[page]);
+    } else {
+      res.send(fallback);
+    }
+  });
+
   app.listen(port, () => {
     const url = `http://localhost:${port}`;
 

@@ -23,7 +23,7 @@
     "flow": "flow",
     "prepare": "yarn build",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "example": "babel-node src/cli.js --root example",
+    "example": "babel-node src/cli.js serve --root example",
     "prebuild": "del dist/",
     "preexample": "del example/dist && yarn build",
     "release": "release-it"

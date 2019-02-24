@@ -12,7 +12,8 @@ import buildPageInfo from './utils/buildPageInfo';
 import getOptions from './utils/getOptions';
 import type { Options } from './types';
 
-export default async function build(options: Options) {
+export default async function build(o: Options) {
+  const options = getOptions(o);
   const {
     root,
     assets,
@@ -22,7 +23,7 @@ export default async function build(options: Options) {
     github,
     logo,
     output,
-  } = getOptions(options);
+  } = options;
 
   const pages = typeof getPages === 'function' ? getPages() : getPages;
   const data = pages.map(page =>
@@ -82,7 +83,7 @@ export default async function build(options: Options) {
       if (err) {
         reject(err);
       } else {
-        resolve(stats);
+        resolve({ stats, options });
       }
     });
   });

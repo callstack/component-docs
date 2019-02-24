@@ -1,57 +1,68 @@
 /* @flow */
 
 import '@babel/register';
+import path from 'path';
+import chalk from 'chalk';
 import glob from 'glob';
 import ora from 'ora';
 import yargs from 'yargs';
 import { serve, build } from './index';
 
 const { argv } = yargs
-  .usage('Usage: $0 [options] <build|serve> <...files>')
-  .option('root', {
-    type: 'string',
-    description: 'The root directory for the project',
-    requiresArg: true,
+  .usage('Usage: $0 <command> [options] [files...]')
+  .options({
+    root: {
+      type: 'string',
+      description: 'The root directory for the project',
+      requiresArg: true,
+    },
+    output: {
+      type: 'string',
+      description: 'Output directory for generated files',
+      requiresArg: true,
+    },
+    assets: {
+      type: 'array',
+      description: 'Directories containing the asset files',
+      requiresArg: true,
+    },
+    styles: {
+      type: 'array',
+      description: 'Additional CSS files to include in the HTML',
+      requiresArg: true,
+    },
+    scripts: {
+      type: 'array',
+      description: 'Additional JS files to include in the HTML',
+      requiresArg: true,
+    },
+    logo: {
+      type: 'string',
+      description: 'Logo image from assets to show in sidebar',
+      requiresArg: true,
+    },
+    github: {
+      type: 'string',
+      description: 'Link to github folder to show edit button',
+      requiresArg: true,
+    },
   })
-  .option('output', {
-    type: 'string',
-    description: 'Output directory for generated files',
-    requiresArg: true,
+  .command('serve', 'serve pages for development', y => {
+    y.options({
+      port: {
+        type: 'number',
+        description: 'Port to run the server on',
+        requiresArg: true,
+      },
+      open: {
+        type: 'boolean',
+        description: 'Whether to open the browser window',
+      },
+    });
   })
-  .option('assets', {
-    type: 'array',
-    description: 'Directories containing the asset files',
-    requiresArg: true,
-  })
-  .option('styles', {
-    type: 'array',
-    description: 'Additional CSS files to include in the HTML',
-    requiresArg: true,
-  })
-  .option('scripts', {
-    type: 'array',
-    description: 'Additional JS files to include in the HTML',
-    requiresArg: true,
-  })
-  .option('logo', {
-    type: 'string',
-    description: 'Logo image from assets to show in sidebar',
-    requiresArg: true,
-  })
-  .option('github', {
-    type: 'string',
-    description: 'Link to github folder to show edit button',
-    requiresArg: true,
-  })
-  .option('port', {
-    type: 'number',
-    description: 'Port to run the server on',
-    requiresArg: true,
-  })
-  .option('open', {
-    type: 'boolean',
-    description: 'Whether to open the browser window',
-  })
+  .command('build', 'build pages for deploying')
+  .demandCommand()
+  .epilogue('See $0 <command> --help for more information')
   .alias('help', 'h')
   .alias('version', 'v')
   .strict();
@@ -73,21 +84,17 @@ if (files.length) {
 }
 
 if (command === 'build') {
-  const spinner = ora('Building files…').start();
+  const spinner = ora('Building pages…').start();
 
   build(argv).then(
-    stats => {
-      spinner.succeed('Successfully built files');
-      console.log(
-        stats.toString({
-          colors: true,
-          all: false,
-          modules: true,
-          errors: true,
-        })
+    ({ stats, options }) => {
+      spinner.succeed(
+        `Successfully built pages in ${chalk.bold(
+          String(stats.endTime - stats.startTime)
+        )}ms (${chalk.blue(path.relative(process.cwd(), options.output))})`
       );
     },
-    e => spinner.fail(`Failed to build files ${e.message}`)
+    e => spinner.fail(`Failed to build pages ${e.message}`)
   );
 } else {
   serve(argv);

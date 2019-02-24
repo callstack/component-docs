@@ -20,7 +20,8 @@ import stringifyData from './utils/stringifyData';
 import getOptions from './utils/getOptions';
 import type { Options, Page, Separator, Metadata } from './types';
 
-export default function serve(options: Options) {
+export default function serve(o: Options) {
+  const options = getOptions(o);
   const {
     root,
     assets,
@@ -32,7 +33,7 @@ export default function serve(options: Options) {
     output,
     port,
     open,
-  } = getOptions(options);
+  } = options;
 
   const cache: Map<string, Metadata> = new Map();
   const collectAndCache = (page: Page | Separator) => {

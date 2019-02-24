@@ -158,11 +158,18 @@ export default function serve(options: Options) {
     process.exit();
   };
 
+  const error = e => {
+    console.log(e.stack || e.message);
+    process.exitCode = 1;
+    cleanup();
+  };
+
   process.stdin.resume();
   process.on('SIGINT', cleanup);
   process.on('SIGUSR1', cleanup);
   process.on('SIGUSR2', cleanup);
-  process.on('uncaughtException', cleanup);
+  process.on('uncaughtException', error);
+  process.on('unhandledRejection', error);
 
   const app = express();
 
@@ -214,15 +221,15 @@ export default function serve(options: Options) {
     })
   );
   app.use(hotMiddleware(compiler));
-  app.listen(port);
+  app.listen(port, () => {
+    const url = `http://localhost:${port}`;
 
-  const url = `http://localhost:${port}`;
+    if (open) {
+      console.log(`Opening ${chalk.blue(url)} in your browser…\n`);
 
-  if (open) {
-    console.log(`Opening ${chalk.blue(url)} in your browser…\n`);
-
-    opn(url);
-  } else {
-    console.log(`Open ${chalk.blue(url)} in your browser.\n`);
-  }
+      opn(url);
+    } else {
+      console.log(`Open ${chalk.blue(url)} in your browser.\n`);
+    }
+  });
 }

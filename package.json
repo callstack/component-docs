@@ -1,6 +1,6 @@
 {
   "name": "component-docs",
-  "version": "0.17.1",
+  "version": "0.18.0",
   "description": "Documentation for React components",
   "bin": "bin/component-docs.js",
   "main": "dist/index.js",

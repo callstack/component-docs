@@ -6,7 +6,7 @@
 
 ## Goals
 
-- Simple API with zero-configuration
+- Simple API with minimal configuration
 - Fully static, deployable on GitHub pages
 - Both server + client routing
 - Optimized for mobile screens
@@ -20,9 +20,71 @@
 yarn add --dev component-docs
 ```
 
+## Configuration
+
+You can specify the configuration using a JavaScript, JSON or YAML file. This can be in form of:
+
+- `component-docs.config.js` JS file exporting the object (recommended).
+- `component-docs` property in a `package.json` file.
+- `.component-docs` file with JSON or YAML syntax.
+- `.component-docs.json`, `.component-docs.yaml`, `.component-docs.yml`, or `.component-docs.js` file.
+
+Example `component-docs.config.js`:
+
+```js
+module.exports = {
+  port: 1234,
+  pages: [
+    { type: 'md', file: path.resolve(__dirname, 'index.md') },
+    { type: 'md', file: path.resolve(__dirname, 'guide.md') },
+  ],
+};
+```
+
+### Options
+
+The configuration object can contain the following properties:
+
+- `pages` (required): An array of items or a function returning an array of items to show as pages
+- `root`: The root directory for the project.
+- `output`: Output directory for generated files.
+- `assets`: Directories containing the asset files.
+- `styles`: Additional CSS files to include in the HTML.
+- `scripts`: Additional JS files to include in the HTML.
+- `logo`: Logo image from assets to show in sidebar.
+- `github`: Link to github folder to show edit button.
+- `port`: Port to run the server on.
+- `open`: Whether to open the browser window.
+
+### Format for pages
+
+Each item in your pages array can contain 3 properties:
+
+- `type` (required): `md` for markdown files, `mdx` for MDX files, `component` to extract component documentation using `react-docgen` or `custom` to render provided file as a React component.
+- `file` (required): absolute path to the file.
+- `group`: A heading to group this item under. By default, grouping is done for component documentation pages with a dot (`.`) in the name. You can pass `null` here to disable this behavior.
+
+## CLI
+
+To serve docs with your config, run:
+
+```sh
+yarn component-docs serve
+```
+
+You can also specify a glob of files to use as pages:
+
+```sh
+yarn component-docs serve "*.{md,mdx}"
+```
+
+The CLI accepts several arguments. See `--help` for details.
+
 ## API
 
-Currently there's no CLI available. You can use the API to generate documentation programmatically.
+If you want to use `component-docs` programmatically, you can use the exported `serve` and `build` functions.
+
+Example:
 
 ```js
 import path from 'path';
@@ -42,7 +104,7 @@ build({
 });
 ```
 
-You can also use the server while actively working on documentation. Just replace `build` with `serve` in the above example.
+The `serve` and `build` functions accept the same options object that's used for the configuration file. If a configuration file already exists, the options will be merged.
 
 ## Extras
 

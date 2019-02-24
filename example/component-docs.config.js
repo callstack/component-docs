@@ -2,9 +2,7 @@
 
 import path from 'path';
 import fs from 'fs';
-import { build, serve } from '../src';
 
-const task = process.argv[2];
 const output = path.join(__dirname, 'dist');
 const fixtures = path.join(__dirname, '__fixtures__');
 const assets = path.join(fixtures, 'assets');
@@ -33,7 +31,7 @@ function pages() {
   ];
 }
 
-const options = {
+module.exports = {
   logo: 'images/logo.svg',
   assets: [path.join(assets, 'screenshots'), path.join(assets, 'images')],
   styles: [path.join(assets, 'styles.css')],
@@ -41,9 +39,3 @@ const options = {
   output,
   github,
 };
-
-if (task !== 'build') {
-  serve(options);
-} else {
-  build(options);
-}

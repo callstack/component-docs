@@ -9,18 +9,21 @@ import configureWebpack from './utils/configureWebpack';
 import collectData from './utils/collectData';
 import stringifyData from './utils/stringifyData';
 import buildPageInfo from './utils/buildPageInfo';
+import getOptions from './utils/getOptions';
 import type { Options } from './types';
 
-export default function build({
-  root = process.cwd(),
-  assets,
-  scripts,
-  styles,
-  pages: getPages,
-  github,
-  logo,
-  output,
-}: Options) {
+export default async function build(options: Options) {
+  const {
+    root,
+    assets,
+    scripts,
+    styles,
+    pages: getPages,
+    github,
+    logo,
+    output,
+  } = getOptions(options);
+
   const pages = typeof getPages === 'function' ? getPages() : getPages;
   const data = pages.map(page =>
     page.type === 'separator' ? page : collectData(page, { root })
@@ -73,16 +76,14 @@ export default function build({
     },
     production: true,
   });
-  webpack(config).run((err, stats) => {
-    if (err) {
-      console.log(err);
-    } else {
-      console.log(
-        stats.toString({
-          chunks: false,
-          colors: true,
-        })
-      );
-    }
+
+  return new Promise((resolve, reject) => {
+    webpack(config).run((err, stats) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(stats);
+      }
+    });
   });
 }

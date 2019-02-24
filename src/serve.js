@@ -16,20 +16,23 @@ import buildPageInfo from './utils/buildPageInfo';
 import configureWebpack from './utils/configureWebpack';
 import collectData from './utils/collectData';
 import stringifyData from './utils/stringifyData';
+import getOptions from './utils/getOptions';
 import type { Options, Page, Separator, Metadata } from './types';
 
-export default function serve({
-  root = process.cwd(),
-  assets,
-  scripts,
-  styles,
-  pages: getPages,
-  github,
-  logo,
-  output,
-  port = 3031,
-  open = true,
-}: Options) {
+export default function serve(options: Options) {
+  const {
+    root,
+    assets,
+    scripts,
+    styles,
+    pages: getPages,
+    github,
+    logo,
+    output,
+    port,
+    open,
+  } = getOptions(options);
+
   const cache: Map<string, Metadata> = new Map();
   const collectAndCache = (page: Page | Separator) => {
     if (page.type === 'separator') {

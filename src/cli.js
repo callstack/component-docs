@@ -1,6 +1,8 @@
 /* @flow */
+/* eslint-disable import/first */
 
-import '@babel/register';
+import './babel-register';
+
 import path from 'path';
 import chalk from 'chalk';
 import glob from 'glob';

@@ -14,24 +14,12 @@ type Options = {
   },
 };
 
-const babelrc = {
-  presets: [
-    [
-      require.resolve('@babel/preset-env'),
-      {
-        modules: false,
-        targets: {
-          browsers: ['last 2 versions', 'safari >= 7'],
-        },
-      },
-    ],
-    require.resolve('@babel/preset-react'),
-    require.resolve('@babel/preset-flow'),
-    require.resolve('@babel/preset-typescript'),
-    require.resolve('linaria/babel'),
-  ],
-  plugins: [require.resolve('@babel/plugin-proposal-class-properties')],
-};
+const babelrc = require('./getBabelOptions')({
+  modules: false,
+  targets: {
+    browsers: ['last 2 versions', 'safari >= 7'],
+  },
+});
 
 export default ({ root, entry, output, production }: Options) => ({
   context: root,

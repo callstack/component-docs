@@ -28,6 +28,7 @@ const babelrc = {
     require.resolve('@babel/preset-react'),
     require.resolve('@babel/preset-flow'),
     require.resolve('@babel/preset-typescript'),
+    require.resolve('linaria/babel'),
   ],
   plugins: [require.resolve('@babel/plugin-proposal-class-properties')],
 };
@@ -74,10 +75,7 @@ export default ({ root, entry, output, production }: Options) => ({
         use: [
           {
             loader: require.resolve('babel-loader'),
-            options: {
-              ...babelrc,
-              presets: [...babelrc.presets, require.resolve('linaria/babel')],
-            },
+            options: babelrc,
           },
           {
             loader: require.resolve('linaria/loader'),

@@ -15,7 +15,6 @@ type Options = {
 };
 
 const babelrc = {
-  babelrc: false,
   presets: [
     [
       require.resolve('@babel/preset-env'),
@@ -28,7 +27,7 @@ const babelrc = {
     ],
     require.resolve('@babel/preset-react'),
     require.resolve('@babel/preset-flow'),
-    require.resolve('linaria/babel'),
+    require.resolve('@babel/preset-typescript'),
   ],
   plugins: [require.resolve('@babel/plugin-proposal-class-properties')],
 };
@@ -75,11 +74,14 @@ export default ({ root, entry, output, production }: Options) => ({
         use: [
           {
             loader: require.resolve('babel-loader'),
-            options: babelrc,
+            options: {
+              ...babelrc,
+              presets: [...babelrc.presets, require.resolve('linaria/babel')],
+            },
           },
           {
             loader: require.resolve('linaria/loader'),
-            options: { sourceMap: !production },
+            options: { sourceMap: !production, babelOptions: babelrc },
           },
         ],
       },

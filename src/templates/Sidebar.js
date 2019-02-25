@@ -288,11 +288,11 @@ export default class Sidebar extends React.Component<Props, State> {
         };
 
         return (
-          <div key={item.path || item.title + i}>
+          <div key={item.link || item.title + i}>
             <div className={row}>
               <Link
-                to={item.path}
-                className={cx(link, path === item.path && active)}
+                to={item.link}
+                className={cx(link, path === item.link && active)}
                 onClick={() =>
                   this.setState(state => {
                     const group = state.expanded[item.title];
@@ -303,12 +303,12 @@ export default class Sidebar extends React.Component<Props, State> {
                         [item.title]: {
                           ...group,
                           expanded:
-                            path === item.path || !item.path
+                            path === item.link || !item.link
                               ? !group.expanded
                               : group.expanded,
                         },
                       },
-                      open: path === item.path ? state.open : false,
+                      open: path === item.link ? state.open : false,
                       query: '',
                     };
                   })
@@ -398,52 +398,60 @@ export default class Sidebar extends React.Component<Props, State> {
           .includes(this.state.query.toLowerCase());
       });
     } else {
-      const groups = data.reduce((acc, item) => {
-        if (item.type === 'separator') {
-          return acc;
-        }
+      // Find all groups names in our data and create a list of groups
+      const groups = data
+        .filter((item: any) => Boolean(item.group))
+        .map((item: any): string => item.group)
+        .filter((item, i, self) => self.lastIndexOf(item) === i)
+        .reduce(
+          (acc, title: string) =>
+            Object.assign(acc, {
+              [title]: {
+                type: 'group',
+                items: [],
+                title,
+              },
+            }),
+          {}
+        );
 
-        if (item.group) {
-          const group = acc[item.group];
-
-          if (group) {
-            group.items.push(item);
-          } else {
-            acc[item.group] = {
-              type: 'group',
-              title: item.group,
-              items: [item],
-            };
-          }
-        }
-
-        return acc;
-      }, {});
-
+      // Find items belonging to groups and add them to the groups
       items = data.reduce((acc, item) => {
         if (item.type === 'separator') {
           acc.push(item);
-        } else {
-          const group = item.group ? groups[item.group] : undefined;
+        } else if (item.title in groups) {
+          // If the title of the item matches a group, replace the item with the group
+          const group = groups[item.title];
+
+          acc.push({ ...group, link: item.link });
+        } else if (item.group) {
+          // If the item belongs to a group, find an item matching the group first
+          /* $FlowFixMe */
+          const index = acc.findIndex(it => it.title === item.group);
+
+          let group = acc[index];
 
           if (group) {
-            const previous = acc.find(
-              it => it.title && it.title === item.group && it.type === 'group'
-            );
+            if (group.type !== 'group') {
+              // If the item exists, but is not a group, turn it a to a group first
+              /* $FlowFixMe */
+              group = { ...groups[item.group], link: item.link };
 
-            if (item.group === item.title) {
-              if (previous) {
-                /* $FlowFixMe */
-                Object.assign(previous, { path: item.link });
-              } else {
-                acc.push({ ...group, path: item.link });
-              }
-            } else if (!previous) {
-              acc.push(group);
+              acc[index] = group;
+            } else {
+              // If the group exists, add our item
+              group.items.push(item);
             }
           } else {
-            acc.push(item);
+            // If the item doesn't exist at all, add a new group to the list
+            /* $FlowFixMe */
+            group = groups[item.group];
+
+            group.items.push(item);
+            acc.push(group);
           }
+        } else {
+          acc.push(item);
         }
 
         return acc;

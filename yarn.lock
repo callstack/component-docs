@@ -5293,10 +5293,10 @@ levn@^0.3.0, levn@~0.3.0:
     prelude-ls "~1.1.2"
     type-check "~0.3.2"
 
-linaria@^1.2.0:
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/linaria/-/linaria-1.2.0.tgz#9718138eb9a65bf935d7a7a291564a3eab81a4da"
-  integrity sha512-2HNXryrfMYxhTf79k+4pXupxUfWCkzFebiRJffbIJ2Mj57BJmS+Db8HSIYNeDMnEFJC7x1aR/xvyCULRzJq0Jg==
+linaria@^1.2.1:
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/linaria/-/linaria-1.2.1.tgz#c830c295258b7b03ef0a7b3ee5b82b9414895846"
+  integrity sha512-2EpJhomogU2UQAJLsabL667lgIYz2+RemWboqn/WF6ULgN0+0ZarsjPiIm7BGTgglEo2F9Cs71lxYPKR1InGug==
   dependencies:
     "@babel/core" "^7.3.3"
     "@babel/generator" "^7.3.3"

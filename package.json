@@ -64,7 +64,7 @@
     "hast-util-to-string": "^1.0.1",
     "history": "^4.7.2",
     "ignore-styles": "^5.0.1",
-    "linaria": "^1.2.0",
+    "linaria": "^1.2.1",
     "marked": "^0.6.1",
     "mini-css-extract-plugin": "^0.5.0",
     "opn": "^5.4.0",

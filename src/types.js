@@ -10,6 +10,12 @@ export type Page = {
 
 export type Separator = { type: 'separator' };
 
+export type Theme = {
+  colors: {
+    accent: string,
+  },
+};
+
 export type Options = {
   root?: string,
   logo?: string,
@@ -21,6 +27,7 @@ export type Options = {
   port?: number,
   open?: boolean,
   github?: string,
+  theme?: Theme,
 };
 
 export type PageInfo = {

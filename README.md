@@ -1,5 +1,7 @@
 # Component Docs
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/callstack/component-docs.svg)](https://greenkeeper.io/)
+
 ![styled_with linaria](https://img.shields.io/badge/styled_with-linaria-de2d68.svg?style=flat-square)
 
 📝 Simple documentation for your React components.

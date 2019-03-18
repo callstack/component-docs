@@ -1,15 +1,11 @@
 /* @flow */
 
 import * as React from 'react';
-import { css, cx } from 'linaria';
+import { styled } from 'linaria/react';
 import Link from './Link';
 import type { Metadata, Separator } from '../types';
 
-const TEXT_COLOR = '#888';
-const TEXT_HOVER_COLOR = '#111';
-const TEXT_ACTIVE_COLOR = '#397AF9';
-
-const sidebar = css`
+const SidebarContent = styled.aside`
   background-color: #f8f9fa;
 
   @media (min-width: 640px) {
@@ -20,7 +16,7 @@ const sidebar = css`
   }
 `;
 
-const navigation = css`
+const Navigation = styled.nav`
   padding: 12px 24px;
 
   @media (min-width: 640px) {
@@ -28,7 +24,7 @@ const navigation = css`
   }
 `;
 
-const searchbar = css`
+const Searchbar = styled.input`
   appearance: none;
   width: calc(100% - 48px);
   padding: 8px 12px;
@@ -50,7 +46,7 @@ const searchbar = css`
   }
 `;
 
-const menu = css`
+const MenuContent = styled.div`
   position: fixed;
   opacity: 0;
   pointer-events: none;
@@ -62,13 +58,13 @@ const menu = css`
   }
 
   @media (max-width: 639px) {
-    .${searchbar}:first-child {
+    ${Searchbar}:first-child {
       margin-top: 72px;
     }
   }
 `;
 
-const menuIcon = css`
+const MenuIcon = styled.label`
   font-size: 20px;
   line-height: 1;
   cursor: pointer;
@@ -84,10 +80,10 @@ const menuIcon = css`
   }
 `;
 
-const menuButton = css`
+const MenuButton = styled.input`
   display: none;
 
-  &:checked ~ .${menu} {
+  &:checked ~ ${MenuContent} {
     position: relative;
     opacity: 1;
     pointer-events: auto;
@@ -99,52 +95,55 @@ const menuButton = css`
   }
 `;
 
-const logoImage = css`
+const LogoImage = styled.img`
   display: block;
   height: 48px;
   width: auto;
   margin: 32px 32px 0;
 `;
 
-const separator = css`
+const SeparatorItem = styled.hr`
   border: 0;
   background-color: rgba(0, 0, 0, 0.04);
   height: 1px;
   margin: 20px 0;
 `;
 
-const link = css`
+const LinkItem = styled(Link)`
   display: block;
   padding: 12px 0;
   text-decoration: none;
-  color: ${TEXT_COLOR};
+  color: #888;
   line-height: 1;
 
   &:hover {
-    color: ${TEXT_HOVER_COLOR};
+    color: #111;
+    text-decoration: none;
+  }
+
+  &[data-selected='true'] {
+    color: #333;
+    color: var(--theme-primary-color);
+
+    &:hover {
+      color: #333;
+      color: var(--theme-primary-color);
+    }
   }
 `;
 
-const active = css`
-  color: ${TEXT_ACTIVE_COLOR};
-
-  &:hover {
-    color: ${TEXT_ACTIVE_COLOR};
-  }
-`;
-
-const row = css`
+const Row = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
 
-  .${link} {
+  ${LinkItem} {
     flex: 1;
   }
 `;
 
-const groupItems = css`
+const GroupItems = styled.div`
   position: relative;
   padding-left: 12px;
   transition: 0.3s;
@@ -160,18 +159,18 @@ const groupItems = css`
     left: 0;
     margin: 12px 0;
   }
+
+  &[data-visible='true'] {
+    opacity: 1;
+  }
+
+  &[data-visible='false'] {
+    opacity: 0;
+    pointer-events: none;
+  }
 `;
 
-const groupItemsVisible = css`
-  opacity: 1;
-`;
-
-const groupItemsHidden = css`
-  opacity: 0;
-  pointer-events: none;
-`;
-
-const buttonIcon = css`
+const ButtonIcon = styled.button`
   background-color: transparent;
   border: none;
   color: #aaa;
@@ -188,14 +187,14 @@ const buttonIcon = css`
   &:focus {
     outline: none;
   }
-`;
 
-const expandedIcon = css`
-  transform: rotate(0deg);
-`;
+  &[data-expanded='true'] {
+    transform: rotate(0deg);
+  }
 
-const collapsedIcon = css`
-  transform: rotate(-180deg);
+  &[data-expanded='false'] {
+    transform: rotate(-180deg);
+  }
 `;
 
 type Props = {
@@ -278,7 +277,7 @@ export default class Sidebar extends React.Component<Props, State> {
     const { path, data, logo } = this.props;
     const mapper = (item, i) => {
       if (item.type === 'separator') {
-        return <hr key={`separator-${i + 1}`} className={separator} />;
+        return <SeparatorItem key={`separator-${i + 1}`} />;
       }
 
       if (item.type === 'group') {
@@ -289,10 +288,10 @@ export default class Sidebar extends React.Component<Props, State> {
 
         return (
           <div key={item.link || item.title + i}>
-            <div className={row}>
-              <Link
+            <Row>
+              <LinkItem
+                data-selected={path === item.link}
                 to={item.link}
-                className={cx(link, path === item.link && active)}
                 onClick={() =>
                   this.setState(state => {
                     const group = state.expanded[item.title];
@@ -315,12 +314,9 @@ export default class Sidebar extends React.Component<Props, State> {
                 }
               >
                 {item.title}
-              </Link>
-              <button
-                className={cx(
-                  buttonIcon,
-                  groupItem.expanded ? expandedIcon : collapsedIcon
-                )}
+              </LinkItem>
+              <ButtonIcon
+                data-expanded={groupItem.expanded}
                 style={{
                   opacity: typeof groupItem.height === 'number' ? 1 : 0,
                 }}
@@ -349,16 +345,13 @@ export default class Sidebar extends React.Component<Props, State> {
                     points="8 4 2 10 3.4 11.4 8 6.8 12.6 11.4 14 10"
                   />
                 </svg>
-              </button>
-            </div>
-            <div
+              </ButtonIcon>
+            </Row>
+            <GroupItems
               ref={container => {
                 this._items[item.title] = container;
               }}
-              className={cx(
-                groupItems,
-                groupItem.expanded ? groupItemsVisible : groupItemsHidden
-              )}
+              data-visible={!!groupItem.expanded}
               style={
                 typeof groupItem.height === 'number'
                   ? {
@@ -368,20 +361,20 @@ export default class Sidebar extends React.Component<Props, State> {
               }
             >
               {item.items.map(mapper)}
-            </div>
+            </GroupItems>
           </div>
         );
       }
 
       return (
-        <Link
+        <LinkItem
+          data-selected={path === item.link}
           key={item.link}
           to={item.link}
-          className={cx(link, path === item.link && active)}
           onClick={() => this.setState({ open: false, query: '' })}
         >
           {item.title}
-        </Link>
+        </LinkItem>
       );
     };
 
@@ -461,30 +454,26 @@ export default class Sidebar extends React.Component<Props, State> {
     const links = items.map(mapper);
 
     return (
-      <aside className={sidebar}>
-        <input
-          className={menuButton}
+      <SidebarContent>
+        <MenuButton
           id="slide-sidebar"
           type="checkbox"
           role="button"
           checked={this.state.open}
           onChange={e => this.setState({ open: e.target.checked })}
         />
-        <label className={menuIcon} htmlFor="slide-sidebar">
-          ☰
-        </label>
-        <div className={menu}>
-          {logo ? <img className={logoImage} src={logo} alt="Logo" /> : null}
-          <input
+        <MenuIcon htmlFor="slide-sidebar">☰</MenuIcon>
+        <MenuContent>
+          {logo ? <LogoImage src={logo} alt="Logo" /> : null}
+          <Searchbar
             type="search"
             value={this.state.query}
             onChange={e => this.setState({ query: e.target.value })}
             placeholder="Filter…"
-            className={searchbar}
           />
-          <nav className={navigation}>{links}</nav>
-        </div>
-      </aside>
+          <Navigation>{links}</Navigation>
+        </MenuContent>
+      </SidebarContent>
     );
   }
 }

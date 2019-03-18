@@ -52,6 +52,8 @@ The configuration object can contain the following properties:
 - `styles`: Additional CSS files to include in the HTML.
 - `scripts`: Additional JS files to include in the HTML.
 - `logo`: Logo image from assets to show in sidebar.
+- `colors`: Colors to use in the page. This is implemented using CSS variables and falls back to default grey colors on IE.
+  - `primary`: Primary color used in highlighted items, links etc.
 - `github`: Link to github folder to show edit button.
 - `port`: Port to run the server on.
 - `open`: Whether to open the browser window.

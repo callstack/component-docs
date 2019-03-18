@@ -33,6 +33,7 @@ export default function serve(o: Options) {
     output,
     port,
     open,
+    colors,
   } = options;
 
   const cache: Map<string, Metadata> = new Map();
@@ -76,6 +77,7 @@ export default function serve(o: Options) {
       logo,
       sheets: ['app.css'],
       scripts: scripts ? scripts.map(s => `scripts/${path.basename(s)}`) : [],
+      colors,
     });
     return acc;
   }, {});
@@ -139,6 +141,7 @@ export default function serve(o: Options) {
           scripts: scripts
             ? scripts.map(s => `scripts/${path.basename(s)}`)
             : [],
+          colors,
         });
         return acc;
       }, {});

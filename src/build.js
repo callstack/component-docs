@@ -23,6 +23,7 @@ export default async function build(o: Options) {
     github,
     logo,
     output,
+    colors,
   } = options;
 
   const pages = typeof getPages === 'function' ? getPages() : getPages;
@@ -63,6 +64,7 @@ export default async function build(o: Options) {
         logo,
         sheets: ['app.css'],
         scripts: scripts ? scripts.map(s => `scripts/${path.basename(s)}`) : [],
+        colors,
       })
     );
   });

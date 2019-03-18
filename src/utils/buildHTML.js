@@ -13,6 +13,9 @@ type Options = {
   logo?: string,
   sheets: string[],
   scripts: string[],
+  colors?: {
+    primary?: string,
+  },
 };
 
 export default function buildHTML({
@@ -22,12 +25,21 @@ export default function buildHTML({
   logo,
   sheets,
   scripts,
+  colors = {},
 }: Options) {
   const html = ReactDOMServer.renderToString(
     <App logo={logo} path={info.link} data={data} github={github} />
   );
 
   let body = `<div id='root'>${html}</div>`;
+
+  body += `
+    <style type="text/css">
+      :root {
+        --theme-primary-color: ${colors.primary || '#397AF9'};
+      }
+    </style>
+  `;
 
   body += `
     <script>

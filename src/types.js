@@ -21,6 +21,9 @@ export type Options = {
   port?: number,
   open?: boolean,
   github?: string,
+  colors?: {
+    primary?: string,
+  },
 };
 
 export type PageInfo = {

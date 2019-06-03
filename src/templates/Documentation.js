@@ -216,8 +216,10 @@ export default function Documentation({ name, info, github, filepath }: Props) {
     })
     .join('\n');
 
-  const keys = Object.keys(info.props).filter(
-    prop => !hasAnnotation(info.props[prop], ANNOTATION_INTERNAL)
+  const props = info.props || {};
+
+  const keys = Object.keys(props).filter(
+    prop => !hasAnnotation(props[prop], ANNOTATION_INTERNAL)
   );
   const methods = info.methods.filter(
     method =>
@@ -264,7 +266,7 @@ export default function Documentation({ name, info, github, filepath }: Props) {
         <React.Fragment>
           <h2>Props</h2>
           {keys.map(prop => (
-            <PropTypeDoc key={prop} name={prop} {...info.props[prop]} />
+            <PropTypeDoc key={prop} name={prop} {...props[prop]} />
           ))}
           {restProps.map(prop => (
             <RestPropsLabel key={prop.name} href={prop.link}>

@@ -42,7 +42,7 @@ export type TypeAnnotation = {
 
 export type Docs = {
   description: string,
-  props: {
+  props: ?{
     [prop: string]: {
       description: string,
       required?: boolean,

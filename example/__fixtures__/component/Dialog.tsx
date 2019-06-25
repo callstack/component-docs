@@ -1,4 +1,3 @@
-/* @flow */
 /* eslint-disable class-methods-use-this, no-unused-vars, react/no-unused-prop-types */
 
 import * as React from 'react';
@@ -10,21 +9,21 @@ type Props = {
   /**
    * Image to show in dialog.
    */
-  source: { uri: string },
+  source: { uri: string };
   /**
-   * Callback to trigger on press.
+   * Cqweqweqweqweqweqwxw
    */
-  onPress: () => mixed,
-  children: React.Node,
+  onPress: () => void;
+  children: React.ReactNode;
   /**
    * @internal
    */
-  siblings: string[],
+  siblings: string[];
   /**
    * @optional
    */
-  theme: any,
-  style?: any,
+  theme: any;
+  style?: any;
 };
 
 /**

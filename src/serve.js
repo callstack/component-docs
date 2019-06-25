@@ -152,7 +152,7 @@ export default function serve(o: Options) {
 
   const watcher = sane(root, {
     watchman: true,
-    glob: ['**/*.md', '**/*.mdx', '**/*.js'],
+    glob: ['**/*.md', '**/*.mdx', '**/*.js', '**/*.ts', '**/*.tsx'],
     ignored: /node_modules/,
   });
 

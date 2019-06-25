@@ -88,7 +88,9 @@ if (files.length) {
 if (command === 'build') {
   const spinner = ora('Building pages…').start();
 
+  // eslint-disable-next-line promise/catch-or-return
   build(argv).then(
+    // eslint-disable-next-line promise/always-return
     ({ stats, options }) => {
       spinner.succeed(
         `Successfully built pages in ${chalk.bold(

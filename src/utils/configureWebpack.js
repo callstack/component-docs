@@ -58,7 +58,7 @@ export default ({ root, entry, output, production }: Options) => ({
   module: {
     rules: [
       {
-        test: /\.js$/,
+        test: /\.(js|tsx?)$/,
         exclude: /node_modules/,
         use: [
           {

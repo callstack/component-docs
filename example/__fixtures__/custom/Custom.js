@@ -1,5 +1,4 @@
 /* @flow */
-/* eslint-disable jsx-a11y/accessible-emoji */
 
 import * as React from 'react';
 import { styled } from 'linaria/react';

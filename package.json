@@ -92,6 +92,8 @@
     "@babel/node": "^7.2.2",
     "@callstack/eslint-config": "^6.1.0",
     "@types/react": "^16.8.22",
+    "@typescript-eslint/eslint-plugin": "^1.11.0",
+    "@typescript-eslint/parser": "^1.11.0",
     "babel-eslint": "^10.0.2",
     "conventional-changelog-cli": "^2.0.12",
     "del-cli": "^1.1.0",

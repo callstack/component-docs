@@ -11,7 +11,7 @@ type Props = {
    */
   source: { uri: string };
   /**
-   * Cqweqweqweqweqweqwxw
+   * Callback to trigger on press.
    */
   onPress: () => void;
   children: React.ReactNode;

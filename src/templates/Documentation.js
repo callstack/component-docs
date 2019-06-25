@@ -71,8 +71,7 @@ const ANNOTATION_OPTIONAL = '@optional';
 const ANNOTATION_INTERNAL = '@internal';
 const ANNOTATION_EXTENDS = '@extends';
 
-const getTypeName = (flowType: TypeAnnotation) =>
-  flowType.raw || flowType.name || '';
+const getTypeName = (type: TypeAnnotation) => type.raw || type.name || '';
 
 const hasAnnotation = (item: any, annotation: string) =>
   // eslint-disable-next-line no-nested-ternary
@@ -89,6 +88,7 @@ const PropTypeDoc = ({
   name,
   description,
   flowType,
+  tsType,
   type,
   required,
   defaultValue,
@@ -100,7 +100,7 @@ const PropTypeDoc = ({
 
   const typeName =
     // eslint-disable-next-line no-nested-ternary
-    flowType ? getTypeName(flowType) : type ? getTypeName(type) : null;
+    flowType || tsType || type ? getTypeName(flowType || tsType || type) : null;
 
   return (
     <PropInfo>

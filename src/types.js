@@ -50,6 +50,7 @@ export type Docs = {
         value: string | number,
       },
       flowType?: TypeAnnotation,
+      tsType?: TypeAnnotation,
       type?: TypeAnnotation,
     },
   },

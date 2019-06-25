@@ -58,10 +58,35 @@ export default function component(
   filepath: string,
   { root }: { root: string }
 ): Metadata {
-  const info = parse(fs.readFileSync(filepath, 'utf-8'), undefined, [
-    ...defaultHandlers,
-    staticPropertyHandler,
-  ]);
+  let content = '';
+
+  const lines = fs.readFileSync(filepath, 'utf-8').split('\n');
+
+  let skip = false;
+
+  for (const line of lines) {
+    if (line === '// @component-docs ignore-next-line') {
+      skip = true;
+      continue;
+    }
+
+    if (skip) {
+      skip = false;
+      continue;
+    }
+
+    content += line + '\n';
+  }
+
+  const info = parse(
+    content,
+    undefined,
+    [...defaultHandlers, staticPropertyHandler],
+    {
+      cwd: root,
+      filename: filepath,
+    }
+  );
   const name = info.displayName || getNameFromPath(filepath);
 
   return {

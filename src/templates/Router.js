@@ -1,7 +1,7 @@
 /* @flow */
 
 import { Component } from 'react';
-import createHistory from 'history/createBrowserHistory';
+import { createBrowserHistory } from 'history';
 import type { Route } from '../types';
 
 type Props = {
@@ -17,7 +17,7 @@ type State = {
 export let history: any;
 
 try {
-  history = createHistory();
+  history = createBrowserHistory();
 } catch (e) {
   history = null;
 }

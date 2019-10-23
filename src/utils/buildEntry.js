@@ -35,8 +35,8 @@ const render = () => {
       <App
         name={window.__INITIAL_PATH__}
         data={data}
-        github={${JSON.stringify(github)}}
-        logo={${JSON.stringify(logo)}}
+        github={${github !== undefined ? JSON.stringify(github) : 'undefined'}}
+        logo={${logo !== undefined ? JSON.stringify(logo) : 'undefined'}}
       />,
       root
     );

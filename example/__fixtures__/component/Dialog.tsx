@@ -95,6 +95,8 @@ export default class Dialog extends React.Component<Props> {
     return Promise.resolve();
   }
 
+  private animate() {}
+
   render() {
     return null;
   }

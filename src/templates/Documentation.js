@@ -226,6 +226,7 @@ export default function Documentation({ name, info, github, filepath }: Props) {
       !(
         method.name.startsWith('_') ||
         method.modifiers.includes('static') ||
+        method.docblock == null ||
         hasAnnotation(method, ANNOTATION_INTERNAL)
       )
   );
@@ -239,6 +240,7 @@ export default function Documentation({ name, info, github, filepath }: Props) {
         .filter(
           method =>
             method.modifiers.includes('static') &&
+            method.docblock != null &&
             !REACT_STATIC_METHODS.includes(method.name)
         )
         .map(method => ({

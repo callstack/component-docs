@@ -5,6 +5,7 @@ import { styled } from 'linaria/react';
 import Content from './Content';
 import Markdown from './Markdown';
 import EditButton from './EditButton';
+import Minimap from './Minimap';
 import type { TypeAnnotation, Docs } from '../types';
 
 type Props = {
@@ -26,6 +27,16 @@ const MarkdownContent = styled(Markdown)`
   p:last-of-type {
     margin-bottom: 0;
   }
+`;
+
+const Row = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+`;
+
+const Wrapper = styled.div`
+  flex: 1;
 `;
 
 const PropInfo = styled.div`
@@ -267,64 +278,102 @@ export default function Documentation({ name, info, github, filepath }: Props) {
 
   return (
     <Content>
-      <EditButton github={github} filepath={filepath} />
-      <Title>{name}</Title>
-      <MarkdownContent source={description} options={{ linkify: true }} />
-      {keys.length || restProps.length ? (
-        <React.Fragment>
-          <h2>Props</h2>
-          {keys.map(prop => (
-            <PropTypeDoc key={prop} name={prop} {...props[prop]} />
-          ))}
-          {restProps.map(prop => (
-            <RestPropsLabel key={prop.name} href={prop.link}>
-              <code>
-                ...
-                {prop.name}
-              </code>
-            </RestPropsLabel>
-          ))}
-        </React.Fragment>
-      ) : null}
-      {methods.length ? (
-        <React.Fragment>
-          <h2>Methods</h2>
-          <p>
-            These methods can be accessed on the <code>ref</code> of the
-            component, e.g.{' '}
-            <code>
-              {pascalToCamelCase(name)}
-              Ref.
-              {methods[0].name}
-              (...args)
-            </code>
-            .
-          </p>
-          {methods.map(method => (
-            <MethodDoc key={method.name} type={null} {...method} />
-          ))}
-        </React.Fragment>
-      ) : null}
-      {statics.length ? (
-        <React.Fragment>
-          <h2>Static properties</h2>
-          <p>
-            These properties can be accessed on <code>{name}</code> by using the
-            dot notation, e.g.{' '}
-            <code>
-              {name}.{statics[0].info.name}
-            </code>
-            .
-          </p>
-          {statics.map(s => {
-            if (s.type === 'method') {
-              return <MethodDoc key={s.info.name} {...s.info} />;
-            }
+      <Row>
+        <Wrapper>
+          <EditButton github={github} filepath={filepath} />
+          <Title>{name}</Title>
+          <MarkdownContent source={description} options={{ linkify: true }} />
+          {keys.length || restProps.length ? (
+            <React.Fragment>
+              <a name="props" />
+              <h2>Props</h2>
+              {keys.map(prop => (
+                <PropTypeDoc key={prop} name={prop} {...props[prop]} />
+              ))}
+              {restProps.map(prop => (
+                <RestPropsLabel key={prop.name} href={prop.link}>
+                  <code>
+                    ...
+                    {prop.name}
+                  </code>
+                </RestPropsLabel>
+              ))}
+            </React.Fragment>
+          ) : null}
+          {methods.length ? (
+            <React.Fragment>
+              <a name="methods" />
+              <h2>Methods</h2>
+              <p>
+                These methods can be accessed on the <code>ref</code> of the
+                component, e.g.{' '}
+                <code>
+                  {pascalToCamelCase(name)}
+                  Ref.
+                  {methods[0].name}
+                  (...args)
+                </code>
+                .
+              </p>
+              {methods.map(method => (
+                <MethodDoc key={method.name} type={null} {...method} />
+              ))}
+            </React.Fragment>
+          ) : null}
+          {statics.length ? (
+            <React.Fragment>
+              <a name="static-properties" />
+              <h2>Static properties</h2>
+              <p>
+                These properties can be accessed on <code>{name}</code> by using
+                the dot notation, e.g.{' '}
+                <code>
+                  {name}.{statics[0].info.name}
+                </code>
+                .
+              </p>
+              {statics.map(s => {
+                if (s.type === 'method') {
+                  return <MethodDoc key={s.info.name} {...s.info} />;
+                }
 
-            return <PropertyDoc key={s.info.name} {...s.info} />;
-          })}
-        </React.Fragment>
-      ) : null}
+                return <PropertyDoc key={s.info.name} {...s.info} />;
+              })}
+            </React.Fragment>
+          ) : null}
+        </Wrapper>
+        <Minimap
+          map={{
+            Props: keys.length
+              ? {
+                  href: '#props',
+                  map: keys.reduce((acc, curr) => {
+                    acc[curr] = `#${curr}`;
+                    return acc;
+                  }, {}),
+                }
+              : undefined,
+            Methods: methods.length
+              ? {
+                  href: '#methods',
+                  map: methods.reduce((acc, curr) => {
+                    acc[curr.name] = `#${curr.name}`;
+                    return acc;
+                  }, {}),
+                }
+              : undefined,
+            'Static properties': statics.length
+              ? {
+                  href: '#static-properties',
+                  map: statics.reduce((acc, curr) => {
+                    acc[curr.info.name] = `#${curr.info.name}`;
+                    return acc;
+                  }, {}),
+                }
+              : undefined,
+          }}
+        />
+      </Row>
     </Content>
   );
 }

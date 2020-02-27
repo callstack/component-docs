@@ -3,7 +3,7 @@
 import * as React from 'react';
 import Router from './Router';
 import Documentation from './Documentation';
-import Markdown from './Markdown';
+import MarkdownPage from './MarkdownPage';
 import Layout from './Layout';
 import Sidebar from './Sidebar';
 import Content from './Content';
@@ -29,7 +29,7 @@ const buildRoutes = (
             <Layout>
               <Sidebar logo={logo} path={props.path} data={data} />
               <Content>
-                <Markdown source={source} />
+                <MarkdownPage source={source} />
               </Content>
             </Layout>
           );

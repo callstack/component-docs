@@ -44,6 +44,7 @@ export default class Router extends Component<Props, State> {
     if (prevState.path !== this.state.path) {
       const route = this.props.routes.find(r => r.link === this.state.path);
       if (route) {
+        // eslint-disable-next-line no-undef
         document.title = route.title || '';
       }
     }

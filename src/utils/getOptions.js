@@ -2,11 +2,11 @@
 /* @flow */
 
 import path from 'path';
-import cosmiconfig from 'cosmiconfig';
+import { cosmiconfigSync } from 'cosmiconfig';
 
 import type { Options } from '../types';
 
-const explorer = cosmiconfig('component-docs');
+const explorer = cosmiconfigSync('component-docs');
 
 export default function getOptions(
   overrides: Options
@@ -18,15 +18,15 @@ export default function getOptions(
       : path.join(process.cwd(), overrides.root || '')
     : process.cwd();
 
-  const result: { config?: $Shape<Options> } = explorer.searchSync(root);
+  const result: { config?: $Shape<Options> } = explorer.search(root);
   const options = {
     port: 3031,
     output: 'dist',
     ...(result ? result.config : null),
     ...overrides,
+    root,
   };
 
-  options.root = root;
   options.output = path.isAbsolute(options.output)
     ? options.output
     : path.join(root, options.output);

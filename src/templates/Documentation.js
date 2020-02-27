@@ -100,7 +100,13 @@ const PropTypeDoc = ({
 
   const typeName =
     // eslint-disable-next-line no-nested-ternary
-    flowType || tsType || type ? getTypeName(flowType || tsType || type) : null;
+    flowType
+      ? getTypeName(flowType)
+      : tsType
+      ? getTypeName(tsType)
+      : type
+      ? getTypeName(type)
+      : null;
 
   return (
     <PropInfo>

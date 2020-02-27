@@ -43,7 +43,7 @@ export type TypeAnnotation = {
 export type Docs = {
   description: string,
   props: ?{
-    [prop: string]: {
+    [prop: string]: {|
       description: string,
       required?: boolean,
       defaultValue?: {
@@ -52,9 +52,9 @@ export type Docs = {
       flowType?: TypeAnnotation,
       tsType?: TypeAnnotation,
       type?: TypeAnnotation,
-    },
+    |},
   },
-  methods: Array<{
+  methods: Array<{|
     name: string,
     description?: string,
     docblock?: string,
@@ -66,13 +66,13 @@ export type Docs = {
       type?: TypeAnnotation,
     },
     modifiers: Array<'static' | 'generator' | 'async'>,
-  }>,
-  statics: Array<{
+  |}>,
+  statics: Array<{|
     name: string,
     description?: string,
     type?: TypeAnnotation,
     value?: string,
-  }>,
+  |}>,
 };
 
 export type Metadata =

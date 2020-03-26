@@ -4,6 +4,7 @@
 
 # VSCode
 .vscode/
+.history/
 tsconfig.json
 
 # node.js

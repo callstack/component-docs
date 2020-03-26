@@ -98,7 +98,10 @@ if (command === 'build') {
         )}ms (${chalk.blue(path.relative(process.cwd(), options.output))})`
       );
     },
-    e => spinner.fail(`Failed to build pages ${e.message}`)
+    e => {
+      spinner.fail(`Failed to build pages ${e.message}`);
+      process.exit(1);
+    }
   );
 } else {
   serve(argv);

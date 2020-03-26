@@ -92,6 +92,13 @@ if (command === 'build') {
   build(argv).then(
     // eslint-disable-next-line promise/always-return
     ({ stats, options }) => {
+      // eslint-disable-next-line promise/always-return
+      if (stats.compilation.errors && stats.compilation.errors.length) {
+        spinner.fail(`Failed to build pages`);
+        console.log(JSON.stringify(stats.compilation.errors));
+        process.exit(1);
+      }
+
       spinner.succeed(
         `Successfully built pages in ${chalk.bold(
           String(stats.endTime - stats.startTime)

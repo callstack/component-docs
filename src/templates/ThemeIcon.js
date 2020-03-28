@@ -63,7 +63,7 @@ const ThemeSwitch = (
 
   return (
     <ThemeSwitchDiv>
-      <Label class="switch-wrap" isDark>
+      <Label class="switch-wrap" isDark={isDark}>
         <Input
           type="checkbox"
           checked={isDark}
@@ -80,7 +80,6 @@ const ThemeSwitch = (
 
 const Label = styled.label`
   cursor: pointer;
-  background: #6200ee;
   background: ${props => (props.isDark ? '#6200ee' : '#000')};
   padding: 3px;
   width: 33px;

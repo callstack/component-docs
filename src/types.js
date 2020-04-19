@@ -72,6 +72,7 @@ export type Docs = {
     description?: string,
     type?: TypeAnnotation,
     value?: string,
+    link?: ?string,
   |}>,
 };
 

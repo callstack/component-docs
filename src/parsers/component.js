@@ -18,7 +18,7 @@ const REACT_STATICS = [
   'propTypes',
 ];
 
-function staticPropertyHandler(documentation, propertyPath) {
+function staticPropertyHandler(documentation, propertyPath, componentName) {
   let statics = [];
 
   if (types.namedTypes.ClassDeclaration.check(propertyPath.node)) {
@@ -40,14 +40,27 @@ function staticPropertyHandler(documentation, propertyPath) {
         }
 
         const docblock = utils.docblock.getDocblock(p);
+        const name = p.node.key.name;
 
-        return {
-          name: p.node.key.name,
+        const showLink = docblock === null;
+
+        const staticInfo = {
+          name,
           description: docblock ? doctrine.parse(docblock).description : null,
           docblock,
           value: p.node.value.value,
           type,
         };
+
+        if (showLink) {
+          return {
+            ...staticInfo,
+            type: { name: 'static' },
+            link: `${dashify(componentName)}-${dashify(name)}.html`,
+          };
+        }
+
+        return staticInfo;
       });
   }
 
@@ -81,7 +94,15 @@ export default function component(
   const info = parse(
     content,
     undefined,
-    [...defaultHandlers, staticPropertyHandler],
+    [
+      ...defaultHandlers,
+      (documentation, propertyPath) =>
+        staticPropertyHandler(
+          documentation,
+          propertyPath,
+          getNameFromPath(filepath)
+        ),
+    ],
     {
       cwd: root,
       filename: filepath,

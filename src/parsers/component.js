@@ -59,7 +59,7 @@ export default function component(
   { root }: { root: string }
 ): Metadata {
   let content = '';
-  let snackPlayers = []
+  let snackPlayers = [];
 
   const lines = fs.readFileSync(filepath, 'utf-8').split('\n');
 
@@ -74,14 +74,17 @@ export default function component(
     if (line.includes('@SnackPlayer')) {
       const parts = line.split(' ').slice(1);
       const snackPlayerName = parts.pop();
-      const snackPlayerPath = path.join(filepath, '..', '..', 'examples', snackPlayerName)
-      if(fs.existsSync(snackPlayerPath)){
+      const snackPlayerPath = path.join(
+        filepath,
+        '..',
+        '..',
+        'examples',
+        snackPlayerName
+      );
+      if (fs.existsSync(snackPlayerPath)) {
         snackPlayers.push({
           name: snackPlayerName,
-          code:  fs.readFileSync(
-            snackPlayerPath,
-            'utf-8'
-          ),
+          code: fs.readFileSync(snackPlayerPath, 'utf-8'),
         });
       }
       skip = true;

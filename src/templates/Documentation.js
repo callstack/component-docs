@@ -205,7 +205,13 @@ const PropertyDoc = ({ name, description, type, value }: *) => {
   );
 };
 
-export default function Documentation({ name, info, github, filepath, snackPlayers }: Props) {
+export default function Documentation({
+  name,
+  info,
+  github,
+  filepath,
+  snackPlayers,
+}: Props) {
   const restProps = [];
   const description = info.description
     .split('\n')

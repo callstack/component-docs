@@ -6,20 +6,8 @@ import PropTypes from 'prop-types';
 /**
  * Buttons communicate the action that will occur when the user touches them
  *
- * <div class="screenshots">
- *   <img src="screenshots/button-raised.png" />
- *   <img src="screenshots/button-primary.png" />
- *   <img src="screenshots/button-custom.png" />
- * </div>
+ * @SnackPlayer Button.SimpleUsage.js
  *
- * ## Usage
- * ```js
- * const MyComponent = () => (
- *   <Button raised onPress={() => console.log('Pressed')}>
- *     Press me
- *   </Button>
- * );
- * ```
  * @extends TouchableWithoutFeedback props https://facebook.github.io/react-native/docs/touchablewithoutfeedback.html#props
  */
 export default class Button extends Component {

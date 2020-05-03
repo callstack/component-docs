@@ -5,6 +5,7 @@ import { styled } from 'linaria/react';
 import Content from './Content';
 import Markdown from './Markdown';
 import EditButton from './EditButton';
+import SnackPlayer from './SnackPlayer';
 import type { TypeAnnotation, Docs } from '../types';
 
 type Props = {
@@ -204,7 +205,7 @@ const PropertyDoc = ({ name, description, type, value }: *) => {
   );
 };
 
-export default function Documentation({ name, info, github, filepath }: Props) {
+export default function Documentation({ name, info, github, filepath, snackPlayers }: Props) {
   const restProps = [];
   const description = info.description
     .split('\n')
@@ -270,6 +271,15 @@ export default function Documentation({ name, info, github, filepath }: Props) {
       <EditButton github={github} filepath={filepath} />
       <Title>{name}</Title>
       <MarkdownContent source={description} options={{ linkify: true }} />
+
+      {snackPlayers.length ? (
+        <React.Fragment>
+          {snackPlayers.map(snackPlayer => (
+            <SnackPlayer snackPlayer={snackPlayer} key={snackPlayer.name} />
+          ))}
+        </React.Fragment>
+      ) : null}
+
       {keys.length || restProps.length ? (
         <React.Fragment>
           <h2>Props</h2>

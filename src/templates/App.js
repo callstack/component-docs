@@ -46,6 +46,7 @@ const buildRoutes = (
                 info={info}
                 github={github}
                 filepath={item.filepath}
+                snackPlayers={item.snackPlayers}
               />
             </Layout>
           );

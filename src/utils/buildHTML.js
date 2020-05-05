@@ -49,6 +49,8 @@ export default function buildHTML({
 
   body += '<script src="app.bundle.js"></script>';
 
+  body += '<script async src="https://snack.expo.io/embed.js"></script>';
+
   scripts.forEach(s => {
     body += `<script src="${s}"></script>`;
   });

@@ -59,6 +59,7 @@ export default function component(
   { root }: { root: string }
 ): Metadata {
   let content = '';
+  let snackPlayers = [];
 
   const lines = fs.readFileSync(filepath, 'utf-8').split('\n');
 
@@ -66,6 +67,26 @@ export default function component(
 
   for (const line of lines) {
     if (line === '// @component-docs ignore-next-line') {
+      skip = true;
+      continue;
+    }
+
+    if (line.includes('@SnackPlayer')) {
+      const parts = line.split(' ').slice(1);
+      const snackPlayerName = parts.pop();
+      const snackPlayerPath = path.join(
+        filepath,
+        '..',
+        '..',
+        'examples',
+        snackPlayerName
+      );
+      if (fs.existsSync(snackPlayerPath)) {
+        snackPlayers.push({
+          name: snackPlayerName,
+          code: fs.readFileSync(snackPlayerPath, 'utf-8'),
+        });
+      }
       skip = true;
       continue;
     }
@@ -93,6 +114,7 @@ export default function component(
     filepath: path.relative(root, filepath),
     title: name,
     description: info.description,
+    snackPlayers: snackPlayers,
     link: dashify(name),
     data: info,
     type: 'component',

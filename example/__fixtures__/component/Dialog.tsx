@@ -64,6 +64,9 @@ type Props = {
  *   }
  * }
  * ```
+ * 
+ * @SnackPlayer Dialog.SimpleUsage.js
+ * 
  */
 export default class Dialog extends React.Component<Props> {
   /**

@@ -221,8 +221,11 @@ dl dd > :last-child {
 blockquote {
   border-left: 4px solid #dddddd;
   padding: 0 14px;
-  color: #777777;
-  color: var(--theme-secondary-bg);
+  opacity: 0.7;
+}
+
+blockquote blockquote {
+  opacity: 1;
 }
 
 blockquote > :first-child {

@@ -14,6 +14,14 @@ html {
   --theme-secondary-bg: #f8f9fa;
 }
 
+:root .dark-theme {
+  --theme-primary-color: #fff;
+  --theme-text-color: #fff;
+  --theme-heading-color: #fff;
+  --theme-main-bg: #000;
+  --theme-secondary-bg: #111;
+}
+
 body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
   font-size: 14px;
@@ -305,13 +313,3 @@ pre code, pre tt {
     -moz-osx-font-smoothing: grayscale;
   }
 }
-
-
-:root .dark-mode {
-  --theme-primary-color: #fff;
-  --theme-text-color: #fff;
-  --theme-heading-color: #fff;
-  --theme-main-bg: #000;
-  --theme-secondary-bg: #111;
-}
-

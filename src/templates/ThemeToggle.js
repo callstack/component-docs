@@ -1,14 +1,54 @@
+/* eslint-env browser */
 /* @flow */
 
 import * as React from 'react';
 import { styled } from 'linaria/react';
 
-type Props = {
-  type: 'dark' | 'light',
-};
+const Label = styled.label`
+  cursor: pointer;
+  background: ${props => (props.isDark ? '#6200ee' : '#000')};
+  padding: 3px;
+  width: 33px;
+  height: 20px;
+  border-radius: 33.5px;
+  display: grid;
+  margin-right: 5px;
+`;
 
-const ThemeIcon = ({ type = 'dark' }: Props) => {
-  if (type === 'dark') {
+const ThemeSwitchDiv = styled.div`
+  display: flex;
+  flex-direction: row;
+`;
+
+const Switch = styled.div`
+  height: 14px;
+  width: 26px;
+  display: grid;
+  grid-template-columns: 0fr 1fr 1fr;
+  transition: 0.2s;
+
+  &:after {
+    content: '';
+    border-radius: 50%;
+    background: #fff;
+    grid-column: 2;
+    transition: background 0.2s;
+  }
+`;
+
+const Input = styled.input`
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+
+  &:checked + ${Switch} {
+    grid-template-columns: 1fr 1fr 0fr;
+  }
+`;
+
+function ThemeIcon({ value }: { value: 'light' | 'dark' }) {
+  if (value === 'dark') {
     return (
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -25,7 +65,7 @@ const ThemeIcon = ({ type = 'dark' }: Props) => {
         />
       </svg>
     );
-  } else if (type === 'light') {
+  } else if (value === 'light') {
     return (
       <svg
         version="1.1"
@@ -54,67 +94,44 @@ const ThemeIcon = ({ type = 'dark' }: Props) => {
   } else {
     return null;
   }
-};
+}
 
-const ThemeSwitch = (
-  props: Props & { onChange: (value: 'dark' | 'light') => void }
-) => {
-  const isDark = props.type === 'dark';
+export default function ThemeToggle() {
+  const [isReady, setIsReady] = React.useState(false);
+  const [isDark, setIsDark] = React.useState(false);
+
+  React.useEffect(() => {
+    if (isReady) {
+      // Apply theme update to body if theme changes
+      if (isDark) {
+        document.body && document.body.classList.add('dark-theme');
+      } else {
+        document.body && document.body.classList.remove('dark-theme');
+      }
+
+      localStorage.setItem('preference-theme', isDark ? 'dark' : 'light');
+    } else {
+      // Correct the switch by reading theme from body on mount
+      if (document.body && document.body.classList.contains('dark-theme')) {
+        setIsDark(true);
+      }
+
+      setIsReady(true);
+    }
+  }, [isDark, isReady]);
 
   return (
     <ThemeSwitchDiv>
-      <Label class="switch-wrap" isDark={isDark}>
+      <Label isDark={isDark}>
         <Input
           type="checkbox"
           checked={isDark}
-          onChange={() => {
-            props.onChange(isDark ? 'light' : 'dark');
-          }}
+          disabled={!isReady}
+          onChange={() => setIsDark(isDark => !isDark)}
         />
-        <Switch class="switch"></Switch>
+        <Switch />
       </Label>
-      <ThemeIcon type={isDark ? 'dark' : 'light'} />
+      <ThemeIcon value={isDark ? 'dark' : 'light'} />
     </ThemeSwitchDiv>
   );
-};
-
-const Label = styled.label`
-  cursor: pointer;
-  background: ${props => (props.isDark ? '#6200ee' : '#000')};
-  padding: 3px;
-  width: 33px;
-  height: 20px;
-  border-radius: 33.5px;
-  display: grid;
-  margin-right: 5px;
-`;
-const ThemeSwitchDiv = styled.div`
-  display: flex;
-  flex-direction: row;
-`;
-
-const Input = styled.input`
-  position: absolute;
-  opacity: 0;
-  width: 0;
-  height: 0;
-  &:checked + .switch {
-    grid-template-columns: 1fr 1fr 0fr;
-  }
-`;
-const Switch = styled.div`
-  height: 14px;
-  width: 26px;
-  display: grid;
-  grid-template-columns: 0fr 1fr 1fr;
-  transition: 0.2s;
-  &:after {
-    content: '';
-    border-radius: 50%;
-    background: #fff;
-    grid-column: 2;
-    transition: background 0.2s;
-  }
-`;
-
-export default ThemeSwitch;
+}

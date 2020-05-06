@@ -267,7 +267,6 @@ export default function Documentation({ name, info, github, filepath }: Props) {
 
   return (
     <Content>
-      <EditButton github={github} filepath={filepath} />
       <Title>{name}</Title>
       <MarkdownContent source={description} options={{ linkify: true }} />
       {keys.length || restProps.length ? (
@@ -325,6 +324,7 @@ export default function Documentation({ name, info, github, filepath }: Props) {
           })}
         </React.Fragment>
       ) : null}
+      <EditButton github={github} filepath={filepath} />
     </Content>
   );
 }

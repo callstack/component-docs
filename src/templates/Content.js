@@ -2,6 +2,7 @@
 
 import * as React from 'react';
 import { styled } from 'linaria/react';
+import Header from './Header';
 
 const Container = styled.main`
   flex: 1;
@@ -123,6 +124,7 @@ type Props = {
 export default function Content({ children }: Props) {
   return (
     <Container>
+      <Header />
       <Inner>{children}</Inner>
     </Container>
   );

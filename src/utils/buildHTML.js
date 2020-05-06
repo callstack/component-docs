@@ -31,7 +31,35 @@ export default function buildHTML({
     <App logo={logo} path={info.link} data={data} github={github} />
   );
 
-  let body = `<div id='root'>${html}</div>`;
+  let body = `
+    <script>
+      var theme;
+
+      try {
+        // Check if there is a preference saved
+        theme = localStorage.getItem('preference-theme');
+      } catch (e) {
+        // Ignore
+      }
+
+      if (theme === undefined) {
+        try {
+          // If no preferred theme is set, read OS preference
+          theme = window.matchMedia('(prefers-color-scheme: dark)').matches
+            ? 'dark'
+            : 'light';
+        } catch (e) {
+          // Ignore
+        }
+      }
+
+      if (theme === 'dark') {
+        document.body.classList.add('dark-theme');
+      }
+    </script>
+  `;
+
+  body += `<div id='root'>${html}</div>`;
 
   body += `
     <style type="text/css">

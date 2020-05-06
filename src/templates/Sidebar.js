@@ -4,9 +4,6 @@ import * as React from 'react';
 import { styled } from 'linaria/react';
 import Link from './Link';
 import type { Metadata, Separator } from '../types';
-import ThemeIcon from './ThemeIcon';
-
-const DARK_MODE_CLASS = 'dark-mode';
 
 const SidebarContent = styled.aside`
   background-color: #f8f9fa;
@@ -51,10 +48,11 @@ const Searchbar = styled.input`
     background-color: rgba(0, 0, 55, 0.12);
   }
 
-  ${'.' + DARK_MODE_CLASS} & {
+  .dark-theme & {
     background-color: rgba(255, 255, 200, 0.08);
   }
-  ${'.' + DARK_MODE_CLASS} &:focus {
+
+  .dark-theme &:focus {
     background-color: rgba(255, 255, 200, 0.08);
   }
 
@@ -228,7 +226,6 @@ type State = {
   expanded: {
     [key: string]: { height: ?number, expanded: boolean },
   },
-  mode: 'dark' | 'light',
 };
 
 export default class Sidebar extends React.Component<Props, State> {
@@ -255,18 +252,6 @@ export default class Sidebar extends React.Component<Props, State> {
     }, {}),
     mode: 'light',
   };
-
-  constructor(props: Props) {
-    super(props);
-    if (
-      global.window !== undefined &&
-      window.matchMedia &&
-      window.matchMedia('(prefers-color-scheme: dark)').matches
-    ) {
-      this.state.mode = 'dark';
-      document.body.classList.add(DARK_MODE_CLASS);
-    }
-  }
 
   componentDidMount() {
     setTimeout(() => this._measureHeights(), 1000);
@@ -305,20 +290,6 @@ export default class Sidebar extends React.Component<Props, State> {
     });
 
   _items: { [key: string]: ?HTMLDivElement } = {};
-
-  handleChangeDark = (mode: 'dark' | 'light') => {
-    this.setState({ mode });
-
-    if (mode === 'dark') {
-      if (!document.body.classList.contains(DARK_MODE_CLASS)) {
-        document.body.classList.add(DARK_MODE_CLASS);
-      }
-    } else {
-      if (document.body.classList.contains(DARK_MODE_CLASS)) {
-        document.body.classList.remove(DARK_MODE_CLASS);
-      }
-    }
-  };
 
   render() {
     const { path, data, logo } = this.props;
@@ -513,10 +484,6 @@ export default class Sidebar extends React.Component<Props, State> {
         <MenuContent>
           <LogoContainer>
             {logo ? <LogoImage src={logo} alt="Logo" /> : null}
-            <ThemeIcon
-              type={this.state.mode}
-              onChange={this.handleChangeDark}
-            />
           </LogoContainer>
 
           <Searchbar

@@ -48,7 +48,7 @@ export default function serve(o: Options) {
       return result;
     }
 
-    result = collectData(page, { root });
+    result = collectData(page, { root, logo, github });
     cache.set(page.file, result);
 
     return result;
@@ -68,7 +68,7 @@ export default function serve(o: Options) {
 
   fs.writeFileSync(path.join(output, 'app.data.js'), stringifyData(data));
 
-  let fallback = build404({ data, sheets: ['app.css'] });
+  let fallback = build404({ logo, data, sheets: ['app.css'] });
   let routes = buildPageInfo(data).reduce((acc, info) => {
     acc[info.link] = buildHTML({
       data,
@@ -130,7 +130,7 @@ export default function serve(o: Options) {
         fs.writeFileSync(filepath, content);
       }
 
-      fallback = build404({ data, sheets: ['app.css'] });
+      fallback = build404({ logo, data, sheets: ['app.css'] });
       routes = buildPageInfo(data).reduce((acc, info) => {
         acc[info.link] = buildHTML({
           data,

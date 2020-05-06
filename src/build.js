@@ -28,7 +28,7 @@ export default async function build(o: Options) {
 
   const pages = typeof getPages === 'function' ? getPages() : getPages;
   const data = pages.map(page =>
-    page.type === 'separator' ? page : collectData(page, { root })
+    page.type === 'separator' ? page : collectData(page, { root, logo, github })
   );
 
   if (!fs.existsSync(output)) {

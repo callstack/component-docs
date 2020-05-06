@@ -17,11 +17,6 @@ const SidebarContent = styled.aside`
   }
 `;
 
-const LogoContainer = styled.div`
-  display: flex;
-  align-items: flex-end;
-`;
-
 const Navigation = styled.nav`
   padding: 12px 24px;
 
@@ -84,10 +79,14 @@ const MenuIcon = styled.label`
   font-size: 20px;
   line-height: 1;
   cursor: pointer;
-  position: absolute;
-  top: 0;
+  position: fixed;
+  bottom: 0;
   right: 0;
-  padding: 30px;
+  padding: 16px;
+  margin: 16px;
+  background-color: #f8f9fa;
+  background-color: var(--theme-secondary-bg);
+  border-radius: 3px;
   z-index: 10;
   -webkit-tap-highlight-color: transparent;
 
@@ -109,13 +108,6 @@ const MenuButton = styled.input`
     color: #111;
     user-select: none;
   }
-`;
-
-const LogoImage = styled.img`
-  display: block;
-  height: 48px;
-  width: auto;
-  margin: 32px 32px 0;
 `;
 
 const SeparatorItem = styled.hr`
@@ -215,7 +207,6 @@ const ButtonIcon = styled.button`
 `;
 
 type Props = {
-  logo?: string,
   path: string,
   data: Array<Metadata | Separator>,
 };
@@ -292,7 +283,7 @@ export default class Sidebar extends React.Component<Props, State> {
   _items: { [key: string]: ?HTMLDivElement } = {};
 
   render() {
-    const { path, data, logo } = this.props;
+    const { path, data } = this.props;
     const mapper = (item, i) => {
       if (item.type === 'separator') {
         return <SeparatorItem key={`separator-${i + 1}`} />;
@@ -482,10 +473,6 @@ export default class Sidebar extends React.Component<Props, State> {
         />
         <MenuIcon htmlFor="slide-sidebar">☰</MenuIcon>
         <MenuContent>
-          <LogoContainer>
-            {logo ? <LogoImage src={logo} alt="Logo" /> : null}
-          </LogoContainer>
-
           <Searchbar
             type="search"
             value={this.state.query}

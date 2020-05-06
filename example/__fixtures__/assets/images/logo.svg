@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="22px" height="48px" version="1.1" viewBox="0 0 22 48">
-    <g fill="#999999" fill-rule="nonzero" transform="translate(0.000000, 24.000000)">
-        <polygon points="8 10 18 10 18 12 8 12"/>
-        <polygon points="4 14 18 14 18 16 4 16"/>
-        <polygon points="4 18 18 18 18 20 4 20"/>
-        <polygon points="4 22 15 22 15 24 4 24"/>
-        <polygon points="4 8 6 8 6 12 4 12"/>
-        <path d="M16,0 L0,0 L0,24 L2,24 L2,2 L14,2 L14,8 L20,8 L20,24 L22,24 L22,5.0859375 L16.9140625,0 L16,0 Z M20,6 L16,6 L16,2 L16.0859375,2 L20,5.9140625 L20,6 Z"/>
+<svg width="22px" height="24px" viewBox="0 0 22 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+    <g fill="#999999" fill-rule="nonzero">
+      <polygon points="8 10 18 10 18 12 8 12"/>
+      <polygon points="4 14 18 14 18 16 4 16"/>
+      <polygon points="4 18 18 18 18 20 4 20"/>
+      <polygon points="4 22 15 22 15 24 4 24"/>
+      <polygon points="4 8 6 8 6 12 4 12"/>
+      <path d="M16,0 L0,0 L0,24 L2,24 L2,2 L14,2 L14,8 L20,8 L20,24 L22,24 L22,5.0859375 L16.9140625,0 L16,0 Z M20,6 L16,6 L16,2 L16.0859375,2 L20,5.9140625 L20,6 Z" />
     </g>
+  </g>
 </svg>

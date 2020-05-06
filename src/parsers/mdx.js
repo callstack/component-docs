@@ -15,7 +15,7 @@ import type { Metadata } from '../types';
 
 export default function(
   filepath: string,
-  { root }: { root: string }
+  { root, logo }: { root: string, logo?: string }
 ): Metadata {
   const text = fs.readFileSync(filepath, 'utf-8');
 
@@ -86,7 +86,7 @@ export default function(
     data: function MDXContent(props) {
       return React.createElement(
         Content,
-        {},
+        { logo },
         React.createElement(component, props)
       );
     },
@@ -128,7 +128,7 @@ ${result};
     data: function MDXContent(props) {
       return React.createElement(
         Content,
-        {},
+        { logo: '${logo}' },
         React.createElement(m.exports.default, props)
       );
     },

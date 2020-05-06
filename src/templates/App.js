@@ -27,8 +27,8 @@ const buildRoutes = (
           const source = item.data;
           render = (props: { path: string }) => (
             <Layout>
-              <Sidebar logo={logo} path={props.path} data={data} />
-              <Content>
+              <Sidebar path={props.path} data={data} />
+              <Content logo={logo}>
                 <Markdown source={source} />
               </Content>
             </Layout>
@@ -40,11 +40,12 @@ const buildRoutes = (
           const info = item.data;
           render = (props: { path: string }) => (
             <Layout>
-              <Sidebar logo={logo} path={props.path} data={data} />
+              <Sidebar path={props.path} data={data} />
               <Documentation
                 name={item.title}
                 info={info}
                 github={github}
+                logo={logo}
                 filepath={item.filepath}
               />
             </Layout>
@@ -56,7 +57,7 @@ const buildRoutes = (
           const CustomComponent = item.data;
           render = (props: { path: string }) => (
             <Layout>
-              <Sidebar logo={logo} path={props.path} data={data} />
+              <Sidebar path={props.path} data={data} />
               <CustomComponent />
             </Layout>
           );

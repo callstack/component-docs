@@ -6,13 +6,14 @@ import Link from './Link';
 import type { PageInfo } from '../types';
 
 type Props = {
+  logo?: string,
   data: PageInfo[],
 };
 
 export default class Fallback extends React.Component<Props> {
   render() {
     return (
-      <Content>
+      <Content logo={this.props.logo}>
         <h1>Page not found.</h1>
         <p>
           Looks like the page you requested doesn&#39;t exist. You can try

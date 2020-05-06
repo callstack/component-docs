@@ -118,13 +118,14 @@ const Inner = styled.div`
 `;
 
 type Props = {
+  logo?: string,
   children: React.Node,
 };
 
-export default function Content({ children }: Props) {
+export default function Content({ logo, children }: Props) {
   return (
     <Container>
-      <Header />
+      <Header logo={logo} />
       <Inner>{children}</Inner>
     </Container>
   );

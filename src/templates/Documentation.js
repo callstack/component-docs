@@ -11,6 +11,7 @@ type Props = {
   name: string,
   info: Docs,
   filepath: string,
+  logo?: string,
   github?: string,
 };
 
@@ -204,7 +205,13 @@ const PropertyDoc = ({ name, description, type, value }: *) => {
   );
 };
 
-export default function Documentation({ name, info, github, filepath }: Props) {
+export default function Documentation({
+  name,
+  info,
+  logo,
+  github,
+  filepath,
+}: Props) {
   const restProps = [];
   const description = info.description
     .split('\n')
@@ -266,7 +273,7 @@ export default function Documentation({ name, info, github, filepath }: Props) {
     );
 
   return (
-    <Content>
+    <Content logo={logo}>
       <Title>{name}</Title>
       <MarkdownContent source={description} options={{ linkify: true }} />
       {keys.length || restProps.length ? (

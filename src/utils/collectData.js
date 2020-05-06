@@ -6,7 +6,10 @@ import component from '../parsers/component';
 import custom from '../parsers/custom';
 import type { Page, Metadata } from '../types';
 
-export default function(page: Page, options: { root: string }): Metadata {
+export default function(
+  page: Page,
+  options: { root: string, logo?: string, github?: string }
+): Metadata {
   let data: Metadata;
 
   switch (page.type) {

@@ -175,12 +175,15 @@ const MethodDoc = ({ name, description, type, params, returns }) => {
   );
 };
 
-const PropertyDoc = ({ name, description, type, value }: *) => {
+const PropertyDoc = ({ name, description, type, value, link }: *) => {
   const typeName = type ? getTypeName(type) : null;
 
   return (
     <PropInfo>
-      <PropLabel name={name} href={`#${name}`}>
+      <PropLabel
+        name={name}
+        href={`${typeName === 'static' && link ? `${link}` : `#${name}`}`}
+      >
         <code>{name}</code>
       </PropLabel>
       {typeName && typeName !== 'unknown' ? (

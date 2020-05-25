@@ -16,6 +16,7 @@ type Options = {
   colors?: {
     primary?: string,
   },
+  title?: string,
 };
 
 export default function buildHTML({
@@ -26,9 +27,16 @@ export default function buildHTML({
   sheets,
   scripts,
   colors = {},
+  title,
 }: Options) {
   const html = ReactDOMServer.renderToString(
-    <App logo={logo} path={info.link} data={data} github={github} />
+    <App
+      logo={logo}
+      path={info.link}
+      data={data}
+      github={github}
+      title={title}
+    />
   );
 
   let body = `
@@ -81,10 +89,13 @@ export default function buildHTML({
     body += `<script src="${s}"></script>`;
   });
 
+  const pageTitle =
+    title !== undefined ? title.replace(/\[title\]/g, info.title) : info.title;
+
   return ReactDOMServer.renderToStaticMarkup(
     // eslint-disable-next-line react/jsx-pascal-case
     <HTML
-      title={info.title}
+      title={pageTitle}
       description={(info.description || '').split('\n')[0]}
       body={body}
       sheets={sheets}

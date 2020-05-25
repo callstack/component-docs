@@ -6,10 +6,12 @@ export default function buildEntry({
   styles,
   github,
   logo,
+  title,
 }: {
   styles?: string[],
   github?: string,
   logo?: string,
+  title?: string,
 }) {
   return `
 import React from 'react';
@@ -37,6 +39,7 @@ const render = () => {
         data={data}
         github={${github !== undefined ? JSON.stringify(github) : 'undefined'}}
         logo={${logo !== undefined ? JSON.stringify(logo) : 'undefined'}}
+        title={${title !== undefined ? JSON.stringify(title) : 'undefined'}}
       />,
       root
     );

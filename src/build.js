@@ -24,6 +24,7 @@ export default async function build(o: Options) {
     logo,
     output,
     colors,
+    title,
   } = options;
 
   const pages = typeof getPages === 'function' ? getPages() : getPages;
@@ -49,7 +50,7 @@ export default async function build(o: Options) {
 
   fs.writeFileSync(
     path.join(output, 'app.src.js'),
-    buildEntry({ styles, github, logo })
+    buildEntry({ styles, github, logo, title })
   );
 
   fs.writeFileSync(path.join(output, 'app.data.js'), stringifyData(data));
@@ -65,6 +66,7 @@ export default async function build(o: Options) {
         sheets: ['app.css'],
         scripts: scripts ? scripts.map(s => `scripts/${path.basename(s)}`) : [],
         colors,
+        title,
       })
     );
   });

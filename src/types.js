@@ -24,6 +24,7 @@ export type Options = {
   colors?: {
     primary?: string,
   },
+  title?: string,
 };
 
 export type PageInfo = {

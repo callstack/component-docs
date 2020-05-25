@@ -80,9 +80,10 @@ type Props = {
   data: Data,
   github?: string,
   logo?: string,
+  title?: string,
 };
 
-export default function App({ path, data, github, logo }: Props) {
+export default function App({ path, data, github, logo, title }: Props) {
   const routes = buildRoutes(data, github, logo);
-  return <Router path={path} routes={routes} />;
+  return <Router path={path} routes={routes} title={title} />;
 }

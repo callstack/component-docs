@@ -38,4 +38,5 @@ module.exports = {
   pages,
   output,
   github,
+  title: '[title] - Component Docs',
 };

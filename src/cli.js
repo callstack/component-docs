@@ -48,6 +48,11 @@ const { argv } = yargs
       description: 'Link to github folder to show edit button',
       requiresArg: true,
     },
+    title: {
+      type: 'string',
+      description: 'Title of a web page',
+      requiresArg: true,
+    },
   })
   .command('serve', 'serve pages for development', y => {
     y.options({

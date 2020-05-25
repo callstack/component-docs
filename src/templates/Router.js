@@ -7,6 +7,7 @@ import type { Route } from '../types';
 type Props = {
   path: string,
   routes: Array<Route>,
+  title?: string,
 };
 
 type State = {
@@ -41,11 +42,14 @@ export default class Router extends Component<Props, State> {
   }
 
   componentDidUpdate(prevProps: Props, prevState: State) {
+    const { routes, title } = this.props;
     if (prevState.path !== this.state.path) {
-      const route = this.props.routes.find(r => r.link === this.state.path);
+      const route = routes.find(r => r.link === this.state.path);
       if (route) {
         // eslint-disable-next-line no-undef
-        document.title = route.title || '';
+        document.title = title
+          ? title.replace(/\[title\]/g, route.title)
+          : route.title || '';
       }
     }
   }

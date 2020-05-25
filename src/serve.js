@@ -34,6 +34,7 @@ export default function serve(o: Options) {
     port,
     open,
     colors,
+    title,
   } = options;
 
   const cache: Map<string, Metadata> = new Map();
@@ -63,7 +64,7 @@ export default function serve(o: Options) {
 
   fs.writeFileSync(
     path.join(output, 'app.src.js'),
-    buildEntry({ styles, github, logo })
+    buildEntry({ styles, github, logo, title })
   );
 
   fs.writeFileSync(path.join(output, 'app.data.js'), stringifyData(data));
@@ -78,6 +79,7 @@ export default function serve(o: Options) {
       sheets: ['app.css'],
       scripts: scripts ? scripts.map(s => `scripts/${path.basename(s)}`) : [],
       colors,
+      title,
     });
     return acc;
   }, {});
@@ -142,6 +144,7 @@ export default function serve(o: Options) {
             ? scripts.map(s => `scripts/${path.basename(s)}`)
             : [],
           colors,
+          title,
         });
         return acc;
       }, {});

@@ -35,6 +35,7 @@ export default function serve(o: Options) {
     open,
     colors,
     title,
+    favicon,
   } = options;
 
   const cache: Map<string, Metadata> = new Map();
@@ -69,7 +70,7 @@ export default function serve(o: Options) {
 
   fs.writeFileSync(path.join(output, 'app.data.js'), stringifyData(data));
 
-  let fallback = build404({ logo, data, sheets: ['app.css'] });
+  let fallback = build404({ logo, data, sheets: ['app.css'], favicon });
   let routes = buildPageInfo(data).reduce((acc, info) => {
     acc[info.link] = buildHTML({
       data,
@@ -80,6 +81,7 @@ export default function serve(o: Options) {
       scripts: scripts ? scripts.map(s => `scripts/${path.basename(s)}`) : [],
       colors,
       title,
+      favicon,
     });
     return acc;
   }, {});
@@ -132,7 +134,7 @@ export default function serve(o: Options) {
         fs.writeFileSync(filepath, content);
       }
 
-      fallback = build404({ logo, data, sheets: ['app.css'] });
+      fallback = build404({ logo, data, sheets: ['app.css'], favicon });
       routes = buildPageInfo(data).reduce((acc, info) => {
         acc[info.link] = buildHTML({
           data,

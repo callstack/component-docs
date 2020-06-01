@@ -33,6 +33,7 @@ function pages() {
 
 module.exports = {
   logo: 'images/logo.svg',
+  favicon: 'images/logo.ico',
   assets: [path.join(assets, 'screenshots'), path.join(assets, 'images')],
   styles: [path.join(assets, 'styles.css')],
   pages,

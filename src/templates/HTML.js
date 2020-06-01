@@ -8,13 +8,21 @@ type Props = {
   description: string,
   body: string,
   sheets: string[],
+  favicon: string,
 };
 
-export default function HTML({ title, description, body, sheets }: Props) {
+export default function HTML({
+  title,
+  description,
+  body,
+  sheets,
+  favicon,
+}: Props) {
   return (
     <html lang="en">
       <head>
         <meta charSet="utf-8" />
+        <link rel="shortcut icon" type="image/x-icon" href={favicon} />
         <meta
           name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"

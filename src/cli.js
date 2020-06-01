@@ -53,6 +53,11 @@ const { argv } = yargs
       description: 'Title of a web page',
       requiresArg: true,
     },
+    favicon: {
+      type: 'string',
+      description: 'Favicon image to show in web tab',
+      requiresArg: true,
+    },
   })
   .command('serve', 'serve pages for development', y => {
     y.options({

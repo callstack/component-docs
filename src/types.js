@@ -25,6 +25,7 @@ export type Options = {
     primary?: string,
   },
   title?: string,
+  favicon?: string,
 };
 
 export type PageInfo = {

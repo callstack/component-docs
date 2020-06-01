@@ -10,9 +10,10 @@ import type { Metadata, Separator } from '../types';
 type Options = {
   data: Array<Metadata | Separator>,
   sheets: string[],
+  favicon?: string,
 };
 
-export default function build404({ data, sheets }: Options) {
+export default function build404({ data, sheets, favicon }: Options) {
   const info = buildPageInfo(data);
   const body = ReactDOMServer.renderToStaticMarkup(<Fallback data={info} />);
 
@@ -23,6 +24,7 @@ export default function build404({ data, sheets }: Options) {
       description="Page not found"
       body={body}
       sheets={sheets}
+      favicon={favicon || ''}
     />
   );
 }

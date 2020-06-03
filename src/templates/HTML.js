@@ -2,6 +2,7 @@
 /* eslint-disable react/no-danger */
 
 import * as React from 'react';
+import mime from 'mime-types';
 
 type Props = {
   title: string,
@@ -22,7 +23,7 @@ export default function HTML({
     <html lang="en">
       <head>
         <meta charSet="utf-8" />
-        <link rel="shortcut icon" type="image/x-icon" href={favicon} />
+        <link rel="shortcut icon" type={mime.lookup(favicon)} href={favicon} />
         <meta
           name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"

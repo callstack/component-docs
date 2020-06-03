@@ -17,6 +17,7 @@ type Options = {
     primary?: string,
   },
   title?: string,
+  favicon?: string,
 };
 
 export default function buildHTML({
@@ -28,6 +29,7 @@ export default function buildHTML({
   scripts,
   colors = {},
   title,
+  favicon,
 }: Options) {
   const html = ReactDOMServer.renderToString(
     <App
@@ -36,6 +38,7 @@ export default function buildHTML({
       data={data}
       github={github}
       title={title}
+      favicon={favicon}
     />
   );
 
@@ -96,6 +99,7 @@ export default function buildHTML({
     // eslint-disable-next-line react/jsx-pascal-case
     <HTML
       title={pageTitle}
+      favicon={favicon || ''}
       description={(info.description || '').split('\n')[0]}
       body={body}
       sheets={sheets}

@@ -2,10 +2,10 @@
 
 import * as React from 'react';
 import { styled } from 'linaria/react';
+import type { TypeAnnotation, Docs } from '../types';
 import Content from './Content';
 import Markdown from './Markdown';
 import EditButton from './EditButton';
-import type { TypeAnnotation, Docs } from '../types';
 
 type Props = {
   name: string,
@@ -83,7 +83,7 @@ const hasAnnotation = (item: any, annotation: string) =>
     : false;
 
 const pascalToCamelCase = (text: string) =>
-  text.replace(/^[A-Z]+/g, $1 => $1.toLowerCase());
+  text.replace(/^[A-Z]+/g, ($1) => $1.toLowerCase());
 
 const PropTypeDoc = ({
   name,
@@ -157,7 +157,9 @@ const MethodDoc = ({ name, description, type, params, returns }) => {
           <span>Params: </span>
           <code>
             {params
-              .map(p => `${p.name}${p.type ? `: ${getTypeName(p.type)}` : ''}`)
+              .map(
+                (p) => `${p.name}${p.type ? `: ${getTypeName(p.type)}` : ''}`
+              )
               .join(', ')}
           </code>
         </PropItem>
@@ -218,7 +220,7 @@ export default function Documentation({
   const restProps = [];
   const description = info.description
     .split('\n')
-    .filter(line => {
+    .filter((line) => {
       if (line.startsWith(ANNOTATION_EXTENDS)) {
         const parts = line.split(' ').slice(1);
         const link = parts.pop();
@@ -235,10 +237,10 @@ export default function Documentation({
   const props = info.props || {};
 
   const keys = Object.keys(props).filter(
-    prop => !hasAnnotation(props[prop], ANNOTATION_INTERNAL)
+    (prop) => !hasAnnotation(props[prop], ANNOTATION_INTERNAL)
   );
   const methods = info.methods.filter(
-    method =>
+    (method) =>
       !(
         method.name.startsWith('_') ||
         method.modifiers.includes('static') ||
@@ -247,19 +249,19 @@ export default function Documentation({
       )
   );
   const statics = info.statics
-    .map(prop => ({
+    .map((prop) => ({
       type: 'property',
       info: prop,
     }))
     .concat(
       info.methods
         .filter(
-          method =>
+          (method) =>
             method.modifiers.includes('static') &&
             method.docblock != null &&
             !REACT_STATIC_METHODS.includes(method.name)
         )
-        .map(method => ({
+        .map((method) => ({
           type: 'method',
           info: {
             ...method,
@@ -268,7 +270,7 @@ export default function Documentation({
         }))
     )
     .filter(
-      item =>
+      (item) =>
         !(
           item.info.name.startsWith('_') ||
           hasAnnotation(item.info, ANNOTATION_INTERNAL)
@@ -282,10 +284,10 @@ export default function Documentation({
       {keys.length || restProps.length ? (
         <React.Fragment>
           <h2>Props</h2>
-          {keys.map(prop => (
+          {keys.map((prop) => (
             <PropTypeDoc key={prop} name={prop} {...props[prop]} />
           ))}
-          {restProps.map(prop => (
+          {restProps.map((prop) => (
             <RestPropsLabel key={prop.name} href={prop.link}>
               <code>
                 ...
@@ -309,7 +311,7 @@ export default function Documentation({
             </code>
             .
           </p>
-          {methods.map(method => (
+          {methods.map((method) => (
             <MethodDoc key={method.name} type={null} {...method} />
           ))}
         </React.Fragment>
@@ -325,7 +327,7 @@ export default function Documentation({
             </code>
             .
           </p>
-          {statics.map(s => {
+          {statics.map((s) => {
             if (s.type === 'method') {
               return <MethodDoc key={s.info.name} {...s.info} />;
             }

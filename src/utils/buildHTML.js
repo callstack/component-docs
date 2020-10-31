@@ -30,7 +30,7 @@ export default function buildHTML({
   colors = {},
   title,
   favicon,
-}: Options) {
+}: Options): string {
   const html = ReactDOMServer.renderToString(
     <App
       logo={logo}
@@ -88,7 +88,7 @@ export default function buildHTML({
 
   body += '<script src="app.bundle.js"></script>';
 
-  scripts.forEach(s => {
+  scripts.forEach((s) => {
     body += `<script src="${s}"></script>`;
   });
 

@@ -21,7 +21,7 @@ const babelrc = require('./getBabelOptions')({
   },
 });
 
-export default ({ root, entry, output, production }: Options) => ({
+export default ({ root, entry, output, production }: Options): Object => ({
   context: root,
   mode: production ? 'production' : 'development',
   devtool: 'source-map',
@@ -35,13 +35,15 @@ export default ({ root, entry, output, production }: Options) => ({
   },
   optimization: {
     minimize: production,
-    namedModules: true,
     concatenateModules: true,
   },
   plugins: [
     new webpack.DefinePlugin({
-      'process.env': {
-        NODE_ENV: JSON.stringify(production ? 'production' : 'development'),
+      process: {
+        cwd: () => {},
+        env: {
+          NODE_ENV: JSON.stringify(production ? 'production' : 'development'),
+        },
       },
     }),
     new MiniCssExtractPlugin({
@@ -97,4 +99,11 @@ export default ({ root, entry, output, production }: Options) => ({
       },
     ],
   },
+  resolve: {
+    fallback: {
+      path: false,
+      url: require.resolve('url'),
+    },
+  },
+  stats: 'minimal',
 });

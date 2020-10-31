@@ -1,11 +1,11 @@
 /* @flow */
 
+import path from 'path';
 import express from 'express';
 import webpack from 'webpack';
 import devMiddleware from 'webpack-dev-middleware';
 import hotMiddleware from 'webpack-hot-middleware';
 import fs from 'fs-extra';
-import path from 'path';
 import inside from 'path-is-inside';
 import sane from 'sane';
 import chalk from 'chalk';
@@ -78,7 +78,7 @@ export default function serve(o: Options) {
       github,
       logo,
       sheets: ['app.css'],
-      scripts: scripts ? scripts.map(s => `scripts/${path.basename(s)}`) : [],
+      scripts: scripts ? scripts.map((s) => `scripts/${path.basename(s)}`) : [],
       colors,
       title,
       favicon,
@@ -99,14 +99,14 @@ export default function serve(o: Options) {
 
     if (
       event === 'change' &&
-      !pages.some(page => {
+      !pages.some((page) => {
         // Check if the changed file was a page
         if (page.type !== 'separator' && page.file === file) {
           return true;
         }
 
         // Check if the changed file was a dependency
-        return data.some(item =>
+        return data.some((item) =>
           item.type !== 'separator' ? item.dependencies.includes(file) : false
         );
       })
@@ -143,7 +143,7 @@ export default function serve(o: Options) {
           logo,
           sheets: ['app.css'],
           scripts: scripts
-            ? scripts.map(s => `scripts/${path.basename(s)}`)
+            ? scripts.map((s) => `scripts/${path.basename(s)}`)
             : [],
           colors,
           title,
@@ -170,7 +170,7 @@ export default function serve(o: Options) {
     process.exit();
   };
 
-  const error = e => {
+  const error = (e) => {
     console.log(e.stack || e.message);
     process.exitCode = 1;
     cleanup();
@@ -186,7 +186,7 @@ export default function serve(o: Options) {
   const app = express();
 
   if (assets) {
-    assets.forEach(dir => {
+    assets.forEach((dir) => {
       app.get(`/${path.basename(dir)}/*`, (req, res) => {
         res.sendFile(path.join(path.dirname(dir), req.path));
       });
@@ -194,7 +194,7 @@ export default function serve(o: Options) {
   }
 
   if (scripts) {
-    scripts.forEach(name => {
+    scripts.forEach((name) => {
       app.get(`/scripts/${path.basename(name)}`, (req, res) => {
         res.sendFile(name);
       });
@@ -216,9 +216,7 @@ export default function serve(o: Options) {
 
   app.use(
     devMiddleware(compiler, {
-      loglevel: 'warn',
       publicPath: config.output.publicPath,
-      stats: 'errors-only',
     })
   );
 

@@ -1,7 +1,6 @@
-/* eslint-disable class-methods-use-this, no-unused-vars, react/no-unused-prop-types */
+/* eslint-disable class-methods-use-this, react/no-unused-prop-types,  @typescript-eslint/no-unused-vars */
 
 import * as React from 'react';
-import Button from './Button';
 import DialogButton from './DialogButton';
 import DialogList from './DialogList';
 

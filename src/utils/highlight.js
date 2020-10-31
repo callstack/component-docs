@@ -19,6 +19,6 @@ refractor.register(require('refractor/lang/swift'));
 refractor.register(require('refractor/lang/java'));
 refractor.register(require('refractor/lang/diff'));
 
-export default function highlight(code: string, lang: string) {
+export default function highlight(code: string, lang: string): string {
   return refractor.highlight(code, aliases[lang] || lang);
 }

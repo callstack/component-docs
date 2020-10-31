@@ -1,9 +1,9 @@
 /* @flow */
 
-import * as React from 'react';
 import fs from 'fs';
 import path from 'path';
 import vm from 'vm';
+import * as React from 'react';
 import relative from 'require-relative';
 import dashify from 'dashify';
 import mdx from '@mdx-js/mdx';
@@ -13,7 +13,7 @@ import rehypePrism from '../utils/rehypePrism';
 import Content from '../templates/Content';
 import type { Metadata } from '../types';
 
-export default function(
+export default function (
   filepath: string,
   { root, logo }: { root: string, logo?: string }
 ): Metadata {
@@ -52,7 +52,7 @@ export default function(
     vm.createContext({
       module: m,
       exports: m.exports,
-      require: name => {
+      require: (name) => {
         const resolved = relative.resolve(name, dirname);
 
         r[name] = resolved;
@@ -102,7 +102,7 @@ export default function(
   var m = { exports: {} };
   var r = {
     ${Object.keys(r)
-      .map(n => `${JSON.stringify(n)}: require(${JSON.stringify(r[n])})`)
+      .map((n) => `${JSON.stringify(n)}: require(${JSON.stringify(r[n])})`)
       .join(',\n')}
   };
 

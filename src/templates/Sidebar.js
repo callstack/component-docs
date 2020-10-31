@@ -2,8 +2,8 @@
 
 import * as React from 'react';
 import { styled } from 'linaria/react';
-import Link from './Link';
 import type { Metadata, Separator } from '../types';
+import Link from './Link';
 
 const SidebarContent = styled.aside`
   background-color: #f8f9fa;
@@ -220,7 +220,7 @@ type State = {
 };
 
 export default class Sidebar extends React.Component<Props, State> {
-  state = {
+  state: State = {
     query: '',
     open: false,
     expanded: this.props.data.reduce((acc, item) => {
@@ -254,7 +254,7 @@ export default class Sidebar extends React.Component<Props, State> {
     }
   }
 
-  _measureHeights = () =>
+  _measureHeights = (): void => {
     this.setState({
       expanded: this.props.data.reduce((acc, item) => {
         if (item.type === 'separator') {
@@ -279,10 +279,11 @@ export default class Sidebar extends React.Component<Props, State> {
         return acc;
       }, {}),
     });
+  };
 
   _items: { [key: string]: ?HTMLDivElement } = {};
 
-  render() {
+  render(): React.Node {
     const { path, data } = this.props;
     const mapper = (item, i) => {
       if (item.type === 'separator') {
@@ -302,7 +303,7 @@ export default class Sidebar extends React.Component<Props, State> {
                 data-selected={path === item.link}
                 to={item.link}
                 onClick={() =>
-                  this.setState(state => {
+                  this.setState((state) => {
                     const group = state.expanded[item.title];
 
                     return {
@@ -330,7 +331,7 @@ export default class Sidebar extends React.Component<Props, State> {
                   opacity: typeof groupItem.height === 'number' ? 1 : 0,
                 }}
                 onClick={() =>
-                  this.setState(state => {
+                  this.setState((state) => {
                     const group = state.expanded[item.title];
 
                     return {
@@ -357,7 +358,7 @@ export default class Sidebar extends React.Component<Props, State> {
               </ButtonIcon>
             </Row>
             <GroupItems
-              ref={container => {
+              ref={(container) => {
                 this._items[item.title] = container;
               }}
               data-visible={!!groupItem.expanded}
@@ -390,7 +391,7 @@ export default class Sidebar extends React.Component<Props, State> {
     let items;
 
     if (this.state.query) {
-      items = data.filter(item => {
+      items = data.filter((item) => {
         if (item.type === 'separator') {
           return false;
         }
@@ -429,7 +430,7 @@ export default class Sidebar extends React.Component<Props, State> {
         } else if (item.group) {
           // If the item belongs to a group, find an item matching the group first
           /* $FlowFixMe */
-          const index = acc.findIndex(it => it.title === item.group);
+          const index = acc.findIndex((it) => it.title === item.group);
 
           let group = acc[index];
 
@@ -469,14 +470,14 @@ export default class Sidebar extends React.Component<Props, State> {
           type="checkbox"
           role="button"
           checked={this.state.open}
-          onChange={e => this.setState({ open: e.target.checked })}
+          onChange={(e) => this.setState({ open: e.target.checked })}
         />
         <MenuIcon htmlFor="slide-sidebar">☰</MenuIcon>
         <MenuContent>
           <Searchbar
             type="search"
             value={this.state.query}
-            onChange={e => this.setState({ query: e.target.value })}
+            onChange={(e) => this.setState({ query: e.target.value })}
             placeholder="Filter…"
           />
           <Navigation>{links}</Navigation>

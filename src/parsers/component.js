@@ -25,12 +25,12 @@ function staticPropertyHandler(documentation, propertyPath, componentName) {
     statics = propertyPath
       .get('body', 'body')
       .filter(
-        p =>
+        (p) =>
           p.node.static &&
           types.namedTypes.ClassProperty.check(p.node) &&
           !REACT_STATICS.includes(p.node.key.name)
       )
-      .map(p => {
+      .map((p) => {
         let type = null;
 
         const typeAnnotation = utils.getTypeAnnotation(p);

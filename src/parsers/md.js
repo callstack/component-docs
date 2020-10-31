@@ -18,7 +18,7 @@ export default function md(
   // Inline file references
   text = text
     .split('\n')
-    .map(line => {
+    .map((line) => {
       if (/^\/.+\.md$/.test(line)) {
         const f = path.join(path.dirname(filepath), line);
         const result = md(f, { root });

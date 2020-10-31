@@ -6,7 +6,7 @@ import { styled } from 'linaria/react';
 
 const Label = styled.label`
   cursor: pointer;
-  background: ${props => (props.isDark ? '#6200ee' : '#000')};
+  background: ${(props) => (props.isDark ? '#6200ee' : '#000')};
   padding: 3px;
   width: 33px;
   height: 20px;
@@ -127,7 +127,7 @@ export default function ThemeToggle() {
           type="checkbox"
           checked={isDark}
           disabled={!isReady}
-          onChange={() => setIsDark(isDark => !isDark)}
+          onChange={() => setIsDark((isDark) => !isDark)}
         />
         <Switch />
       </Label>

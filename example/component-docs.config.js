@@ -16,18 +16,18 @@ function pages() {
   return [
     ...fs
       .readdirSync(markdown)
-      .map(f => path.join(markdown, f))
-      .map(file => ({ type: file.endsWith('mdx') ? 'mdx' : 'md', file })),
+      .map((f) => path.join(markdown, f))
+      .map((file) => ({ type: file.endsWith('mdx') ? 'mdx' : 'md', file })),
     { type: 'separator' },
     ...fs
       .readdirSync(component)
-      .map(f => path.join(component, f))
-      .map(file => ({ type: 'component', file })),
+      .map((f) => path.join(component, f))
+      .map((file) => ({ type: 'component', file })),
     { type: 'separator' },
     ...fs
       .readdirSync(custom)
-      .map(f => path.join(custom, f))
-      .map(file => ({ type: 'custom', file })),
+      .map((f) => path.join(custom, f))
+      .map((file) => ({ type: 'custom', file })),
   ];
 }
 

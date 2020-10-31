@@ -8,9 +8,9 @@ import nodeToString from 'hast-util-to-string';
 import nodeToHTML from 'hast-util-to-html';
 import highlight from './highlight';
 
-export default function() {
+export default function () {
   /* eslint-disable no-param-reassign */
-  return tree => {
+  return (tree) => {
     visit(tree, 'element', visitor);
   };
 

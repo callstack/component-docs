@@ -1,13 +1,13 @@
 /* @flow */
 
 import * as React from 'react';
+import type { Metadata, Route, Separator } from '../types';
 import Router from './Router';
 import Documentation from './Documentation';
 import Markdown from './Markdown';
 import Layout from './Layout';
 import Sidebar from './Sidebar';
 import Content from './Content';
-import type { Metadata, Route, Separator } from '../types';
 
 type Data = Array<Metadata | Separator>;
 
@@ -16,7 +16,7 @@ const buildRoutes = (
   github?: string,
   logo?: string
 ): Array<Route> => {
-  const items: any[] = data.filter(item => item.type !== 'separator');
+  const items: any[] = data.filter((item) => item.type !== 'separator');
 
   return items.map((item: Metadata) => {
     let render;

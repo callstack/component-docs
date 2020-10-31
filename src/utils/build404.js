@@ -4,8 +4,8 @@ import * as React from 'react';
 import ReactDOMServer from 'react-dom/server';
 import HTML from '../templates/HTML';
 import Fallback from '../templates/404';
-import buildPageInfo from './buildPageInfo';
 import type { Metadata, Separator } from '../types';
+import buildPageInfo from './buildPageInfo';
 
 type Options = {
   data: Array<Metadata | Separator>,
@@ -13,7 +13,7 @@ type Options = {
   favicon?: string,
 };
 
-export default function build404({ data, sheets, favicon }: Options) {
+export default function build404({ data, sheets, favicon }: Options): string {
   const info = buildPageInfo(data);
   const body = ReactDOMServer.renderToStaticMarkup(<Fallback data={info} />);
 

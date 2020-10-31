@@ -23,7 +23,11 @@ export default function HTML({
     <html lang="en">
       <head>
         <meta charSet="utf-8" />
-        <link rel="shortcut icon" type={mime.lookup(favicon)} href={favicon} />
+        <link
+          rel="shortcut icon"
+          type={mime.lookup(favicon) || undefined}
+          href={favicon}
+        />
         <meta
           name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"
@@ -43,7 +47,7 @@ export default function HTML({
 
         <title>{title}</title>
 
-        {sheets.map(sheet => (
+        {sheets.map((sheet) => (
           <link key={sheet} type="text/css" rel="stylesheet" href={sheet} />
         ))}
       </head>

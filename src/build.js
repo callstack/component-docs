@@ -1,8 +1,8 @@
 /* @flow */
 
+import path from 'path';
 import webpack from 'webpack';
 import fs from 'fs-extra';
-import path from 'path';
 import buildEntry from './utils/buildEntry';
 import buildHTML from './utils/buildHTML';
 import configureWebpack from './utils/configureWebpack';
@@ -29,7 +29,7 @@ export default async function build(o: Options) {
   } = options;
 
   const pages = typeof getPages === 'function' ? getPages() : getPages;
-  const data = pages.map(page =>
+  const data = pages.map((page) =>
     page.type === 'separator' ? page : collectData(page, { root, logo, github })
   );
 
@@ -38,13 +38,13 @@ export default async function build(o: Options) {
   }
 
   if (assets) {
-    assets.forEach(dir => {
+    assets.forEach((dir) => {
       fs.copySync(dir, path.join(output, path.basename(dir)));
     });
   }
 
   if (scripts) {
-    scripts.forEach(name => {
+    scripts.forEach((name) => {
       fs.copySync(name, path.join(output, 'scripts', path.basename(name)));
     });
   }
@@ -56,7 +56,7 @@ export default async function build(o: Options) {
 
   fs.writeFileSync(path.join(output, 'app.data.js'), stringifyData(data));
 
-  buildPageInfo(data).forEach(info => {
+  buildPageInfo(data).forEach((info) => {
     fs.writeFileSync(
       path.join(output, `${info.link}.html`),
       buildHTML({
@@ -65,7 +65,9 @@ export default async function build(o: Options) {
         github,
         logo,
         sheets: ['app.css'],
-        scripts: scripts ? scripts.map(s => `scripts/${path.basename(s)}`) : [],
+        scripts: scripts
+          ? scripts.map((s) => `scripts/${path.basename(s)}`)
+          : [],
         colors,
         title,
         favicon,

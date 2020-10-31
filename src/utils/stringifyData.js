@@ -2,11 +2,13 @@
 
 import type { Separator, Metadata } from '../types';
 
-export default function stringifyData(data: Array<Metadata | Separator>) {
+export default function stringifyData(
+  data: Array<Metadata | Separator>
+): string {
   return `module.exports = [
   ${data
     /* $FlowFixMe */
-    .map(item => (item.stringify ? item.stringify() : JSON.stringify(item)))
+    .map((item) => (item.stringify ? item.stringify() : JSON.stringify(item)))
     .join(',')}
 ]`;
 }

@@ -59,7 +59,7 @@ const { argv } = yargs
       requiresArg: true,
     },
   })
-  .command('serve', 'serve pages for development', y => {
+  .command('serve', 'serve pages for development', (y) => {
     y.options({
       port: {
         type: 'number',
@@ -88,7 +88,7 @@ if (files.length) {
       []
     );
 
-    return result.map(file => ({
+    return result.map((file) => ({
       type: file.endsWith('mdx') ? 'mdx' : 'md',
       file,
     }));
@@ -115,7 +115,7 @@ if (command === 'build') {
         )}ms (${chalk.blue(path.relative(process.cwd(), options.output))})`
       );
     },
-    e => {
+    (e) => {
       spinner.fail(`Failed to build pages ${e.message}`);
       process.exit(1);
     }

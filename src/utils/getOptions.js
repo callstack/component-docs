@@ -14,7 +14,7 @@ export default function getOptions(
   /* $FlowFixMe */
   const root: string = overrides.root
     ? path.isAbsolute(overrides.root)
-      ? overrides.root
+      ? (overrides.root: any)
       : path.join(process.cwd(), overrides.root || '')
     : process.cwd();
 
@@ -31,9 +31,9 @@ export default function getOptions(
     ? options.output
     : path.join(root, options.output);
 
-  ['assets', 'styles', 'scripts'].forEach(t => {
+  ['assets', 'styles', 'scripts'].forEach((t) => {
     options[t] = options[t]
-      ? options[t].map(name =>
+      ? options[t].map((name) =>
           path.isAbsolute(name) ? name : path.join(root, name)
         )
       : undefined;

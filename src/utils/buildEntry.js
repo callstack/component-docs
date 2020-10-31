@@ -12,7 +12,7 @@ export default function buildEntry({
   github?: string,
   logo?: string,
   title?: string,
-}) {
+}): string {
   return `
 import React from 'react';
 import ReactDOM from 'react-dom';
@@ -25,7 +25,7 @@ import '${path.resolve(__dirname, '../styles/globals.css')}';
 ${
   styles
     ? styles
-        .map(sheet => `import '${path.resolve(__dirname, sheet)}';`)
+        .map((sheet) => `import '${path.resolve(__dirname, sheet)}';`)
         .join('\n')
     : ''
 }

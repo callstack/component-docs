@@ -8,4 +8,5 @@
 [libs]
 
 [options]
+types_first=false
 emoji=true

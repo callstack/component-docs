@@ -34,7 +34,7 @@ export default class Router extends Component<Props, State> {
   state: State;
 
   componentDidMount() {
-    this._unlisten = history.listen(location =>
+    this._unlisten = history.listen((location) =>
       this.setState({
         path: this._parse(location.pathname),
       })
@@ -44,7 +44,7 @@ export default class Router extends Component<Props, State> {
   componentDidUpdate(prevProps: Props, prevState: State) {
     const { routes, title } = this.props;
     if (prevState.path !== this.state.path) {
-      const route = routes.find(r => r.link === this.state.path);
+      const route = routes.find((r) => r.link === this.state.path);
       if (route) {
         // eslint-disable-next-line no-undef
         document.title = title
@@ -61,15 +61,12 @@ export default class Router extends Component<Props, State> {
   props: Props;
 
   _parse = (pathname: string) =>
-    pathname
-      .split('/')
-      .pop()
-      .split('.')[0] || 'index';
+    pathname.split('/').pop().split('.')[0] || 'index';
 
   _unlisten: () => void;
 
   render() {
-    const route = this.props.routes.find(r => r.link === this.state.path);
+    const route = this.props.routes.find((r) => r.link === this.state.path);
 
     if (route) {
       return route.render({

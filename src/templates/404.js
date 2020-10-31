@@ -1,9 +1,9 @@
 /* @flow */
 
 import * as React from 'react';
+import type { PageInfo } from '../types';
 import Content from './Content';
 import Link from './Link';
-import type { PageInfo } from '../types';
 
 type Props = {
   logo?: string,
@@ -21,7 +21,7 @@ export default class Fallback extends React.Component<Props> {
         </p>
         <p>This error page is shown only during development.</p>
         <ul>
-          {this.props.data.map(item => (
+          {this.props.data.map((item) => (
             <li key={item.link}>
               <Link to={item.link}>{item.title}</Link>
             </li>

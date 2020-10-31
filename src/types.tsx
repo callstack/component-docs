@@ -1,0 +1,109 @@
+import type * as React from 'react';
+
+export type Page = {
+  type: 'md' | 'mdx' | 'component' | 'custom';
+  file: string;
+  group?: string | undefined;
+};
+
+export type Separator = { type: 'separator' };
+
+export type Group = {
+  type: 'group';
+  title: string;
+  link?: string;
+  items: (Separator | Group | GroupItem)[];
+};
+
+export type GroupItem = {
+  type: 'md' | 'mdx' | 'component' | 'custom';
+  link: string;
+  title: string;
+};
+
+export type Options = {
+  root?: string;
+  logo?: string;
+  assets?: string[];
+  styles?: string[];
+  scripts?: string[];
+  pages: Array<Page | Separator> | (() => Array<Page | Separator>);
+  output?: string;
+  port?: number;
+  open?: boolean;
+  github?: string;
+  colors?: {
+    primary?: string;
+  };
+  title?: string;
+  favicon?: string;
+};
+
+export type PageInfo = {
+  title: string;
+  description: string;
+  link: string;
+  filepath: string;
+  dependencies: string[];
+  group?: string;
+};
+
+export type TypeAnnotation = {
+  name?: string;
+  raw: string;
+};
+
+export type Docs = {
+  description: string;
+  props?: {
+    [prop: string]: {
+      description: string;
+      required?: boolean;
+      defaultValue?: {
+        value: string | number;
+      };
+      flowType?: TypeAnnotation;
+      tsType?: TypeAnnotation;
+      type?: TypeAnnotation;
+    };
+  };
+  methods: Array<{
+    name: string;
+    description?: string;
+    docblock?: string;
+    params: Array<{
+      name: string;
+      type?: TypeAnnotation;
+    }>;
+    returns?: {
+      type?: TypeAnnotation;
+    };
+    modifiers: Array<'static' | 'generator' | 'async'>;
+  }>;
+  statics: Array<{
+    name: string;
+    description?: string;
+    type?: TypeAnnotation;
+    value?: string;
+    link?: string;
+  }>;
+};
+
+export type Metadata =
+  | (PageInfo & { type: 'component'; data: Docs })
+  | (PageInfo & { type: 'md'; data: string })
+  | (PageInfo & {
+      type: 'mdx';
+      data: React.ComponentType<{}>;
+      stringify: () => string;
+    })
+  | (PageInfo & {
+      type: 'custom';
+      data: React.ComponentType<{}>;
+      stringify: () => string;
+    });
+
+export type Route = PageInfo & {
+  render: (props: { path: string }) => React.ReactNode;
+  props?: {};
+};

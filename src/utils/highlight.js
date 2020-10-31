@@ -8,6 +8,8 @@ const aliases = {
 
 refractor.register(require('refractor/lang/clike'));
 refractor.register(require('refractor/lang/javascript'));
+refractor.register(require('refractor/lang/js-extras'));
+refractor.register(require('refractor/lang/js-templates'));
 refractor.register(require('refractor/lang/typescript'));
 refractor.register(require('refractor/lang/markup'));
 refractor.register(require('refractor/lang/jsx'));

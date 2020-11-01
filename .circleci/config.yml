@@ -24,14 +24,14 @@ jobs:
       - persist_to_workspace:
           root: .
           paths: .
-  lint-and-flow:
+  lint-and-typecheck:
       <<: *defaults
       steps:
         - attach_workspace:
             at: ~/component-docs
         - run: |
             yarn lint
-            yarn flow
+            yarn typescript
   build-package:
       <<: *defaults
       steps:
@@ -44,7 +44,7 @@ workflows:
   build-and-test:
     jobs:
       - install-dependencies
-      - lint-and-flow:
+      - lint-and-typecheck:
           requires:
             - install-dependencies
       - unit-tests:

@@ -1,5 +1,3 @@
-/* @flow weak */
-
 import webpack from 'webpack';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 

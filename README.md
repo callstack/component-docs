@@ -1,6 +1,10 @@
 # Component Docs
 
-![styled_with linaria](https://img.shields.io/badge/styled_with-linaria-de2d68.svg?style=flat-square)
+[![Build Status][build-badge]][build]
+[![Code Coverage][coverage-badge]][coverage]
+[![MIT License][license-badge]][license]
+[![Version][version-badge]][package]
+[![Styled with Linaria][linaria-badge]][linaria]
 
 📝 Simple documentation for your React components.
 
@@ -157,3 +161,14 @@ export const meta = {
 ## Example
 
 `component-docs` is used for [react-native-paper](https://callstack.github.io/react-native-paper)
+
+<!-- badges -->
+
+[build-badge]: https://img.shields.io/circleci/project/github/callstack/component-docs/master.svg?style=flat-square
+[build]: https://circleci.com/gh/callstack/component-docs
+[license-badge]: https://img.shields.io/npm/l/babel-test.svg?style=flat-square
+[license]: https://opensource.org/licenses/MIT
+[version-badge]: https://img.shields.io/npm/v/babel-test.svg?style=flat-square
+[package]: https://www.npmjs.com/package/babel-test
+[linaria-badge]: https://img.shields.io/badge/styled_with-linaria-de2d68.svg?style=flat-square
+[linaria]: https://github.com/callstack/linaria

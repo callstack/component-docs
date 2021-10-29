@@ -1,12 +1,9 @@
-/* @flow */
-/* eslint-disable react/no-unused-prop-types */
-
 import * as React from 'react';
 
 type Props = {
-  source: { uri: string },
-  onPress: () => mixed,
-  style?: any,
+  source: { uri: string };
+  onPress: () => unknown;
+  style?: any;
 };
 
 /**

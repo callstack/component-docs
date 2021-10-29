@@ -1,7 +1,24 @@
-/* eslint-disable react/no-unused-prop-types */
+import * as React from 'react';
 
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+type Props = {
+  /**
+   * Whether to disable the button.
+   */
+  disabled?: boolean;
+  /**
+   * Whether to use to primary color from theme.
+   */
+  primary?: boolean;
+  /**
+   * Content of the button.
+   */
+  children: string | Array<string>;
+  /**
+   * Function to execute on press.
+   */
+  onPress?: Function;
+  style?: any;
+};
 
 /**
  * Buttons communicate the action that will occur when the user touches them
@@ -22,30 +39,7 @@ import PropTypes from 'prop-types';
  * ```
  * @extends TouchableWithoutFeedback props https://facebook.github.io/react-native/docs/touchablewithoutfeedback.html#props
  */
-export default class Button extends Component {
-  static propTypes = {
-    /**
-     * Whether to disable the button.
-     */
-    disabled: PropTypes.bool,
-    /**
-     * Whether to use to primary color from theme.
-     */
-    primary: PropTypes.bool,
-    /**
-     * Content of the button.
-     */
-    children: PropTypes.oneOfType([
-      PropTypes.string,
-      PropTypes.arrayOf(PropTypes.string),
-    ]).isRequired,
-    /**
-     * Function to execute on press.
-     */
-    onPress: PropTypes.func,
-    style: PropTypes.any,
-  };
-
+export default class Button extends React.Component<Props> {
   static defaultProps = {
     disabled: false,
   };

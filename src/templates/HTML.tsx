@@ -1,5 +1,3 @@
-/* eslint-disable react/no-danger */
-
 import * as React from 'react';
 import mime from 'mime-types';
 

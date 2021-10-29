@@ -1,13 +1,10 @@
-/* @flow */
-/* eslint-disable class-methods-use-this, no-unused-vars, react/no-unused-prop-types */
-
 import * as React from 'react';
 
 type Props = {
   /**
    * Title text of the list item
    */
-  title: string,
+  title: string;
 };
 
 /**

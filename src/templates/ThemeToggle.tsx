@@ -1,5 +1,3 @@
-/* eslint-env browser */
-
 import * as React from 'react';
 import { styled } from 'linaria/react';
 

@@ -40,4 +40,10 @@ module.exports = {
   output,
   github,
   title: '[title] - Component Docs',
+  colors: {
+    annotations: {
+      supproted: '#6200ee',
+      deprecated: '#B00020',
+    },
+  },
 };

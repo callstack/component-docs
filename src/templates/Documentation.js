@@ -2,10 +2,11 @@
 
 import * as React from 'react';
 import { styled } from 'linaria/react';
+import color from 'color';
+import type { TypeAnnotation, Docs } from '../types';
 import Content from './Content';
 import Markdown from './Markdown';
 import EditButton from './EditButton';
-import type { TypeAnnotation, Docs } from '../types';
 
 type Props = {
   name: string,
@@ -13,6 +14,10 @@ type Props = {
   filepath: string,
   logo?: string,
   github?: string,
+  colors?: {
+    primary?: string,
+    annotations?: { [key: string]: string },
+  },
 };
 
 const Title = styled.h1`
@@ -33,11 +38,16 @@ const PropInfo = styled.div`
   margin: 14px 0;
 `;
 
+const PropLabelWrapper = styled.div`
+  align-items: center;
+  display: flex;
+  margin: 24px 0 8px 0;
+`;
+
 const PropLabel = styled.a`
   display: block;
   color: inherit;
   font-size: 18px;
-  margin: 24px 0 8px 0;
   text-decoration: none;
   white-space: nowrap;
 
@@ -66,11 +76,34 @@ const RestPropsLabel = styled.a`
   margin: 24px 0 8px 0;
 `;
 
+const Badge = styled.div`
+  border-radius: 15px;
+  border-color: ${props => props.color};
+  background-color: ${props =>
+    color(props.color)
+      .alpha(0.2)
+      .rgb()
+      .string()};
+  border-style: solid;
+  border-width: 1px;
+  font-weight: 600;
+  text-align: center;
+  padding: 4px 8px;
+  font-size: smaller;
+  margin-left: 8px;
+  color: ${props => props.color};
+
+  .dark-theme & {
+    color: white;
+  }
+`;
+
 const REACT_STATIC_METHODS = ['getDerivedStateFromProps'];
 
 const ANNOTATION_OPTIONAL = '@optional';
 const ANNOTATION_INTERNAL = '@internal';
 const ANNOTATION_EXTENDS = '@extends';
+const ANNOTATION_BADGES = ['@supported', '@deprecated'];
 
 const getTypeName = (type: TypeAnnotation) => type.raw || type.name || '';
 
@@ -93,6 +126,7 @@ const PropTypeDoc = ({
   type,
   required,
   defaultValue,
+  colors,
 }: *) => {
   const isRequired =
     required &&
@@ -109,12 +143,29 @@ const PropTypeDoc = ({
       ? getTypeName(type)
       : null;
 
+  const badge =
+    description && ANNOTATION_BADGES.find(i => i == description.split(' ')[0]);
+  const containsBadge = description && badge && description.startsWith(badge);
+  const badgeLine = containsBadge ? description.split('\n')[0] : null;
+  const badgeColor =
+    badge &&
+    colors &&
+    colors.annotations &&
+    colors.annotations[badge.replace('@', '')];
+  const badgeDescription =
+    containsBadge && badgeLine
+      ? badgeLine.replace(badge || '', '').trim()
+      : null;
+
   return (
     <PropInfo>
-      <PropLabel name={name} href={`#${name}`}>
-        <code>{name}</code>
-        {isRequired ? ' (required)' : ''}
-      </PropLabel>
+      <PropLabelWrapper>
+        <PropLabel name={name} href={`#${name}`}>
+          <code>{name}</code>
+          {isRequired ? ' (required)' : ''}
+        </PropLabel>
+        {badge && <Badge color={badgeColor}>{badgeDescription}</Badge>}
+      </PropLabelWrapper>
       {typeName && typeName !== 'unknown' ? (
         <PropItem>
           <span>Type: </span>
@@ -130,7 +181,10 @@ const PropTypeDoc = ({
       {description ? (
         <PropItem
           as={MarkdownContent}
-          source={description.replace(/^@optional/, '').trim()}
+          source={description
+            .replace(/^@optional/, '')
+            .replace(badgeLine || '', '')
+            .trim()}
         />
       ) : null}
     </PropInfo>
@@ -214,6 +268,7 @@ export default function Documentation({
   logo,
   github,
   filepath,
+  colors,
 }: Props) {
   const restProps = [];
   const description = info.description
@@ -283,7 +338,12 @@ export default function Documentation({
         <React.Fragment>
           <h2>Props</h2>
           {keys.map(prop => (
-            <PropTypeDoc key={prop} name={prop} {...props[prop]} />
+            <PropTypeDoc
+              key={prop}
+              name={prop}
+              colors={colors}
+              {...props[prop]}
+            />
           ))}
           {restProps.map(prop => (
             <RestPropsLabel key={prop.name} href={prop.link}>

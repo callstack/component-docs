@@ -15,6 +15,7 @@ type Options = {
   scripts: string[],
   colors?: {
     primary?: string,
+    annotations?: { [key: string]: string },
   },
   title?: string,
   favicon?: string,
@@ -39,6 +40,7 @@ export default function buildHTML({
       github={github}
       title={title}
       favicon={favicon}
+      colors={colors}
     />
   );
 

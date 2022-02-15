@@ -14,7 +14,11 @@ type Data = Array<Metadata | Separator>;
 const buildRoutes = (
   data: Data,
   github?: string,
-  logo?: string
+  logo?: string,
+  colors?: {
+    primary?: string,
+    annotations?: { [key: string]: string },
+  }
 ): Array<Route> => {
   const items: any[] = data.filter(item => item.type !== 'separator');
 
@@ -47,6 +51,7 @@ const buildRoutes = (
                 github={github}
                 logo={logo}
                 filepath={item.filepath}
+                colors={colors}
               />
             </Layout>
           );
@@ -81,9 +86,20 @@ type Props = {
   github?: string,
   logo?: string,
   title?: string,
+  colors?: {
+    primary?: string,
+    annotations?: { [key: string]: string },
+  },
 };
 
-export default function App({ path, data, github, logo, title }: Props) {
-  const routes = buildRoutes(data, github, logo);
+export default function App({
+  path,
+  data,
+  github,
+  logo,
+  title,
+  colors,
+}: Props) {
+  const routes = buildRoutes(data, github, logo, colors);
   return <Router path={path} routes={routes} title={title} />;
 }

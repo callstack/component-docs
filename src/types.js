@@ -23,6 +23,7 @@ export type Options = {
   github?: string,
   colors?: {
     primary?: string,
+    annotations?: { [key: string]: string },
   },
   title?: string,
   favicon?: string,

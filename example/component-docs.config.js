@@ -42,7 +42,8 @@ module.exports = {
   title: '[title] - Component Docs',
   colors: {
     annotations: {
-      supproted: '#6200ee',
+      supported: '#6200ee',
+      renamed: '#ffa500',
       deprecated: '#B00020',
     },
   },

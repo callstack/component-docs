@@ -22,6 +22,7 @@ type Props = {
 
 const Title = styled.h1`
   margin-top: 0;
+  margin-bottom: 0;
 `;
 
 const MarkdownContent = styled(Markdown)`
@@ -98,12 +99,18 @@ const Badge = styled.div`
   }
 `;
 
+const TitleWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  margin-bottom: 24px;
+`;
+
 const REACT_STATIC_METHODS = ['getDerivedStateFromProps'];
 
 const ANNOTATION_OPTIONAL = '@optional';
 const ANNOTATION_INTERNAL = '@internal';
 const ANNOTATION_EXTENDS = '@extends';
-const ANNOTATION_BADGES = ['@supported', '@deprecated'];
+const ANNOTATION_BADGES = ['@supported', '@renamed', '@deprecated'];
 
 const getTypeName = (type: TypeAnnotation) => type.raw || type.name || '';
 
@@ -330,10 +337,30 @@ export default function Documentation({
         )
     );
 
+  const badge =
+    description && ANNOTATION_BADGES.find(i => i == description.split(' ')[0]);
+  const containsBadge = description && badge && description.startsWith(badge);
+  const badgeLine = containsBadge ? description.split('\n')[0] : null;
+  const badgeColor =
+    badge &&
+    colors &&
+    colors.annotations &&
+    colors.annotations[badge.replace('@', '')];
+  const badgeDescription =
+    containsBadge && badgeLine
+      ? badgeLine.replace(badge || '', '').trim()
+      : null;
+
   return (
     <Content logo={logo}>
-      <Title>{name}</Title>
-      <MarkdownContent source={description} options={{ linkify: true }} />
+      <TitleWrapper>
+        <Title>{name}</Title>
+        {badge && <Badge color={badgeColor}>{badgeDescription}</Badge>}
+      </TitleWrapper>
+      <MarkdownContent
+        source={description.replace(badgeLine || '', '')}
+        options={{ linkify: true }}
+      />
       {keys.length || restProps.length ? (
         <React.Fragment>
           <h2>Props</h2>

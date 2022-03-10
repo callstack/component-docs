@@ -33,6 +33,48 @@ const MarkdownContent = styled(Markdown)`
   p:last-of-type {
     margin-bottom: 0;
   }
+
+  .badge {
+    border-radius: 15px;
+    border-style: solid;
+    border-width: 1px;
+    font-weight: 600;
+    text-align: center;
+    padding: 4px 8px;
+    font-size: smaller;
+    margin-left: 8px;
+
+    .dark-theme & {
+      color: white;
+    }
+  }
+
+  .supported {
+    border-color: #6200ee;
+    background-color: ${color('#6200ee')
+      .alpha(0.2)
+      .rgb()
+      .string()};
+    color: #6200ee;
+  }
+
+  .renamed {
+    border-color: #006400;
+    background-color: ${color('#006400')
+      .alpha(0.2)
+      .rgb()
+      .string()};
+    color: #006400;
+  }
+
+  .deprecated {
+    border-color: #b00020;
+    background-color: ${color('#B00020')
+      .alpha(0.2)
+      .rgb()
+      .string()};
+    color: #b00020;
+  }
 `;
 
 const PropInfo = styled.div`

@@ -55,6 +55,28 @@ export default class Markdown extends React.Component<Props> {
       },
     });
 
+    const regex = /(@.*?)\s(.+)(<\/li>)/g;
+    const parts = html.match(regex);
+
+    if (parts && parts.length > 0) {
+      for (let i = 0; i < parts.length; i++) {
+        regex.lastIndex = 0;
+        const part = regex.exec(parts[i]);
+        if (part && part.length > 0) {
+          const badgeDescription = part[0];
+          const badgeName = part[1];
+          const badgeLabel = part[2];
+          html = html.replace(
+            badgeDescription,
+            `<span class="badge ${badgeName.replace(
+              '@',
+              ''
+            )}">${badgeLabel}</span>`
+          );
+        }
+      }
+    }
+
     html = sanitize(html, require('../configs/santize-config.json'));
 
     return (
